@@ -11,6 +11,8 @@ Directory structure:
   source for the core of the engine itself
  sample/
   sample game for testing
+ deps/
+  3rd-party dependencies - you are encouraged to install all of these as per the instructions in each archive
 ``` 
 
 The engine is designed to make games that are easy to mod and a final distribution package therefore contains the following at a minimal:
