@@ -54,6 +54,7 @@ void init_libs() {
 }
 
 int main(int argc, char* argv[]) {
+    printf("\n*** LAMBDA ENGINE STARTUP ***\n\n");
     printf("i_main.c:main() - Lambda engine starting up\n");
     vfs_init(argv[0]);
     init_libs();
