@@ -39,7 +39,7 @@ int vfs_loadpak(char* filename) {
     char* base_dir;
     char full_filename[PATH_MAX];
     base_dir = (char*)PHYSFS_getBaseDir();
-    snprintf(full_filename, sizeof(full_filename), "%s%s", base_dir, filename);
+    snprintf(full_filename, sizeof(full_filename), "%s../%s", base_dir, filename);
     printf("vfs_pak.c:vfs_loadpak() - mounting %s at /...", full_filename);
     retval = PHYSFS_mount((const char*)full_filename,"",1);
     if (retval==0) {
