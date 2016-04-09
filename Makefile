@@ -24,7 +24,15 @@ enginebin: dist/bin/lambda
 
 corepaks: dist/data/core01.pak dist/data/core02.pak
 
-all: enginebin corepaks
+tools: dist/bin/lmapcomp dist/bin/lgamecomp
+
+all: enginebin tools corepaks
+
+clean:
+	rm -f dist/bin/*
+	rm -f dist/data/*
+	rm -f build/core01/libs/*
+	rm -f build/engine/*.o
 
 $(O)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
