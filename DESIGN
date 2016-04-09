@@ -1,0 +1,84 @@
+Each map has 4 parts:
+1 - Visual: made up of tiles, each being a textured quad in OpenGL
+2 - Collision map: a black and white bitmap
+3 - Hotzones: hotzones for scripting defined via coloured patches in a bitmap, entities are single pixels
+4 - Map definition: text file describing map name and assigning IDs for hotzones and spawning entities
+
+The hotzones in the map definition are defined using RGB colours
+
+Map compiler:
+ Takes a large visual and cuts it into tiles
+ Removes all but one colour from collision map and turns it black and white (makes it easier to draw collisions by editing the visual and then converting)
+ Spits out C file with data about hotzones and other misc info based on map definition
+ Generates seperate collision map, visual tileset, entities map and hotzones map (see below)
+
+Map definition file:
+ Provides human-readable map name and C identifier
+ Provides C identifier for each hotzone
+ Provides entity type and C identifier for each entity
+
+Every map must have at least one entity: the player entity
+
+Entities are given C identifiers and classes
+ Entity classes need not be predefined, simply use the class and the compiler will spit out hooks in the C code
+ Entity animations are loaded from the relevant spriteset
+
+Game logic:
+ Seperate dynamic lib made up of the C files from map compiler and any scripting logic via event hooks etc
+
+Game logic compiler:
+ Takes a game/mod definition file
+ Compiles maps and links the resulting C code into a dynamic lib
+ Builds hooks for entity classes defined in maps
+ Compiles + links any extra C code
+
+Compilers are both invocable in 2 modes:
+ 1 - Preprocess - spits out source code and bitmaps for editing, does not compile C code or link dynamic lib
+ 2 - Build - run the complete process
+
+console:
+ stdio only at first (later upgrade to using quake-style console)
+
+VFS layer:
+ PAK files loaded from disk in a set order: core first, then mods
+ mod PAKs override earlier PAKs
+   e.g if a mod is loaded after core, files with the same name in the mod override core
+       mods also override other mods in the same name
+
+Core libs:
+ There are 2 core PAKs:
+   core01.pak contains the renderer, sound system and input system
+   core02.pak contains the game
+ Patches for particular subsystems can (and should) be released as PAKs, for example:
+   patch01.pak
+
+At startup, core01.pak and core02.pak are loaded followed by any patches
+
+pak file structure:
+ Standard zip file
+ gameinfo.def               Copy of the game definition file
+ modinfo.def                Copy of the mod definition file (only used in mod paks)
+ libs/                      Any dynamic libs in this path are loaded at runtime, allowing for mods etc
+     game.so                Game logic and compiled map definitions - must be present somewhere
+ sfx/                       Sound effects
+     whatever.wav           Individual sound effects in .wav format
+     ...
+ music/                     Music in ogg format
+     whatever.ogg           Individual tracks of music
+     ...
+ entities/                  Entity sprites live here
+     player/                Must have at least a player entity class
+           anim_up.bmp      Spriteset for up movements
+           anim_down.bmp    Spriteset for down movements
+           anim_left.bmp    Spriteset for left movements
+           anim_right.bmp   Spriteset for right movements
+ maps/                      Maps live here
+     map01/                 Each subdirectory inherits the C identifier for the map
+          mapinfo.def       Copy of the map definition
+          visual/           Compiled visual
+                tile01.bmp  tile textures
+                tile02.bmp
+                ...
+          collide.bmp       Compiled collision map
+          hotzones.bmp      Compiled hot zones map
+          entities.bmp      Compiled entities map
