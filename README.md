@@ -3,8 +3,10 @@
 
 Directory structure:
 ```
+ build/
+  temporary output from the build system
  dist/
-  the build system sticks output here
+  the build system sticks the final distribution here
  tools/
   map compiler and other tools
  engine/
