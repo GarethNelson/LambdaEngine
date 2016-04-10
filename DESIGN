@@ -45,12 +45,21 @@ VFS layer:
    e.g if a mod is loaded after core, files with the same name in the mod override core
        mods also override other mods in the same name
 
-Core libs:
+Core PAKs:
  There are 2 core PAKs:
    core01.pak contains the renderer, sound system and input system
    core02.pak contains the game
  Patches for particular subsystems can (and should) be released as PAKs, for example:
    patch01.pak
+
+core01 libs:
+ lambda_video.so
+  Contains code for initialising display and getting an OpenGL context
+  Also handles things like double buffering
+ lambda_map.so
+  Contains code for loading+rendering maps using OpenGL
+ lambda_input.so
+  Contains code for getting input and triggering the relevant events
 
 At startup, core01.pak and core02.pak are loaded followed by any patches
 
@@ -59,7 +68,7 @@ pak file structure:
  gameinfo.def               Copy of the game definition file
  modinfo.def                Copy of the mod definition file (only used in mod paks)
  libs/                      Any dynamic libs in this path are loaded at runtime, allowing for mods etc
-     game.so                Game logic and compiled map definitions - must be present somewhere
+     game.so                Game logic and compiled map definitions - must be present somewhere, probably core02.pak
  sfx/                       Sound effects
      whatever.wav           Individual sound effects in .wav format
      ...
