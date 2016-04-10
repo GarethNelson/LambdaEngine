@@ -1,0 +1,10 @@
+Inputs:
+ Map visual                  - needs to be cut into tiles
+ Non-greyscale collision map - needs to be turned into black+white bitmap
+ Hotzones map                - needs to be turned into list of hotzone C identifiers + hotzones-only map
+ Entities map                - needs to be turned into list of entity coordinates with entity classes
+
+Tools:
+lambdacutvis
+ cuts visual into tile bitmaps and a .def file specifying the tiles
+ possible later optimisation: automatically determine repeated tiles and store the tilemap in .def file
