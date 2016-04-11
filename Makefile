@@ -1,10 +1,10 @@
 CC      = gcc
-CFLAGS  = -g -fPIC
+CFLAGS  = -g -fPIC `sdl2-config --cflags`
 LDFLAGS =
 LIBS    = -lphysfs
 O       = build
 
-ENGINE_OBJS       = $(O)/engine/vfs_pak.o  $(O)/engine/vfs_init.o
+ENGINE_OBJS       = $(O)/engine/vfs_pak.o  $(O)/engine/vfs_init.o $(O)/engine/lib_tools.o
 LAMBDA_VIDEO_OBJS = $(O)/lambda_video/v_init.o
 
 dist/bin/lambda: $(ENGINE_OBJS) $(O)/engine/l_main.o

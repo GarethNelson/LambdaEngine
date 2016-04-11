@@ -28,6 +28,7 @@
 
 #include <stdio.h>
 #include "vfs_init.h"
+#include "lib_tools.h"
 
 void init_libs() {
     printf("Libs: init_libs() - Locate libraries...");
