@@ -31,16 +31,11 @@
 #include <physfs.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <physfs.h>
-#include "uthash.h"
+#include <unistd.h>
+#include "vfs_io.h"
 
 char cache_path[PATH_MAX];
 
-struct md5_table_entry {
-    char *filename;   // key
-    char *md5_digest;
-    UT_hash_handle hh;
-};
 
 void init_lib_cache() {
      const char* user_dir;
@@ -57,7 +52,44 @@ void init_lib_cache() {
      }
 }
 
-void refresh_lib_cache(char *filename) {
-     printf("lib_cache.c:refresh_lib_cache() - Refreshing cache for %s...",filename);
+void update_lib_cache(char *filename) {
+     printf("lib_cache.c:update_lib_cache() - Updating cache from VFS for %s...",filename);
      printf("DONE!\n");
+}
+
+void refresh_lib_cache(char *filename) {
+     char cache_filepath[PATH_MAX];
+     char cache_md5path[PATH_MAX];
+     char vfs_filepath[PATH_MAX];
+     char vfs_md5path[PATH_MAX];
+     
+     char md5_vfs[32];
+     char md5_cache[32];
+
+     struct stat st;
+     
+     printf("lib_cache.c:refresh_lib_cache() - Refreshing cache for %s:\n",filename);
+     snprintf(cache_filepath,sizeof(cache_filepath), "%s/%s", cache_path, filename);
+     snprintf(cache_md5path,sizeof(cache_md5path), "%s/%s.md5", cache_path, filename);
+     snprintf(vfs_filepath,sizeof(vfs_filepath),"/libs/%s",filename);
+     snprintf(vfs_md5path,sizeof(vfs_md5path),"/libs/%s.md5",filename);
+     
+     if(stat(cache_filepath, &st) != 0) {
+        printf("lib_cache.c:refresh_lib_cache() - File not found in cache, will update:\n");
+        update_lib_cache(filename);
+        return;
+     }
+
+     if(stat(cache_md5path, &st) == 0) {
+        FILE *cache_md5_fd = fopen((const char*)cache_md5path,"r");
+        fread((void*)md5_cache, sizeof(md5_cache),1,cache_md5_fd);
+        fclose(cache_md5_fd);
+        printf("DONE!\n");
+     } else {
+        printf("lib_cache.c:refresh_lib_cache() - Cache missing MD5, will update:\n");
+        update_lib_cache(filename);
+     }
+     
+     vfs_read((void*)md5_vfs,vfs_md5path,sizeof(md5_vfs));
+     
 }

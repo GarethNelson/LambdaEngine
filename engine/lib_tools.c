@@ -65,6 +65,6 @@ void init_libs() {
     
     printf("lib_tools.c:init_libs() - Loading libs:\n");
     LL_FOREACH_SAFE(libs_list,d,tmp) {
-       printf("Loading %s:\n",d->filename);
+       printf("lib_tools.c:init_libs() - Loading %s:\n",d->filename);
     }
 }
