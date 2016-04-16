@@ -69,7 +69,7 @@ pak file structure:
  modinfo.def                Copy of the mod definition file (only used in mod paks)
  libs/                      Any dynamic libs in this path are loaded at runtime, allowing for mods etc
      game.so                Game logic and compiled map definitions - must be present somewhere, probably core02.pak
-     md5sums.core01         In core01.pak, this contains MD5 checksums used by the cache system
+     game.so.md5            Contains an MD5 checksum used by the cache system
  sfx/                       Sound effects
      whatever.wav           Individual sound effects in .wav format
      ...
@@ -92,3 +92,4 @@ pak file structure:
           collide.bmp       Compiled collision map
           hotzones.bmp      Compiled hot zones map
           entities.bmp      Compiled entities map
+

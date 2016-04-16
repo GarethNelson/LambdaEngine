@@ -27,3 +27,4 @@
 //-----------------------------------------------------------------------------
 
 void init_lib_cache();
+void refresh_lib_cache(char* filename);

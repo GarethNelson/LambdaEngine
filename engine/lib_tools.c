@@ -39,7 +39,7 @@ lib_details *libs_list = (lib_details*)NULL;
 void init_libs() {
     char **lib_physfs_list;
     char **i;
-    lib_details *d;
+    lib_details *d, *tmp;
 
     printf("lib_tools.c:init_libs() - Locate libraries:\n");
     lib_physfs_list = PHYSFS_enumerateFiles("libs");
@@ -58,21 +58,13 @@ void init_libs() {
     printf("lib_tools.c:init_libs() - Start cache system:\n");
     init_lib_cache();
 
-    printf("lib_tools.c:init_libs() - Checking cache...");
-    // Check cache to see what we need to update
-    printf("DONE!\n");
-
-    printf("lib_tools.c:init_libs() - Need to update %d files in cache\n",1);
+    printf("lib_tools.c:init_libs() - Refreshing cache:\n");
+    LL_FOREACH_SAFE(libs_list,d,tmp) {
+       refresh_lib_cache(d->filename);
+    }
     
-    // put the below in a loop
-    printf("lib_tools.c:init_libs() - Updating 1 of 1 files in cache: whatever.so...");
-    // load whatever.so from PhysFS, write it to cache
-    printf("DONE!\n");
-
-    printf("lib_tools.c:init_libs() - Need to load %d libraries\n",1);
-    
-    // put the below in a loop, use the libraries list returned from PhysFS
-    printf("lib_tools.c:init_libs() - Loading 1 of 1 libraries: whatever.so:\n");
-    // load whatever.so from cache using dlopen()
-    // whatever.so should print out it's own debugging details
+    printf("lib_tools.c:init_libs() - Loading libs:\n");
+    LL_FOREACH_SAFE(libs_list,d,tmp) {
+       printf("Loading %s:\n",d->filename);
+    }
 }
