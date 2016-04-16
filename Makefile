@@ -14,10 +14,12 @@ build/core01/libs/lambda_video.so: $(LAMBDA_VIDEO_OBJS)
 	$(CC) -shared -o $(O)/core01/libs/lambda_video.so $(LAMBDA_VIDEO_OBJS)
 
 dist/data/core01.pak: build/core01/libs/lambda_video.so
+	cd build/core01/libs; find ./*.so | xargs -n 1 md5sum >md5sums
 	cd build/core01; zip -r ../../dist/data/core01.pak *
 
 dist/data/core02.pak: sample/gameinfo.def
 	cp sample/gameinfo.def build/core02/
+	cd build/core02/libs; find ./*.so | xargs -n 1 md5sum >md5sums
 	cd build/core02; zip ../../dist/data/core02.pak *
 
 enginebin: dist/bin/lambda
