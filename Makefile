@@ -15,7 +15,7 @@ dist/bin/lambda: $(ENGINE_OBJS) $(O)/engine/l_main.o
 	$(CC) $(CFLAGS) $(LDFLAGS) $(ENGINE_OBJS) $(O)/engine/l_main.o -o $@ $(LIBS)
 
 build/core01/libs/lambda_video.so: $(LAMBDA_VIDEO_OBJS)
-	$(CC) -shared -o $(O)/core01/libs/lambda_video.so $(LAMBDA_VIDEO_OBJS)
+	$(CC) -shared -o $(O)/core01/libs/lambda_video.so -framework OpenGL `sdl2-config --libs` $(LAMBDA_VIDEO_OBJS)
 
 dist/data/core01.pak: build/core01/libs/lambda_video.so
 	cd build/core01/libs; ../../../tools/build_md5sums.sh

@@ -27,12 +27,37 @@
 //-----------------------------------------------------------------------------
 
 #include <stdio.h>
+#include <dlfcn.h>
+#include <stdlib.h>
 #include "vfs_init.h"
 #include "lib_tools.h"
 
 int main(int argc, char* argv[]) {
+    int  (*video_init)();
+    void (*video_pre_render)();
+    void (*video_post_render)();
+    void (*render_init)();
+
     printf("\n*** LAMBDA ENGINE STARTUP ***\n\n");
-    printf("i_main.c:main() - Lambda engine starting up\n");
+    printf("l_main.c:main() - Lambda engine starting up\n");
     vfs_init(argv[0]);
     init_libs();
+
+    video_init        = dlsym(RTLD_DEFAULT,"video_init");
+    video_pre_render  = dlsym(RTLD_DEFAULT,"video_pre_render");
+    video_post_render = dlsym(RTLD_DEFAULT,"video_post_render");
+    if(video_init() != 0) {
+       printf("l_main.c:main() - Failed to setup video!\n");
+       exit(1);
+    }
+    
+//    render_init       = dlsym(RTLD_DEFAULT,"render_init");
+    
+    int running=1; 
+    while(running) {
+        video_pre_render();
+        // process_events();
+        // render_frame();
+        video_post_render();       
+    }
 }

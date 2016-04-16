@@ -32,8 +32,6 @@ void init_libs();
 
 typedef struct lib_details {
     char filename[MAX_LIBFN_LEN];
-    unsigned int content_size;
-    char *content;
     int loaded;
     struct lib_details *next;
 } lib_details;

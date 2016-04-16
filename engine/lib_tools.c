@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <physfs.h>
+#include <dlfcn.h>
 #include "lib_tools.h"
 #include "lib_cache.h"
 #include "utlist.h"
@@ -41,7 +42,8 @@ void load_lib(char *filename) {
      char lib_full_path[PATH_MAX];
      get_cache_path(filename, lib_full_path);
      printf("lib_tools.c:load_lib() - Full path to load is %s, loading:\n",lib_full_path);
-     dlopen(lib_full_path);
+     dlopen(lib_full_path,RTLD_NOW|RTLD_GLOBAL);
+     
 }
 
 void init_libs() {
