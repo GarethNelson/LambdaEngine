@@ -27,9 +27,23 @@
 //-----------------------------------------------------------------------------
 
 #include <physfs.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 void vfs_read(void* buf,char* filename,unsigned int size) {
      PHYSFS_File *fd = PHYSFS_openRead((const char*)filename);
      PHYSFS_read(fd,buf,(PHYSFS_uint32)size,1);
      PHYSFS_close(fd);
+}
+
+void vfs_extract(char *vfs_filename, char* extract_to) {
+     FILE *ext_fd = fopen((const char*)extract_to,"w");
+     PHYSFS_File *vfs_fd = PHYSFS_openRead((const char*)vfs_filename);
+     PHYSFS_uint32 file_size = PHYSFS_fileLength(vfs_fd);
+     char* buf = (char*)malloc(file_size);
+     PHYSFS_read(vfs_fd,buf,file_size,1);
+     PHYSFS_close(vfs_fd);
+     fwrite(buf,file_size,1,ext_fd);
+     fclose(ext_fd);
 }

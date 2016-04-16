@@ -32,6 +32,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <string.h>
 #include "vfs_io.h"
 
 char cache_path[PATH_MAX];
@@ -54,6 +55,19 @@ void init_lib_cache() {
 
 void update_lib_cache(char *filename) {
      printf("lib_cache.c:update_lib_cache() - Updating cache from VFS for %s...",filename);
+     char cache_filepath[PATH_MAX];
+     char cache_md5path[PATH_MAX];
+     char vfs_filepath[PATH_MAX];
+     char vfs_md5path[PATH_MAX];
+
+     snprintf(cache_filepath,sizeof(cache_filepath), "%s/%s", cache_path, filename);
+     snprintf(cache_md5path,sizeof(cache_md5path), "%s/%s.md5", cache_path, filename);
+     snprintf(vfs_filepath,sizeof(vfs_filepath),"/libs/%s",filename);
+     snprintf(vfs_md5path,sizeof(vfs_md5path),"/libs/%s.md5",filename);
+     
+     vfs_extract(vfs_filepath,cache_filepath);
+     vfs_extract(vfs_md5path,cache_md5path);
+
      printf("DONE!\n");
 }
 
@@ -84,12 +98,18 @@ void refresh_lib_cache(char *filename) {
         FILE *cache_md5_fd = fopen((const char*)cache_md5path,"r");
         fread((void*)md5_cache, sizeof(md5_cache),1,cache_md5_fd);
         fclose(cache_md5_fd);
-        printf("DONE!\n");
      } else {
         printf("lib_cache.c:refresh_lib_cache() - Cache missing MD5, will update:\n");
         update_lib_cache(filename);
+        return;
      }
      
      vfs_read((void*)md5_vfs,vfs_md5path,sizeof(md5_vfs));
-     
+     if(strncmp((const char*)md5_vfs,(const char*)md5_cache,sizeof(md5_vfs))==0) {
+        printf("lib_cache.c:refresh_lib_cache() - Cache already up to date\n");
+     } else {
+        printf("lib_cache.c:refresh_lib_cache() - MD5 mismatch, will update:\n");
+        update_lib_cache(filename);
+        return;
+     }
 }
