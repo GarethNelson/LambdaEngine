@@ -1,0 +1,7 @@
+Mac users will need XCode tools and macports, from macports install these:
+  cmake
+  md5sha1sum
+
+Linux users should use their own distro packages
+
+Windows users should do whatever the hell it is windows users do

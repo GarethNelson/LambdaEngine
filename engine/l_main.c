@@ -30,30 +30,6 @@
 #include "vfs_init.h"
 #include "lib_tools.h"
 
-void init_libs() {
-    printf("Libs: init_libs() - Locate libraries...");
-    // load a list of libraries and checksums here
-    printf("DONE!\n");
-    
-    printf("Libs: init_libs() - Checking cache...");
-    // Check cache to see what we need to update
-    printf("DONE!\n");
-
-    printf("Libs: init_libs() - Need to update %d files in cache\n",1);
-    
-    // put the below in a loop
-    printf("Libs: init_libs() - Updating 1 of 1 files in cache: whatever.so...");
-    // load whatever.so from PhysFS, write it to cache
-    printf("DONE!\n");
-
-    printf("Libs: init_libs() - Need to load %d libraries\n",1);
-    
-    // put the below in a loop, use the libraries list returned from PhysFS
-    printf("Libs: init_libs() - Loading 1 of 1 libraries: whatever.so:\n");
-    // load whatever.so from cache using dlopen()
-    // whatever.so should print out it's own debugging details
-}
-
 int main(int argc, char* argv[]) {
     printf("\n*** LAMBDA ENGINE STARTUP ***\n\n");
     printf("i_main.c:main() - Lambda engine starting up\n");
