@@ -1,7 +1,7 @@
 CC      = gcc
 CFLAGS  = -g -fPIC `sdl2-config --cflags`
-LDFLAGS =
-LIBS    = -lphysfs
+LDFLAGS = 
+LIBS    = -lphysfs -ldl
 O       = build
 
 ENGINE_OBJS       = $(O)/engine/vfs_pak.o \

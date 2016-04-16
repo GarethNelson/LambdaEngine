@@ -46,4 +46,5 @@ void vfs_extract(char *vfs_filename, char* extract_to) {
      PHYSFS_close(vfs_fd);
      fwrite(buf,file_size,1,ext_fd);
      fclose(ext_fd);
+     free(buf);
 }

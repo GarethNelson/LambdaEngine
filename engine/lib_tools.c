@@ -29,12 +29,20 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <limits.h>
 #include <physfs.h>
 #include "lib_tools.h"
 #include "lib_cache.h"
 #include "utlist.h"
 
 lib_details *libs_list = (lib_details*)NULL;
+
+void load_lib(char *filename) {
+     char lib_full_path[PATH_MAX];
+     get_cache_path(filename, lib_full_path);
+     printf("lib_tools.c:load_lib() - Full path to load is %s, loading:\n",lib_full_path);
+     dlopen(lib_full_path);
+}
 
 void init_libs() {
     char **lib_physfs_list;
@@ -66,5 +74,6 @@ void init_libs() {
     printf("lib_tools.c:init_libs() - Loading libs:\n");
     LL_FOREACH_SAFE(libs_list,d,tmp) {
        printf("lib_tools.c:init_libs() - Loading %s:\n",d->filename);
+       load_lib(d->filename);
     }
 }

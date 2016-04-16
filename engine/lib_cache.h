@@ -28,3 +28,4 @@
 
 void init_lib_cache();
 void refresh_lib_cache(char* filename);
+void get_cache_path(char* filename, char* lib_full_path);

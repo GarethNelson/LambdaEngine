@@ -53,6 +53,10 @@ void init_lib_cache() {
      }
 }
 
+void get_cache_path(char* filename, char* lib_full_path) {
+     snprintf(lib_full_path,PATH_MAX, "%s/%s",cache_path,filename);
+}
+
 void update_lib_cache(char *filename) {
      printf("lib_cache.c:update_lib_cache() - Updating cache from VFS for %s...",filename);
      char cache_filepath[PATH_MAX];
