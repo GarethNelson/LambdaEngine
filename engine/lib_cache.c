@@ -26,5 +26,28 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <stdio.h>
+#include <limits.h>
+#include <physfs.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include "uthash.h"
+
+char cache_path[PATH_MAX];
+
 void init_lib_cache() {
+     const char* user_dir;
+     struct stat cache_info;
+
+     printf("lib_cache.c:init_lib_cache() - Starting cache system...\n");
+     user_dir = PHYSFS_getUserDir();
+     snprintf(cache_path,sizeof(cache_path), "%s.lambda/cache",user_dir);
+     printf("lib_cache.c:init_lib_cache() - cache path is %s\n",cache_path);
+     
+     if(stat(cache_path, &cache_info) != 0) {
+        mkdir((const char*)cache_path, 0700);
+        printf("lib_cache.c:init_lib_cache() - Created new cache directory\n");
+     }
+     
+     printf("lib_cache.c:init_lib_cache() - Reading MD5 checksums...\n");
 }

@@ -28,17 +28,32 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <physfs.h>
+#include <limits.h>
 #include "vfs_pak.h"
 
 void vfs_init(char* argv) {
      int retval;
+     struct stat st;
+     const char* user_dir;
+     char config_dir[PATH_MAX];
+     
      printf("vfs_init.c:vfs_init() - Init PhysFS...");
      retval = PHYSFS_init(argv);
      if(retval==0) {
        printf("FAILED!\n");
        printf("vfs_init.c:vfs_init() - PhysFS error: %s\n", PHYSFS_getLastError());
        exit(EXIT_FAILURE);
+     }
+     printf("DONE!\n");
+
+     printf("vfs_init.c:vfs_init() - Refresh lambda config directory...");
+     user_dir = PHYSFS_getUserDir();
+     snprintf(config_dir,sizeof(config_dir),"%s.lambda",user_dir);
+     if(stat(config_dir, &st) != 0) {
+        mkdir(config_dir, 0700);
      }
      printf("DONE!\n");
 
