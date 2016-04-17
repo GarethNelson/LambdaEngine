@@ -22,29 +22,27 @@
 // $Log:$
 //
 // DESCRIPTION:
-//      I/O for the VFS
+//      Part of the lambda_render module, setup and init code
 //
 //-----------------------------------------------------------------------------
 
-#include <physfs.h>
-#include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <SDL.h>
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif
 
-void vfs_read(void* buf,char* filename,unsigned int size) {
-     PHYSFS_file *fd = PHYSFS_openRead((const char*)filename);
-     PHYSFS_read(fd,buf,(PHYSFS_uint32)size,1);
-     PHYSFS_close(fd);
+SDL_Window *screen;
+SDL_GLContext glcontext;
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 768
+
+void __attribute__((constructor)) init_module() {
+     printf("lambda_render/r_init.c:init_module() - module loaded\n");
 }
 
-void vfs_extract(char *vfs_filename, char* extract_to) {
-     PHYSFS_file *vfs_fd = PHYSFS_openRead((const char*)vfs_filename);
-     PHYSFS_uint32 file_size = PHYSFS_fileLength(vfs_fd);
-     char* buf = (char*)malloc(file_size);
-     PHYSFS_read(vfs_fd,buf,file_size,1);
-     PHYSFS_close(vfs_fd);
-     FILE *ext_fd = fopen((const char*)extract_to,"w");
-     fwrite(buf,file_size,1,ext_fd);
-     fclose(ext_fd);
-     free(buf);
-}

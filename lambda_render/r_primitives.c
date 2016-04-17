@@ -22,29 +22,36 @@
 // $Log:$
 //
 // DESCRIPTION:
-//      I/O for the VFS
+//      Part of the lambda_render module, implements basic 2D geometry
 //
 //-----------------------------------------------------------------------------
 
-#include <physfs.h>
-#include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <SDL.h>
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif
 
-void vfs_read(void* buf,char* filename,unsigned int size) {
-     PHYSFS_file *fd = PHYSFS_openRead((const char*)filename);
-     PHYSFS_read(fd,buf,(PHYSFS_uint32)size,1);
-     PHYSFS_close(fd);
+SDL_Window *screen;
+SDL_GLContext glcontext;
+// TODO - make these dynamic
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 768
+
+// TODO - add texture loading
+// TODO - switch to VBOs
+void draw_quad(float x, float y, float w, float h) {
+     glBegin( GL_QUADS );
+            glColor3f( 0.f, 1.f, 1.f );
+            glVertex2f(x, y );
+            glVertex2f(x+w, y );
+            glVertex2f(x+w,  y+h );
+            glVertex2f(x,  y+h );
+     glEnd();
 }
 
-void vfs_extract(char *vfs_filename, char* extract_to) {
-     PHYSFS_file *vfs_fd = PHYSFS_openRead((const char*)vfs_filename);
-     PHYSFS_uint32 file_size = PHYSFS_fileLength(vfs_fd);
-     char* buf = (char*)malloc(file_size);
-     PHYSFS_read(vfs_fd,buf,file_size,1);
-     PHYSFS_close(vfs_fd);
-     FILE *ext_fd = fopen((const char*)extract_to,"w");
-     fwrite(buf,file_size,1,ext_fd);
-     fclose(ext_fd);
-     free(buf);
-}
