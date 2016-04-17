@@ -81,10 +81,13 @@ int main(int argc, char* argv[]) {
     render_init();
 
     logo_tex = load_texture("/textures/logo.png");
+    
+    printf("l_main.c:main() - Displaying splashscreen...");fflush(stdout);
     video_pre_render();
     render_logo();
     video_post_render();
-    sleep(10);
+    sleep(3);
+    printf("DONE!\n");
  
 /*    int running=1; 
     while(running) {
