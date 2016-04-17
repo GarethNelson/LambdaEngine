@@ -23,7 +23,7 @@ build/core01/libs/lambda_video.so: $(LAMBDA_VIDEO_OBJS)
 	$(CC) -shared -o $(O)/core01/libs/lambda_video.so -framework OpenGL `sdl2-config --libs` $(LAMBDA_VIDEO_OBJS)
 
 build/core01/libs/lambda_render.so: $(LAMBDA_RENDER_OBJS)
-	$(CC) -shared -o $(O)/core01/libs/lambda_render.so -framework OpenGL `sdl2-config --libs` $(LAMBDA_RENDER_OBJS)
+	$(CC) -shared -o $(O)/core01/libs/lambda_render.so -framework OpenGL -lSOIL $(LAMBDA_RENDER_OBJS)
 
 dist/data/core01.pak: $(CORE01_LIBS)
 	cd build/core01/libs; ../../../tools/build_md5sums.sh

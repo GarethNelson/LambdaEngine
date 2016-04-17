@@ -31,6 +31,13 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+unsigned int vfs_filelen(char* filename) {
+     PHYSFS_file *vfs_fd = PHYSFS_openRead((const char*) filename);
+     PHYSFS_uint32 file_size = PHYSFS_fileLength(vfs_fd);
+     PHYSFS_close(vfs_fd);
+     return (unsigned int)file_size;
+}
+
 void vfs_read(void* buf,char* filename,unsigned int size) {
      PHYSFS_file *fd = PHYSFS_openRead((const char*)filename);
      PHYSFS_read(fd,buf,(PHYSFS_uint32)size,1);

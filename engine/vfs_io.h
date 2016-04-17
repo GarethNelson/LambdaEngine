@@ -26,5 +26,6 @@
 //
 //-----------------------------------------------------------------------------
 
-void vfs_read(void* buf,char* filename,unsigned int size);
-void vfs_extract(char *vfs_filename, char* extract_to);
+unsigned int vfs_filelen(char* filename);
+void         vfs_read(void* buf,char* filename,unsigned int size);
+void         vfs_extract(char *vfs_filename, char* extract_to);

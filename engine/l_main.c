@@ -44,6 +44,9 @@
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
+// TODO - make a global symbol table for all this stuff, pass a pointer to all modules
+// TODO - put symbols from the main program AND modules into the symbol table
+// TODO - update the symbol table only after all modules are loaded
 static int  (*video_init)();
 static void (*video_pre_render)();
 static void (*video_post_render)();

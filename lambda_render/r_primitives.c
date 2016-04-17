@@ -28,7 +28,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <SDL.h>
+#include <SOIL.h>
+#include <dlfcn.h>
+
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -37,21 +39,38 @@
 #include <GL/glu.h>
 #endif
 
-SDL_Window *screen;
-SDL_GLContext glcontext;
 // TODO - make these dynamic
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
-// TODO - add texture loading
+GLuint load_texture(char* vfs_filename) {
+  // TODO - switch to using the global symbol table in l_main.c
+  void (*vfs_read)(void* buf,char* filename,unsigned int size);
+  unsigned int (*vfs_filelen)(char* filename);
+  vfs_read      = dlsym(RTLD_DEFAULT,"vfs_read");
+  vfs_filelen   = dlsym(RTLD_DEFAULT,"vfs_filelen");
+
+  unsigned int tex_size = vfs_filelen(vfs_filename);
+  void* tex_buf = malloc(tex_size);
+  vfs_read((void*)tex_buf,vfs_filename,tex_size);
+  
+  GLuint tex_id = SOIL_load_OGL_texture_from_memory((const unsigned char*)tex_buf,(int)vfs_filelen,SOIL_LOAD_AUTO,SOIL_CREATE_NEW_ID,
+                                                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_COMPRESS_TO_DXT);
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+  return tex_id;
+
+}
+
 // TODO - switch to VBOs
-void draw_quad(float x, float y, float w, float h) {
+void draw_quad(float x, float y, float w, float h,GLuint tex_id) {
+     glBindTexture(GL_TEXTURE_2D, tex_id);
      glBegin( GL_QUADS );
             glColor3f( 0.f, 1.f, 1.f );
-            glVertex2f(x, y );
-            glVertex2f(x+w, y );
-            glVertex2f(x+w,  y+h );
-            glVertex2f(x,  y+h );
+            glTexCoord2f(0.0f, 0.0f); glVertex2f(x, y );
+            glTexCoord2f(1.0f, 0.0f); glVertex2f(x+w, y );
+            glTexCoord2f(1.0f, 1.0f); glVertex2f(x+w,  y+h );
+            glTexCoord2f(0.0f, 1.0f); glVertex2f(x,  y+h );
      glEnd();
 }
 
