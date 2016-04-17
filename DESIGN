@@ -66,7 +66,6 @@ At startup, core01.pak and core02.pak are loaded followed by any patches
 pak file structure:
  Standard zip file
  gameinfo.def               Copy of the game definition file
- modinfo.def                Copy of the mod definition file (only used in mod paks)
  libs/                      Any dynamic libs in this path are loaded at runtime, allowing for mods etc
      game.so                Game logic and compiled map definitions - must be present somewhere, probably core02.pak
      game.so.md5            Contains an MD5 checksum used by the cache system

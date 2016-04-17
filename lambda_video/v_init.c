@@ -39,14 +39,31 @@
 
 SDL_Window *screen;
 SDL_GLContext glcontext;
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 768
 
 void __attribute__((constructor)) init_module() {
      printf("lambda_video/v_init.c:init_module() - module loaded\n");
 }
 
+// TODO - move this to render module and add texture loading
+// TODO - switch to VBOs
+void draw_quad(float x, float y, float w, float h) {
+     glBegin( GL_QUADS );
+            glColor3f( 0.f, 1.f, 1.f );
+            glVertex2f(x, y );
+            glVertex2f(x+w, y );
+            glVertex2f(x+w,  y+h );
+            glVertex2f(x,  y+h );
+     glEnd();
+}
+
+// TODO - move these to something like v_hooks.c
 void video_pre_render() {
-     glClearColor ( 1.0, 0.0, 0.0, 1.0 );
-     glClear ( GL_COLOR_BUFFER_BIT );
+     glClearColor( 0, 0, 0, 0 );
+     glClear(GL_COLOR_BUFFER_BIT);
+     glMatrixMode( GL_MODELVIEW );
+     glLoadIdentity();
 }
 
 void video_post_render() {
@@ -67,9 +84,14 @@ int video_init() {
     SDL_GL_SetSwapInterval(1);
     
     printf("lambda_video/v_init.c:video_init() - Creating window\n");
-    screen = SDL_CreateWindow("Lambda Engine",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,1024,768,
+    screen = SDL_CreateWindow("Lambda Engine",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,SCREEN_WIDTH,SCREEN_HEIGHT,
                                               SDL_WINDOW_OPENGL);
 
     glcontext = SDL_GL_CreateContext(screen);
+    glMatrixMode( GL_PROJECTION );
+    glLoadIdentity();
+    glOrtho( 0.0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0, 1.0, -1.0 );
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity();
     return 0;
 }

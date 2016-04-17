@@ -29,14 +29,32 @@
 #include <stdio.h>
 #include <dlfcn.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "vfs_init.h"
 #include "lib_tools.h"
 
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif
+
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 768
+
+static int  (*video_init)();
+static void (*video_pre_render)();
+static void (*video_post_render)();
+static void (*render_init)();
+static void (*draw_quad)(float x,float y, float w, float h);
+
+void render_logo() {
+     draw_quad(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT);
+}
+
 int main(int argc, char* argv[]) {
-    int  (*video_init)();
-    void (*video_pre_render)();
-    void (*video_post_render)();
-    void (*render_init)();
 
     printf("\n*** LAMBDA ENGINE STARTUP ***\n\n");
     printf("l_main.c:main() - Lambda engine starting up\n");
@@ -46,18 +64,26 @@ int main(int argc, char* argv[]) {
     video_init        = dlsym(RTLD_DEFAULT,"video_init");
     video_pre_render  = dlsym(RTLD_DEFAULT,"video_pre_render");
     video_post_render = dlsym(RTLD_DEFAULT,"video_post_render");
+    draw_quad         = dlsym(RTLD_DEFAULT,"draw_quad");
     if(video_init() != 0) {
        printf("l_main.c:main() - Failed to setup video!\n");
        exit(1);
     }
     
 //    render_init       = dlsym(RTLD_DEFAULT,"render_init");
-    
-    int running=1; 
+
+//  render_init();
+
+    video_pre_render();
+    render_logo();
+    video_post_render();
+    sleep(2);
+ 
+/*    int running=1; 
     while(running) {
         video_pre_render();
         // process_events();
         // render_frame();
         video_post_render();       
-    }
+    }*/
 }
