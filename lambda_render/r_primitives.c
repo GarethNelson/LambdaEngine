@@ -44,6 +44,7 @@
 #define SCREEN_HEIGHT 768
 
 GLuint load_texture(char* vfs_filename) {
+  printf("lambda_render/r_primitives.c:load_texture() - Loading %s...",vfs_filename);
   // TODO - switch to using the global symbol table in l_main.c
   void (*vfs_read)(void* buf,char* filename,unsigned int size);
   unsigned int (*vfs_filelen)(char* filename);
@@ -55,9 +56,10 @@ GLuint load_texture(char* vfs_filename) {
   vfs_read((void*)tex_buf,vfs_filename,tex_size);
   
   GLuint tex_id = SOIL_load_OGL_texture_from_memory((const unsigned char*)tex_buf,(int)vfs_filelen,SOIL_LOAD_AUTO,SOIL_CREATE_NEW_ID,
-                                                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_COMPRESS_TO_DXT);
+                                                    SOIL_FLAG_MIPMAPS |  SOIL_FLAG_COMPRESS_TO_DXT);
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+  printf("DONE!\n");
   return tex_id;
 
 }
@@ -66,7 +68,7 @@ GLuint load_texture(char* vfs_filename) {
 void draw_quad(float x, float y, float w, float h,GLuint tex_id) {
      glBindTexture(GL_TEXTURE_2D, tex_id);
      glBegin( GL_QUADS );
-            glColor3f( 0.f, 1.f, 1.f );
+//            glColor3f( 0.f, 1.f, 1.f );
             glTexCoord2f(0.0f, 0.0f); glVertex2f(x, y );
             glTexCoord2f(1.0f, 0.0f); glVertex2f(x+w, y );
             glTexCoord2f(1.0f, 1.0f); glVertex2f(x+w,  y+h );

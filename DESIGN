@@ -81,6 +81,8 @@ pak file structure:
            anim_down.bmp    Spriteset for down movements
            anim_left.bmp    Spriteset for left movements
            anim_right.bmp   Spriteset for right movements
+ textures/                  Various textures
+     logo.png               Logo displayed at startup
  maps/                      Maps live here
      map01/                 Each subdirectory inherits the C identifier for the map
           mapinfo.def       Copy of the map definition

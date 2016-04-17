@@ -10,7 +10,11 @@ ENGINE_OBJS        = $(O)/engine/vfs_pak.o \
                      $(O)/engine/lib_tools.o \
                      $(O)/engine/lib_cache.o
 LAMBDA_VIDEO_OBJS  = $(O)/lambda_video/v_init.o
-LAMBDA_RENDER_OBJS = $(O)/lambda_render/r_init.o \
+LAMBDA_RENDER_OBJS = $(O)/soil/image_helper.o \
+                     $(O)/soil/stb_image_aug.o \
+                     $(O)/soil/image_DXT.o \
+                     $(O)/soil/SOIL.o \
+                     $(O)/lambda_render/r_init.o \
                      $(O)/lambda_render/r_primitives.o
 
 CORE01_LIBS        = build/core01/libs/lambda_video.so \
@@ -23,9 +27,10 @@ build/core01/libs/lambda_video.so: $(LAMBDA_VIDEO_OBJS)
 	$(CC) -shared -o $(O)/core01/libs/lambda_video.so -framework OpenGL `sdl2-config --libs` $(LAMBDA_VIDEO_OBJS)
 
 build/core01/libs/lambda_render.so: $(LAMBDA_RENDER_OBJS)
-	$(CC) -shared -o $(O)/core01/libs/lambda_render.so -framework OpenGL -lSOIL $(LAMBDA_RENDER_OBJS)
+	$(CC) -shared -o $(O)/core01/libs/lambda_render.so -framework OpenGL  $(LAMBDA_RENDER_OBJS)
 
-dist/data/core01.pak: $(CORE01_LIBS)
+dist/data/core01.pak: $(CORE01_LIBS) textures/logo.png
+	cp -rv textures build/core01/
 	cd build/core01/libs; ../../../tools/build_md5sums.sh
 	cd build/core01; zip -r ../../dist/data/core01.pak *
 

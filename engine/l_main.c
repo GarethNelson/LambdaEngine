@@ -47,14 +47,16 @@
 // TODO - make a global symbol table for all this stuff, pass a pointer to all modules
 // TODO - put symbols from the main program AND modules into the symbol table
 // TODO - update the symbol table only after all modules are loaded
-static int  (*video_init)();
-static void (*video_pre_render)();
-static void (*video_post_render)();
-static void (*render_init)();
-static void (*draw_quad)(float x,float y, float w, float h);
+static int    (*video_init)();
+static void   (*video_pre_render)();
+static void   (*video_post_render)();
+static void   (*render_init)();
+static GLuint (*load_texture)(char* vfs_filename);
+static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
+static GLuint logo_tex;
 
 void render_logo() {
-     draw_quad(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT);
+     draw_quad(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT, logo_tex);
 }
 
 int main(int argc, char* argv[]) {
@@ -67,6 +69,7 @@ int main(int argc, char* argv[]) {
     video_init        = dlsym(RTLD_DEFAULT,"video_init");
     video_pre_render  = dlsym(RTLD_DEFAULT,"video_pre_render");
     video_post_render = dlsym(RTLD_DEFAULT,"video_post_render");
+    load_texture      = dlsym(RTLD_DEFAULT,"load_texture");
     draw_quad         = dlsym(RTLD_DEFAULT,"draw_quad");
     if(video_init() != 0) {
        printf("l_main.c:main() - Failed to setup video!\n");
@@ -77,10 +80,11 @@ int main(int argc, char* argv[]) {
 
 //  render_init();
 
+    logo_tex = load_texture("/textures/logo.png");
     video_pre_render();
     render_logo();
     video_post_render();
-    sleep(2);
+    sleep(10);
  
 /*    int running=1; 
     while(running) {

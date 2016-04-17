@@ -46,17 +46,6 @@ void __attribute__((constructor)) init_module() {
      printf("lambda_video/v_init.c:init_module() - module loaded\n");
 }
 
-// TODO - move this to render module and add texture loading
-// TODO - switch to VBOs
-void draw_quad(float x, float y, float w, float h) {
-     glBegin( GL_QUADS );
-            glColor3f( 0.f, 1.f, 1.f );
-            glVertex2f(x, y );
-            glVertex2f(x+w, y );
-            glVertex2f(x+w,  y+h );
-            glVertex2f(x,  y+h );
-     glEnd();
-}
 
 // TODO - move these to something like v_hooks.c
 void video_pre_render() {
@@ -93,5 +82,6 @@ int video_init() {
     glOrtho( 0.0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0, 1.0, -1.0 );
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
+    glEnable( GL_TEXTURE_2D );
     return 0;
 }
