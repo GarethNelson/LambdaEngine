@@ -45,7 +45,6 @@
 
 GLuint load_texture(char* vfs_filename) {
   printf("lambda_render/r_primitives.c:load_texture() - Loading %s...",vfs_filename);
-  fflush(stdout);
   // TODO - switch to using the global symbol table in l_main.c
   void (*vfs_read)(void* buf,char* filename,unsigned int size);
   unsigned int (*vfs_filelen)(char* filename);

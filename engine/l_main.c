@@ -60,7 +60,7 @@ void render_logo() {
 }
 
 int main(int argc, char* argv[]) {
-
+    setbuf(stdout,NULL);
     printf("\n*** LAMBDA ENGINE STARTUP ***\n\n");
     printf("l_main.c:main() - Lambda engine starting up\n");
     vfs_init(argv[0]);
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
 
     logo_tex = load_texture("/textures/logo.png");
     
-    printf("l_main.c:main() - Displaying splashscreen...");fflush(stdout);
+    printf("l_main.c:main() - Displaying splashscreen...");
     video_pre_render();
     render_logo();
     video_post_render();
