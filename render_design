@@ -11,6 +11,9 @@ rendering scene description
   2D grid of tile texture IDs
  entities
   linked list AND hash table
+   hashtable mapping entity ID to entity
+   linked list of all entities
+   hashtable mapping entity classes to linked lists of entities
   entity ID - used to reference entity from physics etc
   entity coordinates
   entity size
