@@ -46,3 +46,6 @@ void __attribute__((constructor)) init_module() {
      printf("lambda_render/r_init.c:init_module() - module loaded\n");
 }
 
+void render_init() {
+     printf("lambda_render/r_init.c:render_init() - Nothing to do!\n");
+}

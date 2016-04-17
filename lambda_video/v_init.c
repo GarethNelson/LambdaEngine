@@ -49,9 +49,8 @@ void __attribute__((constructor)) init_module() {
 
 // TODO - move these to something like v_hooks.c
 void video_pre_render() {
-     glClearColor( 0, 0, 0, 0 );
      glClear(GL_COLOR_BUFFER_BIT);
-     glMatrixMode( GL_MODELVIEW );
+     //glMatrixMode( GL_MODELVIEW );
      glLoadIdentity();
 }
 
@@ -60,7 +59,7 @@ void video_post_render() {
 }
 
 int video_init() {
-    printf("lambda_video/v_init.c:video_init() - Querying SDL\n");
+    printf("lambda_video/v_init.c:video_init() - Starting up SDL...");
     if(SDL_WasInit(0)==0) {
        SDL_Init(0);
     }
@@ -71,11 +70,15 @@ int video_init() {
     SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
     SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
     SDL_GL_SetSwapInterval(1);
+    printf("DONE!\n");
     
-    printf("lambda_video/v_init.c:video_init() - Creating window\n");
+    printf("lambda_video/v_init.c:video_init() - Creating window...");
     screen = SDL_CreateWindow("Lambda Engine",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,SCREEN_WIDTH,SCREEN_HEIGHT,
                                               SDL_WINDOW_OPENGL);
 
+    printf("DONE!\n");
+
+    printf("lambda_video/v_init.c:video_init() - Configuring OpenGL context...");
     glcontext = SDL_GL_CreateContext(screen);
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
@@ -83,5 +86,6 @@ int video_init() {
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
     glEnable( GL_TEXTURE_2D );
+    printf("DONE!\n");
     return 0;
 }

@@ -1,5 +1,5 @@
 CC      = gcc
-CFLAGS  = -g -fPIC `sdl2-config --cflags`
+CFLAGS  = -g -O2 -Wall -fPIC `sdl2-config --cflags`
 LDFLAGS = 
 LIBS    = -lphysfs -ldl
 O       = build

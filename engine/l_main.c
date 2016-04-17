@@ -71,14 +71,14 @@ int main(int argc, char* argv[]) {
     video_post_render = dlsym(RTLD_DEFAULT,"video_post_render");
     load_texture      = dlsym(RTLD_DEFAULT,"load_texture");
     draw_quad         = dlsym(RTLD_DEFAULT,"draw_quad");
+    render_init       = dlsym(RTLD_DEFAULT,"render_init");
     if(video_init() != 0) {
        printf("l_main.c:main() - Failed to setup video!\n");
        exit(1);
     }
-    
-//    render_init       = dlsym(RTLD_DEFAULT,"render_init");
+    printf("l_main.c:main() - Video started, preparing render:\n");    
 
-//  render_init();
+    render_init();
 
     logo_tex = load_texture("/textures/logo.png");
     video_pre_render();
