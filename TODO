@@ -1,0 +1,21 @@
+Properly handle quit
+  Close window appropriately
+Load screen
+  Actually preload stuff
+   Spawn thread in init and create mutex
+   Load requested files into VFS cache in other thread, free mutex once all loaded
+   In update function, check thread status by seeing if mutex is free
+   Once mutex is free, cleanup and go to next stage
+   
+VFS cache
+  Load some assets from bin2c symbols
+  Methods:
+    Get file content
+     If the file requested is not in the cache, file will be loaded from VFS
+    Get file length
+    Store in cache (for use by loading screen)
+
+Texture manager
+  Global textures
+  per-map textures
+  Read from VFS cache if available, otherwise read from VFS directly
