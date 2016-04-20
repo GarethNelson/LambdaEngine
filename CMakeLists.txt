@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.2)
 project (LambdaEngine)
 INCLUDE(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-include_directories(${SDL2_INCLUDE_DIRS})
+include_directories(${SDL2_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/soil)
 
 
 find_library(OpenGL_LIBRARY OpenGL )

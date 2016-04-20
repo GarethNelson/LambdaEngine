@@ -27,6 +27,9 @@
 //-----------------------------------------------------------------------------
 
 #include <stdio.h>
+#ifdef __linux__
+#define __USE_GNU
+#endif
 #include <dlfcn.h>
 #include <stdlib.h>
 #include <unistd.h>

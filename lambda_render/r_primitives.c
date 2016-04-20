@@ -29,6 +29,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <SOIL.h>
+#ifdef __linux__
+#define __USE_GNU
+#endif
 #include <dlfcn.h>
 
 #if defined(__APPLE__)
