@@ -21,12 +21,16 @@ add_library(lambda_video SHARED ${lambda_video_SRC})
 target_link_libraries(lambda_video ${SDL2_LIBRARIES} ${OpenGL_LIBRARY})
 set_target_properties(lambda_video PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
 
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+   set(EXTRA_GL GL)
+endif()
+
 file(GLOB lambda_render_SRC
      "soil/*.c"
      "lambda_render/*.c"
      "lambda_render/*.h")
 add_library(lambda_render SHARED ${lambda_render_SRC})
-target_link_libraries(lambda_render ${OpenGL_LIBRARY} GL m)
+target_link_libraries(lambda_render ${OpenGL_LIBRARY} ${EXTRA_GL} m)
 set_target_properties(lambda_render PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
 
 add_custom_target(core01_md5sums ALL
