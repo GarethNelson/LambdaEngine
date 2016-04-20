@@ -38,10 +38,9 @@ VFS cache
       Evicts all temp assets from the cache - useful for map changes
 
 Texture manager
-  Read from VFS cache if available, otherwise read from VFS directly
   Methods:
      load texture   - loads texture from VFS cache and sends to the GPU ready for use
      unload texture - unloads the texture from the GPU
-     unload all     - unloads all textures from the GPU
+     unload all     - unloads all textures from the GPU - should be run between maps and FSM stages
      get texture    - returns the texture ID for a loaded texture by given filename if loaded
                       if not loaded, attempts to load
