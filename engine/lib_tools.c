@@ -54,7 +54,12 @@ void init_libs() {
     printf("lib_tools.c:init_libs() - Locate libraries:\n");
     lib_physfs_list = PHYSFS_enumerateFiles("libs");
     for(i=lib_physfs_list; *i != NULL; i++) {
+        printf("%s\n",*i);
+#ifdef __APPLE__
+        if(strlen(*i) > 6 && !strcmp(*i + strlen(*i) - 6, ".dylib")) {
+#else
         if(strlen(*i) > 3 && !strcmp(*i + strlen(*i) - 3, ".so")) {
+#endif
            // I know this isn't portable, but fuck it
            d = malloc(sizeof(lib_details));
            strncpy(d->filename,*i,MAX_LIBFN_LEN);
