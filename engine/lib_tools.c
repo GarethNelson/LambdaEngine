@@ -42,8 +42,10 @@ void load_lib(char *filename) {
      char lib_full_path[PATH_MAX];
      get_cache_path(filename, lib_full_path);
      printf("lib_tools.c:load_lib() - Full path to load is %s, loading:\n",lib_full_path);
-     dlopen(lib_full_path,RTLD_NOW|RTLD_GLOBAL);
-     
+     void* handle=dlopen(lib_full_path,RTLD_NOW|RTLD_GLOBAL);
+     if(handle==NULL) {
+        printf("lib_tools.c:load_lib() - dlopen() error: %s\n",dlerror());
+     }
 }
 
 void init_libs() {

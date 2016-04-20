@@ -26,7 +26,7 @@ file(GLOB lambda_render_SRC
      "lambda_render/*.c"
      "lambda_render/*.h")
 add_library(lambda_render SHARED ${lambda_render_SRC})
-target_link_libraries(lambda_render ${OpenGL_LIBRARY})
+target_link_libraries(lambda_render ${OpenGL_LIBRARY} m)
 set_target_properties(lambda_render PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
 
 add_custom_target(core01_md5sums ALL
