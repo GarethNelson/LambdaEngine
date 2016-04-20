@@ -73,6 +73,7 @@ void update_splash() {
         clean_splash();
      }
      if(((splash_vals_t*)global_state.stage_vals)->cur_alpha <= 0.1f ) {
+        sleep(1);
         ((splash_vals_t*)global_state.stage_vals)->fade_in = 0;
      }
      if(((splash_vals_t*)global_state.stage_vals)->fade_in==1) {
