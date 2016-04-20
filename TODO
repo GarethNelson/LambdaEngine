@@ -1,3 +1,9 @@
+Define dlsym API
+  Move symbols into standard header file
+  Macro in header file for importing symbols
+    Modules include the header file and then do something like IMPORT(video_init) in their own init function
+  After all core modules are in place, document the API and refactor
+
 Properly handle quit
   Close window appropriately
 Load screen
@@ -8,14 +14,34 @@ Load screen
    Once mutex is free, cleanup and go to next stage
    
 VFS cache
-  Load some assets from bin2c symbols
+  Internal hashtable of VFS filenames mapping to sizes and content
+  Global assets
+    Files which are never unloaded once in the cache
+    Linked list of global assets is stored for checking all globals
+  Temp assets
+    Files which can be unloaded from the cache at any time
+    Linked list of temp assets is stored to make cleanup simpler
   Methods:
     Get file content
      If the file requested is not in the cache, file will be loaded from VFS
     Get file length
     Store in cache (for use by loading screen)
+    Mark as global
+      Mark a file as a global asset
+      Updates linked lists to ensure global assets are not in temp asset list
+       Marking a temp asset as global results in removing it from the temp assets list
+    Mark as temp
+      Mark a file as a temp asset
+      Updates linked lists to ensure global assets are not in temp asset list
+       Attempting to mark a global asset as temp is a NOP
+    Cleanup
+      Evicts all temp assets from the cache - useful for map changes
 
 Texture manager
-  Global textures
-  per-map textures
   Read from VFS cache if available, otherwise read from VFS directly
+  Methods:
+     load texture   - loads texture from VFS cache and sends to the GPU ready for use
+     unload texture - unloads the texture from the GPU
+     unload all     - unloads all textures from the GPU
+     get texture    - returns the texture ID for a loaded texture by given filename if loaded
+                      if not loaded, attempts to load
