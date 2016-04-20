@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include "vfs_init.h"
 #include "lib_tools.h"
+#include "l_state.h"
 
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
@@ -58,6 +59,8 @@ static GLuint (*load_texture)(char* vfs_filename);
 static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
 static GLuint logo_tex;
 
+global_state_t global_state;
+
 void render_logo() {
      draw_quad(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT, logo_tex);
 }
@@ -66,6 +69,7 @@ int main(int argc, char* argv[]) {
     setbuf(stdout,NULL);
     printf("\n*** LAMBDA ENGINE STARTUP ***\n\n");
     printf("l_main.c:main() - Lambda engine starting up\n");
+    global_state.app_stage = STARTUP;
     vfs_init(argv[0]);
     init_libs();
 

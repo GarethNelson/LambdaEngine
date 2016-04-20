@@ -58,8 +58,7 @@ GLuint load_texture(char* vfs_filename) {
   void* tex_buf = malloc(tex_size);
   vfs_read((void*)tex_buf,vfs_filename,tex_size);
   
-  GLuint tex_id = SOIL_load_OGL_texture_from_memory((const unsigned char*)tex_buf,(int)vfs_filelen,SOIL_LOAD_AUTO,SOIL_CREATE_NEW_ID,
-                                                    SOIL_FLAG_MIPMAPS |  SOIL_FLAG_COMPRESS_TO_DXT);
+  GLuint tex_id = SOIL_load_OGL_texture_from_memory((const unsigned char*)tex_buf,(int)vfs_filelen,SOIL_LOAD_AUTO,SOIL_CREATE_NEW_ID,0);
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
   printf("DONE!\n");
