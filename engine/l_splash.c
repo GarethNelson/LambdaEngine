@@ -68,6 +68,10 @@ void init_splash() {
 }
 
 void update_splash() {
+     if(((splash_vals_t*)global_state.stage_vals)->cur_alpha >= 1.1f) {
+        global_state.app_stage = INIT_MAINMENU;
+        clean_splash();
+     }
      if(((splash_vals_t*)global_state.stage_vals)->cur_alpha <= 0.1f ) {
         ((splash_vals_t*)global_state.stage_vals)->fade_in = 0;
      }
