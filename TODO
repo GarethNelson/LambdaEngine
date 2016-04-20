@@ -1,8 +1,29 @@
+Hardcoded screen res must go
+  Put the screen res into global state at startup
+   Fullscreen flag
+
 Define dlsym API
   Move symbols into standard header file
   Macro in header file for importing symbols
     Modules include the header file and then do something like IMPORT(video_init) in their own init function
   After all core modules are in place, document the API and refactor
+  Change video_pre_render and video_post_render so they run hooks
+
+Isolate SDL into seperate module
+  move all SDL-specific code into hooks
+    e.g video_init() should run a platform_video_init_glcontext() hook which SDL module registers a callback on
+    SDL_PumpEvents() and SDL_GL_SwapWindow() should be moved into video_post_render hook callbacks
+
+module hooks system
+  List hooks in dlsym API header file using macro to define function add_hook_whatever and run_hook_whatever
+     e.g add_hook_video_pre_render
+  Each hook is a function that takes a pointer (void*) as param
+    The pointer may be void, otherwise it should be a pointer to a struct typedef defined in the dlsym API header
+  Modules may add their own callbacks using add_hook_whatever
+  Modules (and main engine core) may run all registered callbacks using run_hook_whatever
+  Each hook holds an array of callbacks of a certain max size
+  run_hook_whatever() simply iterates through the array until a NULL pointer is found
+    therefore order of adding callbacks is important
 
 Properly handle quit
   Close window appropriately
