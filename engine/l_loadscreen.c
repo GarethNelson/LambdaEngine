@@ -59,7 +59,7 @@ void init_load_screen() {
      video_pre_render  = dlsym(RTLD_DEFAULT,"video_pre_render");
      video_post_render = dlsym(RTLD_DEFAULT,"video_post_render");
      draw_triangle_rot = dlsym(RTLD_DEFAULT,"draw_triangle_rot");
-     rot = 0.0f;
+     rot = 1.0f;
      global_state.stage_vals = malloc(sizeof(loader_vals_t));
      ((loader_vals_t*)global_state.stage_vals)->next_stage = INIT_SPLASH; // TODO - move this to l_main.c
      printf("DONE!\n");

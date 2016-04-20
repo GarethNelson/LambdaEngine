@@ -61,6 +61,7 @@ typedef struct {
 // TODO - multiple logos?
 typedef struct {
     float cur_alpha;
+    unsigned int fade_in;
 } splash_vals_t;
 
 

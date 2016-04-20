@@ -62,16 +62,20 @@ void init_splash() {
      load_texture      = dlsym(RTLD_DEFAULT,"load_texture");
      draw_quad_blend   = dlsym(RTLD_DEFAULT,"draw_quad_blend");
      global_state.stage_vals = malloc(sizeof(splash_vals_t));
-     ((splash_vals_t*)global_state.stage_vals)->cur_alpha = 0.0f;
+     ((splash_vals_t*)global_state.stage_vals)->cur_alpha = 1.0f;
+     ((splash_vals_t*)global_state.stage_vals)->fade_in = 1;
      logo_tex = load_texture("/textures/logo.tga");
 }
 
 void update_splash() {
-     if(((splash_vals_t*)global_state.stage_vals)->cur_alpha >= 1.0f ) {
-        global_state.app_stage = INIT_MAINMENU;
-        clean_splash();
+     if(((splash_vals_t*)global_state.stage_vals)->cur_alpha <= 0.1f ) {
+        ((splash_vals_t*)global_state.stage_vals)->fade_in = 0;
      }
-     ((splash_vals_t*)global_state.stage_vals)->cur_alpha += 0.025f;
+     if(((splash_vals_t*)global_state.stage_vals)->fade_in==1) {
+        ((splash_vals_t*)global_state.stage_vals)->cur_alpha -= 0.025f;
+     } else {
+        ((splash_vals_t*)global_state.stage_vals)->cur_alpha += 0.025f;
+     }
      video_pre_render();
       draw_quad_blend(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT, logo_tex, ((splash_vals_t*)global_state.stage_vals)->cur_alpha );
      video_post_render();

@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
         switch(global_state.app_stage) {
             case STARTUP:
                printf("l_main.c:main() - Switching to INIT_LOADSCREEN\n");
-               global_state.app_stage = INIT_SPLASH;
+               global_state.app_stage = INIT_LOADSCREEN;
                break;
             case INIT_LOADSCREEN:
                init_load_screen();
