@@ -54,6 +54,7 @@ void init_libs() {
     printf("lib_tools.c:init_libs() - Locate libraries:\n");
     lib_physfs_list = PHYSFS_enumerateFiles("libs");
     for(i=lib_physfs_list; *i != NULL; i++) {
+        printf("%s\n",*i);
 #ifdef __APPLE__
         if(strlen(*i) > 6 && !strcmp(*i + strlen(*i) - 6, ".dylib")) {
 #else
