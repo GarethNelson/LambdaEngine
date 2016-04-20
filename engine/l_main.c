@@ -37,6 +37,7 @@
 #include "lib_tools.h"
 #include "l_state.h"
 #include "l_loadscreen.h"
+#include "l_splash.h"
 
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
@@ -59,12 +60,11 @@ static void   (*render_init)();
 static GLuint (*load_texture)(char* vfs_filename);
 static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
 static void   (*draw_quad_blend)(float x, float y, float w, float h, GLuint tex_id, float alpha);
-static GLuint logo_tex;
 
 global_state_t global_state;
 
 void render_logo() {
-     draw_quad_blend(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT, logo_tex,0.5f);
+//     draw_quad_blend(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT, logo_tex,0.5f);
 }
 
 int main(int argc, char* argv[]) {
@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
         switch(global_state.app_stage) {
             case STARTUP:
                printf("l_main.c:main() - Switching to INIT_LOADSCREEN\n");
-               global_state.app_stage = INIT_LOADSCREEN;
+               global_state.app_stage = INIT_SPLASH;
                break;
             case INIT_LOADSCREEN:
                init_load_screen();
@@ -106,8 +106,12 @@ int main(int argc, char* argv[]) {
                update_load_screen();
                break;
             case INIT_SPLASH:
+               init_splash();
+               printf("l_main.c:main() - Switching to SPLASH\n");
+               global_state.app_stage = SPLASH;
                break;
             case SPLASH:
+               update_splash();
                break;
             case INIT_MAINMENU:
                break;
@@ -129,7 +133,6 @@ int main(int argc, char* argv[]) {
        usleep(50000);
     }
 
-    logo_tex = load_texture("/textures/logo.tga");
     
     printf("l_main.c:main() - Displaying splashscreen...");
     video_pre_render();

@@ -69,7 +69,9 @@ GLuint load_texture(char* vfs_filename) {
 // TODO - switch to VBOs
 
 void draw_quad(float x, float y, float w, float h,GLuint tex_id) {
+     glLoadIdentity();
      glBindTexture(GL_TEXTURE_2D, tex_id);
+     glColor4f(1.0f,1.0f,1.0f,1.0f);
      glBegin( GL_QUADS );
             glTexCoord2f(0.0f, 0.0f); glVertex2f(x, y );
             glTexCoord2f(1.0f, 0.0f); glVertex2f(x+w, y );
@@ -90,17 +92,20 @@ void draw_triangle_rot(float x, float y, float rot) {
 }
 
 void draw_quad_blend(float x, float y, float w, float h, GLuint tex_id, float alpha) {
+
      draw_quad(x,y,w,h,tex_id);
      glEnable(GL_BLEND);
      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
      glDisable(GL_DEPTH_TEST);
+     glDisable(GL_TEXTURE_2D);
      glBegin(GL_QUADS);
             glColor4f( .0f, .0f, .0f,alpha );
-            glTexCoord2f(0.0f, 0.0f); glVertex2f(x, y );
-            glTexCoord2f(1.0f, 0.0f); glVertex2f(x+w, y );
-            glTexCoord2f(1.0f, 1.0f); glVertex2f(x+w,  y+h );
-            glTexCoord2f(0.0f, 1.0f); glVertex2f(x,  y+h );
+            glVertex2f(x, y );
+            glVertex2f(x+w, y );
+            glVertex2f(x+w,  y+h );
+            glVertex2f(x,  y+h );
      glEnd();
+     glEnable(GL_DEPTH_TEST);
      glDisable(GL_BLEND);
      glEnable(GL_TEXTURE_2D);
 }
