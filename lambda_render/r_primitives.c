@@ -67,10 +67,10 @@ GLuint load_texture(char* vfs_filename) {
 }
 
 // TODO - switch to VBOs
+
 void draw_quad(float x, float y, float w, float h,GLuint tex_id) {
      glBindTexture(GL_TEXTURE_2D, tex_id);
      glBegin( GL_QUADS );
-//            glColor3f( 0.f, 1.f, 1.f );
             glTexCoord2f(0.0f, 0.0f); glVertex2f(x, y );
             glTexCoord2f(1.0f, 0.0f); glVertex2f(x+w, y );
             glTexCoord2f(1.0f, 1.0f); glVertex2f(x+w,  y+h );
@@ -78,3 +78,18 @@ void draw_quad(float x, float y, float w, float h,GLuint tex_id) {
      glEnd();
 }
 
+void draw_quad_blend(float x, float y, float w, float h, GLuint tex_id, float alpha) {
+     draw_quad(x,y,w,h,tex_id);
+     glEnable(GL_BLEND);
+     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+     glDisable(GL_DEPTH_TEST);
+     glBegin(GL_QUADS);
+            glColor4f( .0f, .0f, .0f,alpha );
+            glTexCoord2f(0.0f, 0.0f); glVertex2f(x, y );
+            glTexCoord2f(1.0f, 0.0f); glVertex2f(x+w, y );
+            glTexCoord2f(1.0f, 1.0f); glVertex2f(x+w,  y+h );
+            glTexCoord2f(0.0f, 1.0f); glVertex2f(x,  y+h );
+     glEnd();
+     glDisable(GL_BLEND);
+     glEnable(GL_TEXTURE_2D);
+}

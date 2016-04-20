@@ -57,12 +57,13 @@ static void   (*video_post_render)();
 static void   (*render_init)();
 static GLuint (*load_texture)(char* vfs_filename);
 static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
+static void   (*draw_quad_blend)(float x, float y, float w, float h, GLuint tex_id, float alpha);
 static GLuint logo_tex;
 
 global_state_t global_state;
 
 void render_logo() {
-     draw_quad(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT, logo_tex);
+     draw_quad_blend(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT, logo_tex,0.5f);
 }
 
 int main(int argc, char* argv[]) {
@@ -78,6 +79,7 @@ int main(int argc, char* argv[]) {
     video_post_render = dlsym(RTLD_DEFAULT,"video_post_render");
     load_texture      = dlsym(RTLD_DEFAULT,"load_texture");
     draw_quad         = dlsym(RTLD_DEFAULT,"draw_quad");
+    draw_quad_blend   = dlsym(RTLD_DEFAULT,"draw_quad_blend");
     render_init       = dlsym(RTLD_DEFAULT,"render_init");
     if(video_init() != 0) {
        printf("l_main.c:main() - Failed to setup video!\n");
