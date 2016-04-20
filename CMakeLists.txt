@@ -33,3 +33,11 @@ add_custom_target(core01_md5sums ALL
                  COMMAND  "${CMAKE_CURRENT_SOURCE_DIR}/tools/build_md5sums.sh"
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
 
+add_custom_target(core01_textures ALL
+                  COMMAND "cp -rv ${CMAKE_CURRENT_SOURCE_DIR}/textures ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/"
+                  )
+                 
+add_custom_target(core01.pak ALL
+                  DEPENDS core01_textures lambda_video lambda_render core01_md5sums
+                  COMMAND "zip -r ${CMAKE_CURRENT_SOURCE_DIR}/dist/data/core01.pak *"
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01) 
