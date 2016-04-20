@@ -1872,7 +1872,7 @@ unsigned int SOIL_direct_load_DDS(
 
 int query_NPOT_capability( void )
 {
-	char const* glstr = glGetString(GL_EXTENSIONS);
+	const GLubyte * glstr = glGetString(GL_EXTENSIONS);
         if(glstr==NULL) {
            has_NPOT_capability = SOIL_CAPABILITY_NONE;
            return has_NPOT_capability;
