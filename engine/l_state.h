@@ -67,6 +67,7 @@ typedef struct {
     e_lambda_stage next_stage; // after loading resources, what stage do we go to next?
                                // realistically will always be MAINMENU, SPLASH or INGAME
     char next_map[40];         // if next_stage is INGAME, specify the map
+    float rot_val;
 } loader_vals_t;
 
 // *********************************************

@@ -78,6 +78,17 @@ void draw_quad(float x, float y, float w, float h,GLuint tex_id) {
      glEnd();
 }
 
+void draw_triangle_rot(float x, float y, float rot) {
+     glLoadIdentity();
+     glTranslatef( x + 25.0f, y + 25.0, 0.f );
+     glRotatef(rot,0.0f,0.0f,1.0f);
+     glBegin(GL_TRIANGLES);
+            glColor3f(1.0f,0.0f,0.0f); glVertex2f(25.0f,0.0f);
+            glColor3f(0.0f,1.0f,0.0f); glVertex2f(0.0f,25.0f);
+            glColor3f(0.0f,0.0f,1.0f); glVertex2f(50.0f,50.0f);
+     glEnd();
+}
+
 void draw_quad_blend(float x, float y, float w, float h, GLuint tex_id, float alpha) {
      draw_quad(x,y,w,h,tex_id);
      glEnable(GL_BLEND);

@@ -36,6 +36,7 @@
 #include "vfs_init.h"
 #include "lib_tools.h"
 #include "l_state.h"
+#include "l_loadscreen.h"
 
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
@@ -88,6 +89,12 @@ int main(int argc, char* argv[]) {
     printf("l_main.c:main() - Video started, preparing render:\n");    
 
     render_init();
+
+    init_load_screen();
+    while(1) {
+       update_load_screen();
+       usleep(50000);
+    }
 
     logo_tex = load_texture("/textures/logo.tga");
     

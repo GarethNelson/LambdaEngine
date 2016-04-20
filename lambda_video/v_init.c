@@ -57,6 +57,7 @@ void video_pre_render() {
 }
 
 void video_post_render() {
+     SDL_PumpEvents();
      SDL_GL_SwapWindow(screen);
 }
 

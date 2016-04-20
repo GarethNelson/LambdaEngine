@@ -12,7 +12,7 @@ file(GLOB engine_SRC
      "engine/*.h")
 add_executable(lambda ${engine_SRC})
 set_target_properties(lambda PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dist/bin)
-target_link_libraries(lambda physfs dl)
+target_link_libraries(lambda physfs dl ${OpenGL_LIBRARY})
 
 file(GLOB lambda_video_SRC
      "lambda_video/*.c"
