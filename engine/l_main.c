@@ -89,6 +89,39 @@ int main(int argc, char* argv[]) {
     printf("l_main.c:main() - Video started, preparing render:\n");    
 
     render_init();
+    
+    while(1) {
+        usleep(50000);
+        switch(global_state.app_stage) {
+            case STARTUP:
+               printf("l_main.c:main() - Switching to INIT_LOADSCREEN\n");
+               global_state.app_stage = INIT_LOADSCREEN;
+               break;
+            case INIT_LOADSCREEN:
+               init_load_screen();
+               printf("l_main.c:main() - Switching to LOADSCREEN\n");
+               global_state.app_stage = LOADSCREEN;
+               break;
+            case LOADSCREEN:
+               update_load_screen();
+               break;
+            case INIT_SPLASH:
+               break;
+            case SPLASH:
+               break;
+            case INIT_MAINMENU:
+               break;
+            case MAINMENU:
+               break;
+            case INIT_INGAME:
+               break;
+            case INGAME:
+               break;
+            case SHUTDOWN:
+               break;
+
+        }
+    }
 
     init_load_screen();
     while(1) {

@@ -32,9 +32,13 @@
 /// this indicates what overall state (i.e what stage) the program is in
 typedef enum {
     STARTUP,
+    INIT_LOADSCREEN,
     LOADSCREEN,
+    INIT_SPLASH,
     SPLASH,
+    INIT_MAINMENU,
     MAINMENU,
+    INIT_INGAME,
     INGAME,
     SHUTDOWN
 } e_lambda_stage;
