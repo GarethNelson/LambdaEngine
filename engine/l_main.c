@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
 
     render_init();
 
-    logo_tex = load_texture("/textures/logo.png");
+    logo_tex = load_texture("/textures/logo.tga");
     
     printf("l_main.c:main() - Displaying splashscreen...");
     video_pre_render();
