@@ -27,7 +27,6 @@
 //-----------------------------------------------------------------------------
 #ifndef __L_LOADSCREEN_H_
 #define __L_LOADSCREEN_H_
-#include "l_state.h"
 
 void init_load_screen();
 

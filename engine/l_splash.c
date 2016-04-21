@@ -37,7 +37,8 @@
 #include <GL/glu.h>
 #endif
 
-#include "l_state.h"
+#include <lambda_api.h>
+#include <lambda_state.h>
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768

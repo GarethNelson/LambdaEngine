@@ -22,13 +22,37 @@
 // $Log:$
 //
 // DESCRIPTION:
-//     Header file for l_splash.c
+//     This magical header file includes the API used by all modules
 //
 //-----------------------------------------------------------------------------
-#ifndef __L_SPLASH_H_
-#define __L_SPLASH_H_
 
-void init_splash();
+#ifndef __LAMBDA_API_H_
+#define __LAMBDA_API_H_
 
-void update_splash();
+#include <dlfcn.h>
+#include "lambda_state.h"
+
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
 #endif
+
+static int    (*video_init)();
+static void   (*video_pre_render)();
+static void   (*video_post_render)();
+
+static void   (*render_init)();
+static GLuint (*load_texture)(char* vfs_filename);
+static void   (*draw_triangle_rot)(float x, float y, float rot);
+static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
+
+// Only extern stuff from l_main.c if we're not actually in l_main.c
+#ifndef __IN_MAIN_
+extern global_state_t global_state;
+#endif
+
+#endif
+

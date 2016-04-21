@@ -1,13 +1,14 @@
-Hardcoded screen res must go
-  Put the screen res into global state at startup
-   Fullscreen flag
-
 Define dlsym API
   Move symbols into standard header file
   Macro in header file for importing symbols
     Modules include the header file and then do something like IMPORT(video_init) in their own init function
+  Put global state in header file
   After all core modules are in place, document the API and refactor
   Change video_pre_render and video_post_render so they run hooks
+
+Hardcoded screen res must go
+  Put the screen res into global state at startup
+   Fullscreen flag
 
 Isolate SDL into seperate module
   move all SDL-specific code into hooks

@@ -35,7 +35,6 @@
 #include <unistd.h>
 #include "vfs_init.h"
 #include "lib_tools.h"
-#include "l_state.h"
 #include "l_loadscreen.h"
 #include "l_splash.h"
 
@@ -46,6 +45,10 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #endif
+
+#define __IN_MAIN_
+#include <lambda_api.h>
+#include <lambda_state.h>
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
