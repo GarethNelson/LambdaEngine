@@ -48,11 +48,13 @@ static void   (*video_pre_render)();
 static void   (*video_post_render)();
 #endif
 
+#ifndef __IN_RENDER_
 static void   (*render_init)();
 static GLuint (*load_texture)(char* vfs_filename);
 static void   (*draw_triangle_rot)(float x, float y, float rot);
 static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
 static void   (*draw_quad_blend)(float x,float y, float w, float h, GLuint tex_id, float alpha);
+#endif
 
 typedef struct hook_callback_t {
     void (*func_ptr)(void* param);
@@ -77,8 +79,11 @@ extern global_state_t global_state;
 #endif
 
 #define IMPORT(SYMBOL_NAME) SYMBOL_NAME = dlsym(RTLD_DEFAULT,#SYMBOL_NAME);
-#define INIT_LAMBDA_API() IMPORT(hook_callbacks); \
-                          IMPORT(global_state);
+
+// the below is required for any external libs, but not in the main executable
+#define INIT_LAMBDA_API() global_state   = (global_state_t*)  dlsym(RTLD_DEFAULT,"global_state"); \
+                          hook_callbacks = (hook_callbacks_t*) global_state->hook_callbacks;
+
 
 
 

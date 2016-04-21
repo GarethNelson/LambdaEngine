@@ -46,6 +46,7 @@ SDL_GLContext glcontext;
 #define SCREEN_HEIGHT 768
 
 void __attribute__((constructor)) init_module() {
+     INIT_LAMBDA_API()
      CREATE_HOOK(v_pre_render)
      printf("lambda_video/v_init.c:init_module() - module loaded\n");
 }

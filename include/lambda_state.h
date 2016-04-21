@@ -53,6 +53,7 @@ typedef struct {
     e_lambda_stage app_stage;
     void* stage_vals;  // pointer to a struct that contains the actual stage-specific state data
     global_vals_hash* global_vals; // uthash
+    void* hook_callbacks; // insane hack
 } global_state_t;
 
 // *********************************************

@@ -61,6 +61,7 @@ int main(int argc, char* argv[]) {
     printf("\n*** LAMBDA ENGINE STARTUP ***\n\n");
     printf("l_main.c:main() - Lambda engine starting up\n");
     global_state.app_stage = STARTUP;
+    global_state.hook_callbacks = (void*)hook_callbacks;
     vfs_init(argv[0]);
     init_libs();
 
