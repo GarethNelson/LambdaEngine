@@ -70,10 +70,21 @@ extern struct hook_callbacks_t *hook_callbacks;
 extern global_state_t global_state;
 #endif
 
-#define CREATE_HOOK(HOOK_NAME) struct hook_callbacks_t *hook_callback = malloc(sizeof(struct hook_callbacks_t); \
+static struct hook_callbacks_t *hook_callback;
+static hook_callback_t *callback_el;
+
+#define CREATE_HOOK(HOOK_NAME) hook_callback = malloc(sizeof(struct hook_callbacks_t); \
                                strncpy(hook_callback->hook_name,(const char *)#HOOK_NAME,40); \
                                hook_callback->callbacks = NULL; \
                                HASH_ADD_STR(hook_callbacks,hook_name,#HOOK_NAME);
+
+#define ADD_HOOK_CALLBACK(HOOK_NAME,CALLBACK) HASH_FIND_STR(hook_callbacks,(const char*)#HOOK_NAME,hook_callback); \
+                                              LL_APPEND(hook_callback->callbacks,CALLBACK);
+
+#define RUN_HOOK(HOOK_NAME,PARAM) HASH_FIND_STR(hook_callbacks,(const char*)#HOOK_NAME,hook_callback); \
+                                  LL_FOREACH(hook_callback->callbacks,callback_el) { \
+                                      callback_el->func_ptr(PARAM);\
+                                  }
 
 #endif
 
