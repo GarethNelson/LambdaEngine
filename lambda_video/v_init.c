@@ -37,12 +37,16 @@
 #include <GL/glu.h>
 #endif
 
+#define __IN_VIDEO_
+#include <lambda_api.h>
+
 SDL_Window *screen;
 SDL_GLContext glcontext;
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
 void __attribute__((constructor)) init_module() {
+     CREATE_HOOK(v_pre_render)
      printf("lambda_video/v_init.c:init_module() - module loaded\n");
 }
 

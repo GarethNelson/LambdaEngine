@@ -54,7 +54,7 @@
 #define SCREEN_HEIGHT 768
 
 global_state_t global_state;
-struct hook_callbacks_t *hook_callbacks=NULL; // see lambda_api.h
+hook_callbacks_t *hook_callbacks=NULL; // see lambda_api.h
 
 int main(int argc, char* argv[]) {
     setbuf(stdout,NULL);

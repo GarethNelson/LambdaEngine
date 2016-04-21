@@ -37,20 +37,14 @@
 #include <GL/glu.h>
 #endif
 
+#define __IN_MAIN_
 #include <lambda_api.h>
 #include <lambda_state.h>
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
-static void   (*video_pre_render)();
-static void   (*video_post_render)();
-static GLuint (*load_texture)(char* vfs_filename);
-static void   (*draw_quad_blend)(float x, float y, float w, float h, GLuint tex_id, float alpha);
-
-extern global_state_t global_state;
-
-GLuint logo_tex;
+static GLuint logo_tex;
 
 void clean_splash() {
      free(global_state.stage_vals);
@@ -58,10 +52,10 @@ void clean_splash() {
 
 void init_splash() {
      printf("l_splash.c:init_splash() - Initialising splash:\n");
-     video_pre_render  = dlsym(RTLD_DEFAULT,"video_pre_render");
-     video_post_render = dlsym(RTLD_DEFAULT,"video_post_render");
-     load_texture      = dlsym(RTLD_DEFAULT,"load_texture");
-     draw_quad_blend   = dlsym(RTLD_DEFAULT,"draw_quad_blend");
+     IMPORT(video_pre_render)
+     IMPORT(video_post_render)
+     IMPORT(load_texture)
+     IMPORT(draw_quad_blend)
      global_state.stage_vals = malloc(sizeof(splash_vals_t));
      ((splash_vals_t*)global_state.stage_vals)->cur_alpha = 1.0f;
      ((splash_vals_t*)global_state.stage_vals)->fade_in = 1;

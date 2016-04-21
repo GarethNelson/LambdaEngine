@@ -42,41 +42,54 @@
 #include <GL/glu.h>
 #endif
 
+#ifndef __IN_VIDEO_
 static int    (*video_init)();
 static void   (*video_pre_render)();
 static void   (*video_post_render)();
+#endif
 
 static void   (*render_init)();
 static GLuint (*load_texture)(char* vfs_filename);
 static void   (*draw_triangle_rot)(float x, float y, float rot);
 static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
-
-#define IMPORT(SYMBOL_NAME) SYMBOL_NAME = dlsym(RTLD_DEFAULT,#SYMBOL_NAME);
+static void   (*draw_quad_blend)(float x,float y, float w, float h, GLuint tex_id, float alpha);
 
 typedef struct hook_callback_t {
     void (*func_ptr)(void* param);
     struct hook_callback_t *next;
 } hook_callback_t; // note the lack of s - callback, not callbacks
 
-struct {
+typedef struct hook_callbacks_t {
     char hook_name[40];
     hook_callback_t *callbacks;
     UT_hash_handle hh;
 } hook_callbacks_t;
 
+
+
 // Only extern stuff from l_main.c if we're not actually in l_main.c
 #ifndef __IN_MAIN_
-extern struct hook_callbacks_t *hook_callbacks;
+static hook_callbacks_t *hook_callbacks;
+static global_state_t *global_state;
+#else
+extern hook_callbacks_t *hook_callbacks;
 extern global_state_t global_state;
 #endif
 
-static struct hook_callbacks_t *hook_callback;
+#define IMPORT(SYMBOL_NAME) SYMBOL_NAME = dlsym(RTLD_DEFAULT,#SYMBOL_NAME);
+#define INIT_LAMBDA_API() IMPORT(hook_callbacks); \
+                          IMPORT(global_state);
+
+
+
+static hook_callbacks_t *hook_callback;
 static hook_callback_t *callback_el;
 
-#define CREATE_HOOK(HOOK_NAME) hook_callback = malloc(sizeof(struct hook_callbacks_t); \
-                               strncpy(hook_callback->hook_name,(const char *)#HOOK_NAME,40); \
-                               hook_callback->callbacks = NULL; \
-                               HASH_ADD_STR(hook_callbacks,hook_name,#HOOK_NAME);
+
+#define CREATE_HOOK(NEW_HOOK_NAME) hook_callback = malloc(sizeof(hook_callbacks_t)); \
+                                   strncpy(hook_callback->hook_name,(const char *)#NEW_HOOK_NAME,40); \
+                                   hook_callback->callbacks = NULL; \
+                                   HASH_ADD_STR(hook_callbacks,hook_name,hook_callback);
 
 #define ADD_HOOK_CALLBACK(HOOK_NAME,CALLBACK) HASH_FIND_STR(hook_callbacks,(const char*)#HOOK_NAME,hook_callback); \
                                               LL_APPEND(hook_callback->callbacks,CALLBACK);

@@ -37,6 +37,7 @@
 #include <GL/glu.h>
 #endif
 
+#define __IN_MAIN_
 #include <lambda_state.h>
 #include <lambda_api.h>
 
