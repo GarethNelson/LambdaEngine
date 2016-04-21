@@ -44,12 +44,8 @@
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
-static void   (*video_pre_render)();
-static void   (*video_post_render)();
-static void   (*draw_triangle_rot)(float x, float y, float rot);
 static float rot;
 
-extern global_state_t global_state;
 
 
 void clean_init_screen() {
@@ -58,9 +54,9 @@ void clean_init_screen() {
 
 void init_load_screen() {
      printf("l_loadscreen.c:init_load_screen() - Initialising loading screen...");
-     video_pre_render  = dlsym(RTLD_DEFAULT,"video_pre_render");
-     video_post_render = dlsym(RTLD_DEFAULT,"video_post_render");
-     draw_triangle_rot = dlsym(RTLD_DEFAULT,"draw_triangle_rot");
+     IMPORT(video_pre_render)
+     IMPORT(video_post_render)
+     IMPORT(draw_triangle_rot)
      rot = 1.0f;
      global_state.stage_vals = malloc(sizeof(loader_vals_t));
      ((loader_vals_t*)global_state.stage_vals)->next_stage = INIT_SPLASH; // TODO - move this to l_main.c
