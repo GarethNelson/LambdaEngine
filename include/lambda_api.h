@@ -30,7 +30,9 @@
 #define __LAMBDA_API_H_
 
 #include <dlfcn.h>
-#include "lambda_state.h"
+#include <lambda_state.h>
+#include <uthash.h>
+#include <utlist.h>
 
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
@@ -51,10 +53,27 @@ static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
 
 #define IMPORT(SYMBOL_NAME) SYMBOL_NAME = dlsym(RTLD_DEFAULT,#SYMBOL_NAME);
 
+typedef struct hook_callback_t {
+    void (*func_ptr)(void* param);
+    struct hook_callback_t *next;
+} hook_callback_t; // note the lack of s - callback, not callbacks
+
+struct {
+    char hook_name[40];
+    hook_callback_t *callbacks;
+    UT_hash_handle hh;
+} hook_callbacks_t;
+
 // Only extern stuff from l_main.c if we're not actually in l_main.c
 #ifndef __IN_MAIN_
+extern struct hook_callbacks_t *hook_callbacks;
 extern global_state_t global_state;
 #endif
+
+#define CREATE_HOOK(HOOK_NAME) struct hook_callbacks_t *hook_callback = malloc(sizeof(struct hook_callbacks_t); \
+                               strncpy(hook_callback->hook_name,(const char *)#HOOK_NAME,40); \
+                               hook_callback->callbacks = NULL; \
+                               HASH_ADD_STR(hook_callbacks,hook_name,#HOOK_NAME);
 
 #endif
 

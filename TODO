@@ -1,4 +1,5 @@
 Define dlsym API
+  Create a single C module that must be linked to by each shared lib and main executable
   Move symbols into standard header file
   Macro in header file for importing symbols
     Modules include the header file and then do something like IMPORT(video_init) in their own init function
