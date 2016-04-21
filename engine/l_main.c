@@ -53,22 +53,7 @@
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
-// TODO - make a global symbol table for all this stuff, pass a pointer to all modules
-// TODO - put symbols from the main program AND modules into the symbol table
-// TODO - update the symbol table only after all modules are loaded
-static int    (*video_init)();
-static void   (*video_pre_render)();
-static void   (*video_post_render)();
-static void   (*render_init)();
-static GLuint (*load_texture)(char* vfs_filename);
-static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
-static void   (*draw_quad_blend)(float x, float y, float w, float h, GLuint tex_id, float alpha);
-
 global_state_t global_state;
-
-void render_logo() {
-//     draw_quad_blend(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT, logo_tex,0.5f);
-}
 
 int main(int argc, char* argv[]) {
     setbuf(stdout,NULL);
@@ -78,13 +63,8 @@ int main(int argc, char* argv[]) {
     vfs_init(argv[0]);
     init_libs();
 
-    video_init        = dlsym(RTLD_DEFAULT,"video_init");
-    video_pre_render  = dlsym(RTLD_DEFAULT,"video_pre_render");
-    video_post_render = dlsym(RTLD_DEFAULT,"video_post_render");
-    load_texture      = dlsym(RTLD_DEFAULT,"load_texture");
-    draw_quad         = dlsym(RTLD_DEFAULT,"draw_quad");
-    draw_quad_blend   = dlsym(RTLD_DEFAULT,"draw_quad_blend");
-    render_init       = dlsym(RTLD_DEFAULT,"render_init");
+    IMPORT(video_init)
+    IMPORT(render_init)
     if(video_init() != 0) {
        printf("l_main.c:main() - Failed to setup video!\n");
        exit(1);
@@ -130,25 +110,4 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    init_load_screen();
-    while(1) {
-       update_load_screen();
-       usleep(50000);
-    }
-
-    
-    printf("l_main.c:main() - Displaying splashscreen...");
-    video_pre_render();
-    render_logo();
-    video_post_render();
-    sleep(3);
-    printf("DONE!\n");
- 
-/*    int running=1; 
-    while(running) {
-        video_pre_render();
-        // process_events();
-        // render_frame();
-        video_post_render();       
-    }*/
 }

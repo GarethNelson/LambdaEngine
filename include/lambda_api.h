@@ -49,6 +49,8 @@ static GLuint (*load_texture)(char* vfs_filename);
 static void   (*draw_triangle_rot)(float x, float y, float rot);
 static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
 
+#define IMPORT(SYMBOL_NAME) SYMBOL_NAME = dlsym(RTLD_DEFAULT,#SYMBOL_NAME);
+
 // Only extern stuff from l_main.c if we're not actually in l_main.c
 #ifndef __IN_MAIN_
 extern global_state_t global_state;
