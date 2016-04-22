@@ -45,11 +45,19 @@ SDL_GLContext glcontext;
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
+
+void v_post_init(void* param) { // post init callback
+     printf("lambda_video/v_init.c:v_post_init() - Setting up hook callbacks\n");
+
+}
+
 void __attribute__((constructor)) init_module() {
      INIT_LAMBDA_API()
      CREATE_HOOK(v_pre_render)
+     ADD_HOOK_CALLBACK(lambda_post_load,&v_post_init)
      printf("lambda_video/v_init.c:init_module() - module loaded\n");
 }
+
 
 
 // TODO - move these to something like v_hooks.c

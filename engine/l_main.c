@@ -53,17 +53,20 @@
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
-global_state_t global_state;
+global_state_t *global_state;
 hook_callbacks_t *hook_callbacks=NULL; // see lambda_api.h
 
 int main(int argc, char* argv[]) {
     setbuf(stdout,NULL);
     printf("\n*** LAMBDA ENGINE STARTUP ***\n\n");
     printf("l_main.c:main() - Lambda engine starting up\n");
-    global_state.app_stage = STARTUP;
-    global_state.hook_callbacks = (void*)hook_callbacks;
+    global_state = (global_state_t*)malloc(sizeof(global_state_t));
+    global_state->app_stage = STARTUP;
+    global_state->hook_callbacks = (void*)hook_callbacks;
     vfs_init(argv[0]);
+    CREATE_HOOK(lambda_post_load)
     init_libs();
+    RUN_HOOK(lambda_post_load,NULL)
 
     IMPORT(video_init)
     IMPORT(render_init)
@@ -77,15 +80,15 @@ int main(int argc, char* argv[]) {
     
     while(1) {
         usleep(50000);
-        switch(global_state.app_stage) {
+        switch(global_state->app_stage) {
             case STARTUP:
                printf("l_main.c:main() - Switching to INIT_LOADSCREEN\n");
-               global_state.app_stage = INIT_LOADSCREEN;
+               global_state->app_stage = INIT_LOADSCREEN;
                break;
             case INIT_LOADSCREEN:
                init_load_screen();
                printf("l_main.c:main() - Switching to LOADSCREEN\n");
-               global_state.app_stage = LOADSCREEN;
+               global_state->app_stage = LOADSCREEN;
                break;
             case LOADSCREEN:
                update_load_screen();
@@ -93,7 +96,7 @@ int main(int argc, char* argv[]) {
             case INIT_SPLASH:
                init_splash();
                printf("l_main.c:main() - Switching to SPLASH\n");
-               global_state.app_stage = SPLASH;
+               global_state->app_stage = SPLASH;
                break;
             case SPLASH:
                update_splash();

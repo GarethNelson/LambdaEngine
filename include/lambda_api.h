@@ -71,18 +71,18 @@ typedef struct hook_callbacks_t {
 
 // Only extern stuff from l_main.c if we're not actually in l_main.c
 #ifndef __IN_MAIN_
-static hook_callbacks_t *hook_callbacks;
-static global_state_t *global_state;
+hook_callbacks_t *hook_callbacks;
+global_state_t *global_state;
 #else
-extern hook_callbacks_t *hook_callbacks;
-extern global_state_t global_state;
+hook_callbacks_t *hook_callbacks;
+global_state_t *global_state;
 #endif
 
 #define IMPORT(SYMBOL_NAME) SYMBOL_NAME = dlsym(RTLD_DEFAULT,#SYMBOL_NAME);
 
 // the below is required for any external libs, but not in the main executable
-#define INIT_LAMBDA_API() global_state   = (global_state_t*)  dlsym(RTLD_DEFAULT,"global_state"); \
-                          hook_callbacks = (hook_callbacks_t*) global_state->hook_callbacks;
+#define INIT_LAMBDA_API() global_state   = ((global_state_t**)   dlsym(RTLD_DEFAULT,"global_state"))[0]; \
+                          hook_callbacks = ((hook_callbacks_t**) dlsym(RTLD_DEFAULT,"hook_callbacks"))[0]; 
 
 
 
@@ -90,16 +90,17 @@ extern global_state_t global_state;
 static hook_callbacks_t *hook_callback;
 static hook_callback_t *callback_el;
 
-
 #define CREATE_HOOK(NEW_HOOK_NAME) hook_callback = malloc(sizeof(hook_callbacks_t)); \
                                    strncpy(hook_callback->hook_name,(const char *)#NEW_HOOK_NAME,40); \
                                    hook_callback->callbacks = NULL; \
                                    HASH_ADD_STR(hook_callbacks,hook_name,hook_callback);
 
-#define ADD_HOOK_CALLBACK(HOOK_NAME,CALLBACK) HASH_FIND_STR(hook_callbacks,(const char*)#HOOK_NAME,hook_callback); \
-                                              LL_APPEND(hook_callback->callbacks,CALLBACK);
+#define ADD_HOOK_CALLBACK(HOOK_NAME,CALLBACK) HASH_FIND_STR(hook_callbacks,#HOOK_NAME,hook_callback); \
+                                              callback_el = malloc(sizeof(hook_callback_t)); \
+                                              callback_el->func_ptr = CALLBACK; \
+                                              LL_APPEND(hook_callback->callbacks,callback_el);
 
-#define RUN_HOOK(HOOK_NAME,PARAM) HASH_FIND_STR(hook_callbacks,(const char*)#HOOK_NAME,hook_callback); \
+#define RUN_HOOK(HOOK_NAME,PARAM) HASH_FIND_STR(hook_callbacks,#HOOK_NAME,hook_callback); \
                                   LL_FOREACH(hook_callback->callbacks,callback_el) { \
                                       callback_el->func_ptr(PARAM);\
                                   }

@@ -47,7 +47,7 @@
 static GLuint logo_tex;
 
 void clean_splash() {
-     free(global_state.stage_vals);
+     free(global_state->stage_vals);
 }
 
 void init_splash() {
@@ -56,28 +56,28 @@ void init_splash() {
      IMPORT(video_post_render)
      IMPORT(load_texture)
      IMPORT(draw_quad_blend)
-     global_state.stage_vals = malloc(sizeof(splash_vals_t));
-     ((splash_vals_t*)global_state.stage_vals)->cur_alpha = 1.0f;
-     ((splash_vals_t*)global_state.stage_vals)->fade_in = 1;
+     global_state->stage_vals = malloc(sizeof(splash_vals_t));
+     ((splash_vals_t*)global_state->stage_vals)->cur_alpha = 1.0f;
+     ((splash_vals_t*)global_state->stage_vals)->fade_in = 1;
      logo_tex = load_texture("/textures/logo.tga");
 }
 
 void update_splash() {
-     if(((splash_vals_t*)global_state.stage_vals)->cur_alpha >= 1.1f) {
-        global_state.app_stage = INIT_MAINMENU;
+     if(((splash_vals_t*)global_state->stage_vals)->cur_alpha >= 1.1f) {
+        global_state->app_stage = INIT_MAINMENU;
         clean_splash();
      }
-     if(((splash_vals_t*)global_state.stage_vals)->cur_alpha <= 0.1f ) {
+     if(((splash_vals_t*)global_state->stage_vals)->cur_alpha <= 0.1f ) {
         sleep(1);
-        ((splash_vals_t*)global_state.stage_vals)->fade_in = 0;
+        ((splash_vals_t*)global_state->stage_vals)->fade_in = 0;
      }
-     if(((splash_vals_t*)global_state.stage_vals)->fade_in==1) {
-        ((splash_vals_t*)global_state.stage_vals)->cur_alpha -= 0.025f;
+     if(((splash_vals_t*)global_state->stage_vals)->fade_in==1) {
+        ((splash_vals_t*)global_state->stage_vals)->cur_alpha -= 0.025f;
      } else {
-        ((splash_vals_t*)global_state.stage_vals)->cur_alpha += 0.025f;
+        ((splash_vals_t*)global_state->stage_vals)->cur_alpha += 0.025f;
      }
      video_pre_render();
-      draw_quad_blend(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT, logo_tex, ((splash_vals_t*)global_state.stage_vals)->cur_alpha );
+      draw_quad_blend(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT, logo_tex, ((splash_vals_t*)global_state->stage_vals)->cur_alpha );
      video_post_render();
 
 }
