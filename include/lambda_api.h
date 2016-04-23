@@ -31,6 +31,7 @@
 
 #ifdef __linux__
 #define __USE_GNU
+#define _GNU_SOURCE
 #endif
 
 #include <dlfcn.h>
