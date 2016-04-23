@@ -27,7 +27,6 @@
 //-----------------------------------------------------------------------------
 
 #include <unistd.h>
-#include <dlfcn.h>
 #include <stdio.h>
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
