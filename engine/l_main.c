@@ -80,6 +80,7 @@ int main(int argc, char* argv[]) {
     
     while(1) {
         usleep(50000);
+
         switch(global_state->app_stage) {
             case STARTUP:
                printf("l_main.c:main() - Switching to INIT_LOADSCREEN\n");
