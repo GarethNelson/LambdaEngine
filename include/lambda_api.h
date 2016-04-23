@@ -29,6 +29,10 @@
 #ifndef __LAMBDA_API_H_
 #define __LAMBDA_API_H_
 
+#ifdef __linux__
+#define __USE_GNU
+#endif
+
 #include <dlfcn.h>
 #include <lambda_state.h>
 #include <uthash.h>
