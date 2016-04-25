@@ -66,6 +66,7 @@ int main(int argc, char* argv[]) {
     vfs_init(argv[0]);
     CREATE_HOOK(lambda_post_load)
     CREATE_HOOK(lambda_shutdown)
+    CREATE_HOOK(lambda_frame)
     init_libs();
     RUN_HOOK(lambda_post_load,NULL)
 

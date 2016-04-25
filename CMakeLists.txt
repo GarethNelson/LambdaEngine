@@ -21,6 +21,15 @@ add_library(lambda_video SHARED ${lambda_video_SRC})
 target_link_libraries(lambda_video ${SDL2_LIBRARIES} ${OpenGL_LIBRARY})
 set_target_properties(lambda_video PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
 
+
+file(GLOB lambda_input_SRC
+     "lambda_input/*.c"
+     "lambda_input/*.h")
+add_library(lambda_input SHARED ${lambda_input_SRC})
+target_link_libraries(lambda_input ${SDL2_LIBRARIES} )
+set_target_properties(lambda_input PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
+
+
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
    set(EXTRA_GL GL)
 endif()
