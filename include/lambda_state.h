@@ -54,6 +54,8 @@ typedef struct {
     e_lambda_stage app_stage;
     void* stage_vals;  // pointer to a struct that contains the actual stage-specific state data
     global_vals_hash* global_vals; // uthash
+    unsigned int frame_delta; // timekeeping, ms - handled by video module
+    unsigned int last_frame;
 } global_state_t;
 
 

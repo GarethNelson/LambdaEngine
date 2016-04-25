@@ -26,6 +26,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL.h>
@@ -45,13 +46,23 @@ SDL_GLContext glcontext;
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
+void v_frame(void* param) {
+     unsigned int now = SDL_GetTicks();
+     global_state->frame_delta = now-global_state->last_frame;
+     global_state->last_frame  = now;
+     usleep(50000);
+     printf("%f FPS ", 1.0f/global_state->frame_delta);
+}
 
 void v_post_init(void* param) { // post init callback
-     printf("lambda_video/v_init.c:v_post_init() - Setting up hook callbacks\n");
-
+     printf("lambda_video/v_init.c:v_post_init() - Setting up hook callbacks...");
+     ADD_HOOK_CALLBACK(lambda_frame,&v_frame)
+     global_state->last_frame = SDL_GetTicks();
+     printf("DONE!\n");
 }
 
 void v_shutdown(void* param) {
+     SDL_QuitSubSystem(SDL_INIT_TIMER);
      SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
@@ -83,6 +94,7 @@ int video_init() {
     if(SDL_WasInit(0)==0) {
        SDL_Init(0);
     }
+    SDL_InitSubSystem(SDL_INIT_TIMER);
     SDL_InitSubSystem(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 5 );
     SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 5 );

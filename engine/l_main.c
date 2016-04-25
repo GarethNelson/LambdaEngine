@@ -95,11 +95,7 @@ int main(int argc, char* argv[]) {
     printf("l_main.c:main() - Video started, preparing render:\n");    
 
     render_init();
-    
-
-
     while(1) {
-        usleep(50000);
         RUN_HOOK(lambda_frame,NULL)
         switch(global_state->app_stage) {
             case STARTUP:
