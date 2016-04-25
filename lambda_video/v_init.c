@@ -50,14 +50,17 @@ void v_frame(void* param) {
      unsigned int now = SDL_GetTicks();
      global_state->frame_delta = now-global_state->last_frame;
      global_state->last_frame  = now;
-     usleep(50000);
-     printf("%f FPS ", 1.0f/global_state->frame_delta);
+     float fps       = (1.0f/global_state->frame_delta)*1000.0f;
+     global_state->display_fps = (unsigned int)fps;
+     if(global_state->frame_delta <= 33) {
+        SDL_Delay(33 - global_state->frame_delta);
+     }
 }
 
 void v_post_init(void* param) { // post init callback
      printf("lambda_video/v_init.c:v_post_init() - Setting up hook callbacks...");
      ADD_HOOK_CALLBACK(lambda_frame,&v_frame)
-     global_state->last_frame = SDL_GetTicks();
+     global_state->last_frame = SDL_GetTicks()-20;
      printf("DONE!\n");
 }
 

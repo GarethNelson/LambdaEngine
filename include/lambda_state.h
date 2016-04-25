@@ -56,6 +56,7 @@ typedef struct {
     global_vals_hash* global_vals; // uthash
     unsigned int frame_delta; // timekeeping, ms - handled by video module
     unsigned int last_frame;
+    unsigned int display_fps;  // render FPS
 } global_state_t;
 
 
