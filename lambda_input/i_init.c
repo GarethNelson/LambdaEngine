@@ -32,23 +32,67 @@
 #define __IN_INPUT_
 #include "lambda_api.h"
 
-void i_frame(void* param) {
-     utarray_clear(lambda_events);
-     SDL_Event e;
-     while (SDL_PollEvent(&e)) {
-        if(e.type == SDL_QUIT) {
-           global_state->app_stage = SHUTDOWN;
-        }
-     }
-}
+
+
+
 
 void i_shutdown(void* param) {
     SDL_QuitSubSystem(SDL_INIT_EVENTS);
 }
 
+void i_default(void* param) {
+     printf("lambda_input/i_init.c:i_default() - default handler called!\n");
+}
+
+void i_handle_sdl_key_event(SDL_Event *e) {
+     // TODO - Make this configurable
+     switch(e->key.keysym.sym) {
+        case SDLK_RETURN:
+          RUN_SINGLE_HOOK("input_action",NULL)
+        break;
+        case SDLK_ESCAPE:
+          RUN_SINGLE_HOOK("input_back",NULL)
+        break;
+        case SDLK_UP:
+          RUN_SINGLE_HOOK("input_up",NULL)
+        break;
+        case SDLK_DOWN:
+          RUN_SINGLE_HOOK("input_down",NULL)
+        break;
+        case SDLK_LEFT:
+          RUN_SINGLE_HOOK("input_left",NULL)
+        break;
+        case SDLK_RIGHT:
+          RUN_SINGLE_HOOK("input_right",NULL)
+        break;
+     }
+}
+
+void i_frame(void* param) {
+     utarray_clear(lambda_events);
+     SDL_Event e;
+     while (SDL_PollEvent(&e)) {
+        switch(e.type) {
+           case SDL_QUIT:
+             global_state->app_stage = SHUTDOWN;
+           break;
+           case SDL_KEYDOWN:
+             i_handle_sdl_key_event(&e);
+           break;
+        }
+
+     }
+}
+
 void i_postload(void* param) {
-     printf("lambda_input/i_init.c:i_postload() - Setting up i_frame hook...");
+     printf("lambda_input/i_init.c:i_postload() - Setting up hooks...");
      ADD_HOOK_CALLBACK(lambda_frame,&i_frame)
+     SET_SINGLE_HOOK(input_action, &i_default);
+     SET_SINGLE_HOOK(input_back,   &i_default);
+     SET_SINGLE_HOOK(input_up,     &i_default);
+     SET_SINGLE_HOOK(input_down,   &i_default);
+     SET_SINGLE_HOOK(input_left,   &i_default);
+     SET_SINGLE_HOOK(input_right,  &i_default);
      printf("DONE!\n");
 }
 

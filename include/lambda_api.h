@@ -100,7 +100,7 @@ UT_array *lambda_events;
 
 static hook_callbacks_t *hook_callback;
 static hook_callback_t *callback_el;
-static single_callbacks_t single_callback;
+static single_callbacks_t *single_callback;
 
 
 #define CREATE_HOOK(NEW_HOOK_NAME) hook_callback = malloc(sizeof(hook_callbacks_t)); \
@@ -111,7 +111,7 @@ static single_callbacks_t single_callback;
 #define SET_SINGLE_HOOK(HOOK_NAME,CALLBACK) HASH_FIND_STR(single_callbacks,#HOOK_NAME,single_callback); \
                                             if(single_callback==NULL) { \
                                                single_callback = malloc(sizeof(single_callbacks_t)); \
-                                               HASH_ADD_TR(single_callbacks,hook_name,single_callback); \
+                                               HASH_ADD_STR(single_callbacks,hook_name,single_callback); \
                                             } \
                                             strncpy(single_callback->hook_name,(const char*)#HOOK_NAME,40); \
                                             single_callback->func_ptr = CALLBACK;
