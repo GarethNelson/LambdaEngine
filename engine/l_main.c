@@ -72,6 +72,7 @@ int main(int argc, char* argv[]) {
 
     IMPORT(video_init)
     IMPORT(render_init)
+    IMPORT(input_init)
     if(video_init() != 0) {
        printf("l_main.c:main() - Failed to setup video!\n");
        exit(1);
@@ -82,9 +83,11 @@ int main(int argc, char* argv[]) {
     
     printf("l_main.c:main() - Starting events system...\n");
     utarray_new(lambda_events, &events_icd);
+    input_init();
 
     while(1) {
         usleep(50000);
+        RUN_HOOK(lambda_frame,NULL)
         switch(global_state->app_stage) {
             case STARTUP:
                printf("l_main.c:main() - Switching to INIT_LOADSCREEN\n");
@@ -116,6 +119,7 @@ int main(int argc, char* argv[]) {
                break;
             case SHUTDOWN:
                RUN_HOOK(lambda_shutdown,NULL)
+               exit(0);
                break;
 
         }

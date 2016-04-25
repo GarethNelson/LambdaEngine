@@ -61,6 +61,10 @@ static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
 static void   (*draw_quad_blend)(float x,float y, float w, float h, GLuint tex_id, float alpha);
 #endif
 
+#ifndef __IN_INPUT_
+static void (*input_init)();
+#endif
+
 typedef struct hook_callback_t {
     void (*func_ptr)(void* param);
     struct hook_callback_t *next;
