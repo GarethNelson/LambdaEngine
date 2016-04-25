@@ -56,6 +56,7 @@
 global_state_t *global_state;
 UT_array *lambda_events;
 hook_callbacks_t *hook_callbacks=NULL; // see lambda_api.h
+single_callbacks_t *single_callbacks=NULL;
 UT_icd events_icd = {sizeof(lambda_event_t),NULL,NULL,NULL};
 
 int main(int argc, char* argv[]) {
