@@ -27,11 +27,13 @@
 //-----------------------------------------------------------------------------
 
 #include <stdio.h>
+#include <utarray.h>
 #include <SDL.h>
 #define __IN_INPUT_
 #include "lambda_api.h"
 
 void i_frame(void* param) {
+     utarray_clear(lambda_events);
      SDL_Event e;
      while (SDL_PollEvent(&e)) {
         if(e.type == SDL_QUIT) {
@@ -44,18 +46,24 @@ void i_shutdown(void* param) {
     SDL_QuitSubSystem(SDL_INIT_EVENTS);
 }
 
+void i_postload(void* param) {
+     printf("lambda_input/i_init.c:i_postload() - Setting up i_frame hook...");
+     ADD_HOOK_CALLBACK(lambda_frame,&i_frame)
+     printf("DONE!\n");
+}
+
 void input_init() {
-    printf("lambda_input/i_init.c:input_init() - Starting up SDL...");
-    if(SDL_WasInit(0)==0) {
-       SDL_Init(0);
-    }
-    SDL_InitSubSystem(SDL_INIT_EVENTS);
-    printf("DONE!\n");
+     printf("lambda_input/i_init.c:input_init() - Starting up SDL...");
+     if(SDL_WasInit(0)==0) {
+        SDL_Init(0);
+     }
+     SDL_InitSubSystem(SDL_INIT_EVENTS);
+     printf("DONE!\n");
 }
 
 void __attribute__((constructor)) init_module() {
      INIT_LAMBDA_API()
-     ADD_HOOK_CALLBACK(lambda_frame,&i_frame)
+     ADD_HOOK_CALLBACK(lambda_post_load,&i_postload)
      ADD_HOOK_CALLBACK(lambda_shutdown,&i_shutdown)
      printf("lambda_input/i_init.c:init_module() - module loaded\n");
 }

@@ -54,6 +54,7 @@
 #define SCREEN_HEIGHT 768
 
 global_state_t *global_state;
+UT_array *lambda_events;
 hook_callbacks_t *hook_callbacks=NULL; // see lambda_api.h
 UT_icd events_icd = {sizeof(lambda_event_t),NULL,NULL,NULL};
 
@@ -63,16 +64,29 @@ int main(int argc, char* argv[]) {
     printf("l_main.c:main() - Lambda engine starting up\n");
     global_state = (global_state_t*)malloc(sizeof(global_state_t));
     global_state->app_stage = STARTUP;
+    utarray_new(lambda_events, &events_icd);
     vfs_init(argv[0]);
+
     CREATE_HOOK(lambda_post_load)
     CREATE_HOOK(lambda_shutdown)
     CREATE_HOOK(lambda_frame)
-    init_libs();
-    RUN_HOOK(lambda_post_load,NULL)
 
+
+    init_libs();
     IMPORT(video_init)
     IMPORT(render_init)
     IMPORT(input_init)
+
+
+    printf("l_main.c:main() - Starting events system:\n");
+
+    input_init();
+
+    printf("l_main.c:main() - Starting post load hooks:\n");
+
+    RUN_HOOK(lambda_post_load,NULL)
+
+
     if(video_init() != 0) {
        printf("l_main.c:main() - Failed to setup video!\n");
        exit(1);
@@ -81,9 +95,7 @@ int main(int argc, char* argv[]) {
 
     render_init();
     
-    printf("l_main.c:main() - Starting events system...\n");
-    utarray_new(lambda_events, &events_icd);
-    input_init();
+
 
     while(1) {
         usleep(50000);

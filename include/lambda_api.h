@@ -86,7 +86,8 @@ UT_array *lambda_events;
 
 // the below is required for any external libs, but not in the main executable
 #define INIT_LAMBDA_API() global_state   = ((global_state_t**)   dlsym(RTLD_DEFAULT,"global_state"))[0]; \
-                          hook_callbacks = ((hook_callbacks_t**) dlsym(RTLD_DEFAULT,"hook_callbacks"))[0]; 
+                          hook_callbacks = ((hook_callbacks_t**) dlsym(RTLD_DEFAULT,"hook_callbacks"))[0]; \
+                          lambda_events  = ((UT_array**)         dlsym(RTLD_DEFAULT,"lambda_events"))[0];
 
 
 
