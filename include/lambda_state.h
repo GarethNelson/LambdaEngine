@@ -28,6 +28,7 @@
 #ifndef __L_STATE_H_
 #define __L_STATE_H_
 #include "uthash.h"
+#include "utarray.h"
 
 /// this indicates what overall state (i.e what stage) the program is in
 typedef enum {
@@ -53,18 +54,36 @@ typedef struct {
     e_lambda_stage app_stage;
     void* stage_vals;  // pointer to a struct that contains the actual stage-specific state data
     global_vals_hash* global_vals; // uthash
-    void* hook_callbacks; // insane hack
 } global_state_t;
+
+
+// *********************************************
+//  General events data
+typedef enum {
+    QUIT,    // close the whole game
+    ACTION,  // do stuff
+    BACK,    // backup (for menus and such)
+    UP,      // go down
+    DOWN,    // go up
+    LEFT,    // go right
+    RIGHT,   // i'm joking, seriously
+} e_lambda_event;
+
+typedef struct {
+    e_lambda_event event_type;
+    // this space reserved for future expansion - event parameters, bitches
+} lambda_event_t;
+// *********************************************
+
 
 // *********************************************
 //  SPLASH data
-// *********************************************
 // TODO - multiple logos?
 typedef struct {
     float cur_alpha;
     unsigned int fade_in;
 } splash_vals_t;
-
+// *********************************************
 
 
 // *********************************************

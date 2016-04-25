@@ -51,10 +51,15 @@ void v_post_init(void* param) { // post init callback
 
 }
 
+void v_shutdown(void* param) {
+     SDL_QuitSubSystem(SDL_INIT_VIDEO);
+}
+
 void __attribute__((constructor)) init_module() {
      INIT_LAMBDA_API()
      CREATE_HOOK(v_pre_render)
      ADD_HOOK_CALLBACK(lambda_post_load,&v_post_init)
+     ADD_HOOK_CALLBACK(lambda_shutdown,&v_shutdown)
      printf("lambda_video/v_init.c:init_module() - module loaded\n");
 }
 

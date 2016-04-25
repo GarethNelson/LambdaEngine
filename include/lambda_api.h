@@ -74,14 +74,9 @@ typedef struct hook_callbacks_t {
 
 
 
-// Only extern stuff from l_main.c if we're not actually in l_main.c
-#ifndef __IN_MAIN_
 hook_callbacks_t *hook_callbacks;
 global_state_t *global_state;
-#else
-hook_callbacks_t *hook_callbacks;
-global_state_t *global_state;
-#endif
+UT_array *lambda_events;
 
 #define IMPORT(SYMBOL_NAME) SYMBOL_NAME = dlsym(RTLD_DEFAULT,#SYMBOL_NAME);
 

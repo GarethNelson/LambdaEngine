@@ -55,6 +55,7 @@
 
 global_state_t *global_state;
 hook_callbacks_t *hook_callbacks=NULL; // see lambda_api.h
+UT_icd events_icd = {sizeof(lambda_event_t),NULL,NULL,NULL};
 
 int main(int argc, char* argv[]) {
     setbuf(stdout,NULL);
@@ -62,9 +63,9 @@ int main(int argc, char* argv[]) {
     printf("l_main.c:main() - Lambda engine starting up\n");
     global_state = (global_state_t*)malloc(sizeof(global_state_t));
     global_state->app_stage = STARTUP;
-    global_state->hook_callbacks = (void*)hook_callbacks;
     vfs_init(argv[0]);
     CREATE_HOOK(lambda_post_load)
+    CREATE_HOOK(lambda_shutdown)
     init_libs();
     RUN_HOOK(lambda_post_load,NULL)
 
@@ -78,9 +79,11 @@ int main(int argc, char* argv[]) {
 
     render_init();
     
+    printf("l_main.c:main() - Starting events system...\n");
+    utarray_new(lambda_events, &events_icd);
+
     while(1) {
         usleep(50000);
-
         switch(global_state->app_stage) {
             case STARTUP:
                printf("l_main.c:main() - Switching to INIT_LOADSCREEN\n");
@@ -111,6 +114,7 @@ int main(int argc, char* argv[]) {
             case INGAME:
                break;
             case SHUTDOWN:
+               RUN_HOOK(lambda_shutdown,NULL)
                break;
 
         }
