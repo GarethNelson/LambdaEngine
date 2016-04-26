@@ -49,7 +49,7 @@ SDL_GLContext glcontext;
 void v_frame(void* param) {
      unsigned int frame_timeout = (global_state->last_frame)+33;
      while (!SDL_TICKS_PASSED(SDL_GetTicks(), frame_timeout)) {
-         usleep(100);
+         usleep(1);
      }
      unsigned int now = SDL_GetTicks();
      global_state->frame_delta = now-global_state->last_frame;
