@@ -47,20 +47,22 @@ SDL_GLContext glcontext;
 #define SCREEN_HEIGHT 768
 
 void v_frame(void* param) {
+     unsigned int frame_timeout = (global_state->last_frame)+33;
+     while (!SDL_TICKS_PASSED(SDL_GetTicks(), frame_timeout)) {
+         usleep(100);
+     }
      unsigned int now = SDL_GetTicks();
      global_state->frame_delta = now-global_state->last_frame;
      global_state->last_frame  = now;
      float fps       = (1.0f/global_state->frame_delta)*1000.0f;
      global_state->display_fps = (unsigned int)fps;
-     if(global_state->frame_delta <= 33) {
-        SDL_Delay(33 - global_state->frame_delta);
-     }
+     printf("%d ",global_state->frame_delta);
 }
 
 void v_post_init(void* param) { // post init callback
      printf("lambda_video/v_init.c:v_post_init() - Setting up hook callbacks...");
      ADD_HOOK_CALLBACK(lambda_frame,&v_frame)
-     global_state->last_frame = SDL_GetTicks()-20;
+     global_state->last_frame = SDL_GetTicks();
      printf("DONE!\n");
 }
 
