@@ -56,7 +56,6 @@ void v_frame(void* param) {
      global_state->last_frame  = now;
      float fps       = (1.0f/global_state->frame_delta)*1000.0f;
      global_state->display_fps = (unsigned int)fps;
-     printf("%d ",global_state->frame_delta);
 }
 
 void v_post_init(void* param) { // post init callback
