@@ -31,10 +31,29 @@
 
 #include <stdio.h>
 #include <physfs.h>
+#include <limits.h>
 #include <uthash.h>
+#include <utlist.h>
 #include "vfs_io.h"
 
-void vfs_cache_read(void* buf, char* filename); 
+typedef struct vfs_cache_entry_t {
+    char filename[PATH_MAX];
+    unsigned int file_len;
+    unsigned int is_global;
+    unsigned int is_temp;
+    void *data;
+    struct vfs_cache_entry_t *next;
+    UT_hash_handle hh;
+} vfs_cache_entry_t;
+
+// main hashtable with hilarious name
+vfs_cache_entry_t *vfs_cache_hash;
+
+// linked lists for speed - denormalisation bitches
+vfs_cache_entry_t *temp_assets;
+vfs_cache_entry_t *global_assets;
+
+void* vfs_cache_read(char* filename); 
 unsigned int vfs_cache_filelen(char* filename);
 void vfs_precache(char* filename);
 void vfs_cache_mark_global(char* filename);

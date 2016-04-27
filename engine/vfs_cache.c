@@ -28,16 +28,45 @@
 
 #include <stdio.h>
 #include <physfs.h>
+#include <stdlib.h>
 #include "vfs_cache.h"
 #include "vfs_io.h"
 
-void vfs_cache_read(void* buf, char* filename) {
+vfs_cache_entry_t *vfs_cache_hash = NULL;
+vfs_cache_entry_t *temp_assets    = NULL;
+vfs_cache_entry_t *global_assets  = NULL;
+
+void vfs_precache(char* filename) {
+      vfs_cache_entry_t *cache_entry;
+      HASH_FIND_STR(vfs_cache_hash,filename,cache_entry);
+      if(cache_entry != NULL) {
+         return;
+      }
+      cache_entry = malloc(sizeof(vfs_cache_entry_t));
+      strncpy(cache_entry->filename,(const char*)filename,PATH_MAX);
+      cache_entry->file_len = vfs_filelen(filename);
+      cache_entry->data     = malloc(cache_entry->file_len);
+      vfs_read(cache_entry->data,filename,cache_entry->file_len);
+      HASH_ADD_STR(vfs_cache_hash,filename,cache_entry);
+}
+
+void* vfs_cache_read(char* filename) {
+      vfs_cache_entry_t *cache_entry;
+      HASH_FIND_STR(vfs_cache_hash,filename,cache_entry);
+      if(cache_entry==NULL) {
+         vfs_precache(filename);
+         HASH_FIND_STR(vfs_cache_hash,filename,cache_entry);
+      }
+      return cache_entry->data;
 }
 
 unsigned int vfs_cache_filelen(char* filename) {
-}
-
-void vfs_precache(char* filename) {
+      vfs_cache_entry_t *cache_entry;
+      HASH_FIND_STR(vfs_cache_hash,filename,cache_entry);
+      if(cache_entry==NULL) {
+         return vfs_filelen(filename);
+      }
+      return cache_entry->file_len;
 }
 
 void vfs_cache_mark_global(char* filename) {
