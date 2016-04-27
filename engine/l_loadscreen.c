@@ -39,6 +39,7 @@
 #define __IN_MAIN_
 #include <lambda_state.h>
 #include <lambda_api.h>
+#include <pthread.h>
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768

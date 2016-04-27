@@ -1,11 +1,7 @@
-Define dlsym API
-  Create a single C module that must be linked to by each shared lib and main executable
-  Move symbols into standard header file
-  Macro in header file for importing symbols
-    Modules include the header file and then do something like IMPORT(video_init) in their own init function
-  Put global state in header file
-  After all core modules are in place, document the API and refactor
-  Change video_pre_render and video_post_render so they run hooks
+Modify FSM to pass parameters to stages
+  e.g list of files to cache in loadscreen, or map to load in ingame etc
+
+After all core modules are in place, document the API and refactor
 
 Hardcoded screen res must go
   Put the screen res into global state at startup
