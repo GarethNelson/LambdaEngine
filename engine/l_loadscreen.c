@@ -51,6 +51,7 @@ static loader_asset_t *tmp_asset;
 
 void clean_init_screen() {
      pthread_mutex_destroy(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));
+     
      free(global_state->stage_vals);
 }
 
@@ -58,10 +59,11 @@ void* loader_thread(void* data) {
       printf("l_loadscreen.c:loader_thread() - Begin loading assets\n");
       pthread_mutex_lock(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));
 
-      loader_asset_t *asset_to_load;
-      LL_FOREACH( ((loader_vals_t*)global_state->stage_vals)->assets, asset_to_load) {
+      loader_asset_t *asset_to_load, *tmp;
+      LL_FOREACH_SAFE( ((loader_vals_t*)global_state->stage_vals)->assets, asset_to_load,tmp) {
          printf("l_loadscreen.c:loader_thread() - Precaching %s\n", asset_to_load->filename);
          vfs_precache(asset_to_load->filename);
+         LL_DELETE( ((loader_vals_t*)global_state->stage_vals)->assets, asset_to_load);
       }
 
       pthread_mutex_unlock(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));

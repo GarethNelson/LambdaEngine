@@ -117,6 +117,7 @@ int main(int argc, char* argv[]) {
                update_splash();
                break;
             case INIT_MAINMENU:
+               printf("l_main.c:main() - Initialising main menu\n");
                break;
             case MAINMENU:
                break;
