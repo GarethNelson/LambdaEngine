@@ -37,10 +37,11 @@
 #include <GL/glu.h>
 #endif
 
+#define __IN_RENDER_
+#include <lambda_api.h>
+
 SDL_Window *screen;
 SDL_GLContext glcontext;
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
 
 void __attribute__((constructor)) init_module() {
      printf("lambda_render/r_init.c:init_module() - module loaded\n");

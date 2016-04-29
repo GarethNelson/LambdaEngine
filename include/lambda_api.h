@@ -65,6 +65,15 @@ static void   (*draw_quad_blend)(float x,float y, float w, float h, GLuint tex_i
 static void (*input_init)();
 #endif
 
+#ifndef __IN_MAIN_
+static void*        (*vfs_cache_read)(char* filename); 
+static unsigned int (*vfs_cache_filelen)(char* filename);
+static void         (*vfs_precache)(char* filename);
+static void         (*vfs_cache_mark_global)(char* filename);
+static void         (*vfs_cache_mark_temp)(char* filename);
+static void         (*vfs_cache_cleanup)();
+#endif
+
 typedef struct hook_callback_t {
     void (*func_ptr)(void* param);
     struct hook_callback_t *next;

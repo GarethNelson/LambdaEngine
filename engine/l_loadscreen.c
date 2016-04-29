@@ -58,8 +58,10 @@ void init_load_screen() {
      IMPORT(video_post_render)
      IMPORT(draw_triangle_rot)
      rot = 1.0f;
-     global_state->stage_vals = malloc(sizeof(loader_vals_t));
-     ((loader_vals_t*)global_state->stage_vals)->next_stage = INIT_SPLASH; // TODO - move this to l_main.c
+     if(global_state->stage_vals == NULL) {
+       global_state->stage_vals = malloc(sizeof(loader_vals_t));
+       ((loader_vals_t*)global_state->stage_vals)->next_stage = INIT_SPLASH; // TODO - move this to l_main.c
+     }
      printf("DONE!\n");
 }
 

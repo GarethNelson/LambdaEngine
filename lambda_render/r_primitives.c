@@ -42,23 +42,19 @@
 #include <GL/glu.h>
 #endif
 
-// TODO - make these dynamic
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
+#define __IN_RENDER_
+#include <lambda_api.h>
+
 
 GLuint load_texture(char* vfs_filename) {
+  IMPORT(vfs_cache_filelen)
+  IMPORT(vfs_cache_read)
   printf("lambda_render/r_primitives.c:load_texture() - Loading %s...",vfs_filename);
-  // TODO - switch to using the global symbol table in l_main.c
-  void (*vfs_read)(void* buf,char* filename,unsigned int size);
-  unsigned int (*vfs_filelen)(char* filename);
-  vfs_read      = dlsym(RTLD_DEFAULT,"vfs_read");
-  vfs_filelen   = dlsym(RTLD_DEFAULT,"vfs_filelen");
 
-  unsigned int tex_size = vfs_filelen(vfs_filename);
-  void* tex_buf = malloc(tex_size);
-  vfs_read((void*)tex_buf,vfs_filename,tex_size);
+  unsigned int tex_size = vfs_cache_filelen(vfs_filename);
+  void* tex_buf = vfs_cache_read(vfs_filename);
   
-  GLuint tex_id = SOIL_load_OGL_texture_from_memory((const unsigned char*)tex_buf,(int)vfs_filelen,SOIL_LOAD_AUTO,SOIL_CREATE_NEW_ID,0);
+  GLuint tex_id = SOIL_load_OGL_texture_from_memory((const unsigned char*)tex_buf,tex_size,SOIL_LOAD_AUTO,SOIL_CREATE_NEW_ID,0);
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
   printf("DONE!\n");

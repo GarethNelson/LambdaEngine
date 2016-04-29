@@ -50,8 +50,6 @@
 #include <lambda_api.h>
 #include <lambda_state.h>
 
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
 
 global_state_t *global_state;
 UT_array *lambda_events;

@@ -1,3 +1,7 @@
+Map compiler
+  So we can compile .def files into binary structs and pseudo mmap() them
+    For the win
+
 Modify FSM to pass parameters to stages
   e.g list of files to cache in loadscreen, or map to load in ingame etc
 

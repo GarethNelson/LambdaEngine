@@ -43,8 +43,6 @@
 
 SDL_Window *screen;
 SDL_GLContext glcontext;
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
 
 void v_frame(void* param) {
      unsigned int frame_timeout = (global_state->last_frame)+33;
@@ -109,7 +107,9 @@ int video_init() {
     printf("DONE!\n");
     
     printf("lambda_video/v_init.c:video_init() - Creating window...");
-    screen = SDL_CreateWindow("Lambda Engine",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,SCREEN_WIDTH,SCREEN_HEIGHT,
+    global_state->screen_w = 1024; // TODO - make this dynamic
+    global_state->screen_h = 768;
+    screen = SDL_CreateWindow("Lambda Engine",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,global_state->screen_w,global_state->screen_h,
                                               SDL_WINDOW_OPENGL);
 
     printf("DONE!\n");
@@ -118,7 +118,7 @@ int video_init() {
     glcontext = SDL_GL_CreateContext(screen);
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    glOrtho( 0.0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0, 1.0, -1.0 );
+    glOrtho( 0.0, global_state->screen_w, global_state->screen_h, 0.0, 1.0, -1.0 );
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
     glEnable( GL_TEXTURE_2D );

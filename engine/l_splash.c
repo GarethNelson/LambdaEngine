@@ -40,8 +40,6 @@
 #include <lambda_api.h>
 #include <lambda_state.h>
 
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
 
 static GLuint logo_tex;
 
@@ -76,7 +74,7 @@ void update_splash() {
         ((splash_vals_t*)global_state->stage_vals)->cur_alpha += 0.025f;
      }
      video_pre_render();
-      draw_quad_blend(0,0,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT, logo_tex, ((splash_vals_t*)global_state->stage_vals)->cur_alpha );
+      draw_quad_blend(0,0,(float)global_state->screen_w,(float)global_state->screen_h, logo_tex, ((splash_vals_t*)global_state->stage_vals)->cur_alpha );
      video_post_render();
 
 }
