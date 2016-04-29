@@ -76,11 +76,15 @@ void init_load_screen() {
      IMPORT(draw_triangle_rot)
      rot = 1.0f;
      if(global_state->stage_vals == NULL) { // if we're here, it means this is the first loading screen
+       printf("l_loadscreen.c:init_load_screen() - First start!\n");
        global_state->stage_vals = malloc(sizeof(loader_vals_t));
        ((loader_vals_t*)global_state->stage_vals)->next_stage = INIT_SPLASH;
+       ((loader_vals_t*)global_state->stage_vals)->assets = NULL;
+       printf("l_loadscreen.c:init_load_screen() - Precache setup begin\n");
        L_PRECACHE("/textures/logo.tga")
-       L_PRECACHE("/textures/logo.png")
+       printf("l_loadscreen.c:init_load_screen() - Precache setup end\n");
      }
+     printf("l_loadscreen.c:init_load_screen() - Starting asset loader thread:\n");
      pthread_mutex_init(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex), NULL);
      pthread_create(&(((loader_vals_t*)global_state->stage_vals)->loader_thread),NULL,loader_thread,NULL);
 }
