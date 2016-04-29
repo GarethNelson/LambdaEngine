@@ -41,8 +41,6 @@
 #include <lambda_api.h>
 #include <pthread.h>
 
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
 
 static float rot;
 
@@ -67,7 +65,7 @@ void init_load_screen() {
 
 void update_load_screen() {
      video_pre_render();
-     draw_triangle_rot((SCREEN_WIDTH/2)-50,((SCREEN_HEIGHT/2)-50),rot);
+     draw_triangle_rot((global_state->screen_w/2)-50,((global_state->screen_h/2)-50),rot);
      video_post_render();
      if(rot >= 360.0f) {
         global_state->app_stage = ((loader_vals_t*)global_state->stage_vals)->next_stage;

@@ -105,12 +105,14 @@ int video_init() {
     SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
     SDL_GL_SetSwapInterval(1);
     printf("DONE!\n");
+
+    SDL_DisplayMode disp_mode;
+    SDL_GetDesktopDisplayMode(0, &disp_mode);
     
     printf("lambda_video/v_init.c:video_init() - Creating window...");
-    global_state->screen_w = 1024; // TODO - make this dynamic
-    global_state->screen_h = 768;
-    screen = SDL_CreateWindow("Lambda Engine",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,global_state->screen_w,global_state->screen_h,
-                                              SDL_WINDOW_OPENGL);
+    screen = SDL_CreateWindow("Lambda Engine",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,disp_mode.w,disp_mode.h,
+                                              SDL_WINDOW_OPENGL|SDL_WINDOW_FULLSCREEN_DESKTOP);
+    SDL_GL_GetDrawableSize(screen, &(global_state->screen_w), &(global_state->screen_h));
 
     printf("DONE!\n");
 

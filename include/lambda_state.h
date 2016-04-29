@@ -58,8 +58,8 @@ typedef struct {
     unsigned int frame_delta; // timekeeping, ms - handled by video module
     unsigned int last_frame;
     unsigned int display_fps;  // render FPS
-    unsigned int screen_w;
-    unsigned int screen_h;
+    int screen_w;
+    int screen_h;
 } global_state_t;
 
 
