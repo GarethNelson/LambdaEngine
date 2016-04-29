@@ -47,6 +47,7 @@ static float rot;
 
 
 void clean_init_screen() {
+     pthread_mutex_destroy(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));
      free(global_state->stage_vals);
 }
 
@@ -64,7 +65,7 @@ void init_load_screen() {
      rot = 1.0f;
      if(global_state->stage_vals == NULL) {
        global_state->stage_vals = malloc(sizeof(loader_vals_t));
-       ((loader_vals_t*)global_state->stage_vals)->next_stage = INIT_SPLASH; // TODO - move this to l_main.c
+       ((loader_vals_t*)global_state->stage_vals)->next_stage = INIT_SPLASH;
      }
      pthread_mutex_init(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex), NULL);
      pthread_create(&(((loader_vals_t*)global_state->stage_vals)->loader_thread),NULL,loader_thread,NULL);
