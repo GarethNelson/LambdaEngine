@@ -50,6 +50,12 @@ void clean_init_screen() {
      free(global_state->stage_vals);
 }
 
+void* loader_thread(void* data) {
+      pthread_mutex_lock(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));
+      pthread_mutex_unlock(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));
+      return NULL;
+}
+
 void init_load_screen() {
      printf("l_loadscreen.c:init_load_screen() - Initialising loading screen...");
      IMPORT(video_pre_render)
@@ -60,6 +66,8 @@ void init_load_screen() {
        global_state->stage_vals = malloc(sizeof(loader_vals_t));
        ((loader_vals_t*)global_state->stage_vals)->next_stage = INIT_SPLASH; // TODO - move this to l_main.c
      }
+     pthread_mutex_init(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex), NULL);
+     pthread_create(&(((loader_vals_t*)global_state->stage_vals)->loader_thread),NULL,loader_thread,NULL);
      printf("DONE!\n");
 }
 
@@ -67,10 +75,15 @@ void update_load_screen() {
      video_pre_render();
      draw_triangle_rot((global_state->screen_w/2)-50,((global_state->screen_h/2)-50),rot);
      video_post_render();
+     // this is silly, but means we see SOME of the loading animation even if it's super quick
      if(rot >= 360.0f) {
-        global_state->app_stage = ((loader_vals_t*)global_state->stage_vals)->next_stage;
-        clean_init_screen();
+        rot = 1.0f;
+        if(pthread_mutex_trylock(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex))==0) {
+           global_state->app_stage = ((loader_vals_t*)global_state->stage_vals)->next_stage;
+           clean_init_screen();
+        }
+     } else {
+        rot += 5.0f;
      }
-     rot += 5.0f;
 }
 
