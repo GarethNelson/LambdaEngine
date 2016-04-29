@@ -47,6 +47,10 @@ add_custom_target(core01_md5sums ALL
                  COMMAND  "${CMAKE_CURRENT_SOURCE_DIR}/tools/build_md5sums.sh"
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
 
+add_custom_target(core01_fonts ALL
+                  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/fonts ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/fonts
+                  )
+
 add_custom_target(core01_textures ALL
                   ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/textures ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/textures
                   )
