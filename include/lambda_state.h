@@ -28,7 +28,9 @@
 #ifndef __L_STATE_H_
 #define __L_STATE_H_
 #include <pthread.h>
+#include <limits.h>
 #include "uthash.h"
+#include "utlist.h"
 #include "utarray.h"
 
 /// this indicates what overall state (i.e what stage) the program is in
@@ -94,11 +96,16 @@ typedef struct {
 
 // *********************************************
 //  LOADSCREEN data
+typedef struct loader_asset_t {
+    char filename[PATH_MAX];
+    struct loader_asset_t *next;
+} loader_asset_t;
+
 typedef struct {
     e_lambda_stage next_stage; // after loading resources, what stage do we go to next?
                                // realistically will always be MAINMENU, SPLASH or INGAME
     char next_map[40];         // if next_stage is INGAME, specify the map
-    char **files_to_load;
+    loader_asset_t *assets;    // used with utlist
     pthread_t loader_thread;
     pthread_mutex_t loader_mutex;
 } loader_vals_t;

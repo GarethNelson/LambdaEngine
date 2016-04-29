@@ -40,11 +40,14 @@
 #include <lambda_state.h>
 #include <lambda_api.h>
 #include <pthread.h>
-
+#include "vfs_cache.h"
 
 static float rot;
+static loader_asset_t *tmp_asset;
 
-
+#define L_PRECACHE(asset_filename) tmp_asset = (loader_asset_t*)malloc(sizeof(loader_asset_t)); \
+                                   snprintf(tmp_asset->filename,PATH_MAX-1,"%s",asset_filename);\
+                                   LL_APPEND(  ((loader_vals_t*)global_state->stage_vals)->assets, tmp_asset);
 
 void clean_init_screen() {
      pthread_mutex_destroy(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));
@@ -52,24 +55,34 @@ void clean_init_screen() {
 }
 
 void* loader_thread(void* data) {
+      printf("l_loadscreen.c:loader_thread() - Begin loading assets\n");
       pthread_mutex_lock(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));
+
+      loader_asset_t *asset_to_load;
+      LL_FOREACH( ((loader_vals_t*)global_state->stage_vals)->assets, asset_to_load) {
+         printf("l_loadscreen.c:loader_thread() - Precaching %s\n", asset_to_load->filename);
+         vfs_precache(asset_to_load->filename);
+      }
+
       pthread_mutex_unlock(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));
+      printf("l_loadscreen.c:loader_thread() - Finished loading assets!\n");
       return NULL;
 }
 
 void init_load_screen() {
-     printf("l_loadscreen.c:init_load_screen() - Initialising loading screen...");
+     printf("l_loadscreen.c:init_load_screen() - Initialising loading screen\n");
      IMPORT(video_pre_render)
      IMPORT(video_post_render)
      IMPORT(draw_triangle_rot)
      rot = 1.0f;
-     if(global_state->stage_vals == NULL) {
+     if(global_state->stage_vals == NULL) { // if we're here, it means this is the first loading screen
        global_state->stage_vals = malloc(sizeof(loader_vals_t));
        ((loader_vals_t*)global_state->stage_vals)->next_stage = INIT_SPLASH;
+       L_PRECACHE("/textures/logo.tga")
+       L_PRECACHE("/textures/logo.png")
      }
      pthread_mutex_init(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex), NULL);
      pthread_create(&(((loader_vals_t*)global_state->stage_vals)->loader_thread),NULL,loader_thread,NULL);
-     printf("DONE!\n");
 }
 
 void update_load_screen() {
