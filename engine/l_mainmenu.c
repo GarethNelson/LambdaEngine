@@ -64,8 +64,10 @@ void init_mainmenu() {
 
 void update_mainmenu() {
      video_pre_render();
-     draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,128,128,bg_tex);
-     draw_text((global_state->screen_w/2)-256,((global_state->screen_h/4)-128),menu_title_font,"Lambda Engine");
+      draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,128,128,bg_tex);
+      draw_text((global_state->screen_w/2)-256,((global_state->screen_h/4)-128),menu_title_font,"Lambda Engine");
+      draw_text((global_state->screen_w/2)-200,((global_state->screen_h/4)+64), menu_item_font,"New Game");
+      draw_text((global_state->screen_w/2)-200,((global_state->screen_h/4)+128),menu_item_font,"Quit");
      video_post_render();
 
 }
