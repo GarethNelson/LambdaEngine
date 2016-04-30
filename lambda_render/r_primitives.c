@@ -45,6 +45,8 @@
 #define __IN_RENDER_
 #include <lambda_api.h>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 GLuint load_texture(char* vfs_filename) {
   IMPORT(vfs_cache_filelen)

@@ -1,3 +1,9 @@
+Stringtable?
+
+Font system
+  Hashtable of (fontname,size) as key, array of glyph textures as value
+  Texture cache (same string shouldn't result in multiple renderings)
+
 Map compiler
   So we can compile .def files into binary structs and pseudo mmap() them
     For the win
@@ -7,9 +13,7 @@ Modify FSM to pass parameters to stages
 
 After all core modules are in place, document the API and refactor
 
-Hardcoded screen res must go
-  Put the screen res into global state at startup
-   Fullscreen flag
+Fullscreen flag
 
 Isolate SDL into seperate module
   move all SDL-specific code into hooks
@@ -27,8 +31,6 @@ module hooks system
   run_hook_whatever() simply iterates through the array until a NULL pointer is found
     therefore order of adding callbacks is important
 
-Properly handle quit
-  Close window appropriately
 Load screen
   Actually preload stuff
    Spawn thread in stage init and create mutex

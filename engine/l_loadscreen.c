@@ -84,6 +84,7 @@ void init_load_screen() {
        ((loader_vals_t*)global_state->stage_vals)->assets = NULL;
        printf("l_loadscreen.c:init_load_screen() - Precache setup begin\n");
        L_PRECACHE("/textures/logo.tga")
+       L_PRECACHE("/fonts/default.ttf")
        printf("l_loadscreen.c:init_load_screen() - Precache setup end\n");
      }
      printf("l_loadscreen.c:init_load_screen() - Starting asset loader thread:\n");
