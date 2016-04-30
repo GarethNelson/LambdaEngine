@@ -43,8 +43,6 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-SDL_Window *screen;
-SDL_GLContext glcontext;
 FT_Library font_library;
 
 void __attribute__((constructor)) init_module() {
