@@ -59,6 +59,8 @@ static GLuint (*load_texture)(char* vfs_filename);
 static void   (*draw_triangle_rot)(float x, float y, float rot);
 static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
 static void   (*draw_quad_blend)(float x,float y, float w, float h, GLuint tex_id, float alpha);
+static void*  (*load_font)(char* vfs_filename);
+static GLuint (*render_text)(void* font, char* text);
 #endif
 
 #ifndef __IN_INPUT_

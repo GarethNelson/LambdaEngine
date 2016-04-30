@@ -64,22 +64,6 @@ GLuint load_texture(char* vfs_filename) {
 
 }
 
-void* load_font(char* vfs_filename) {
-  if(!TTF_WasInit()) {
-     TTF_Init();
-  }
-  IMPORT(vfs_cache_filelen)
-  IMPORT(vfs_cache_read)
-  printf("lambda_render/r_primitives.c:load_font() - Loading %s...",vfs_filename);
-  TTF_Font *font;
-
-  unsigned int f_size = vfs_cache_filelen(vfs_filename);
-  void* f_buf = vfs_cache_read(vfs_filename);
-  font = TTF_OpenFontRW(SDL_RWFromMem(f_buf,f_size),1,32);
-
-  printf("DONE!\n");
-}
-
 // taken from the SDL_ttf glfont.c sample
 static int power_of_two(int input)
 {
@@ -91,8 +75,9 @@ static int power_of_two(int input)
     return value;
 }
 
-GLuint SDL_GL_LoadTexture(SDL_Surface *surface, GLfloat *texcoord)
+GLuint SDL_GL_LoadTexture(SDL_Surface *surface)
 {
+    GLfloat texcoord[4];
     GLuint texture;
     int w, h;
     SDL_Surface *image;
@@ -162,6 +147,36 @@ GLuint SDL_GL_LoadTexture(SDL_Surface *surface, GLfloat *texcoord)
 
     return texture;
 }
+
+
+void* load_font(char* vfs_filename) {
+  if(!TTF_WasInit()) {
+     TTF_Init();
+  }
+  IMPORT(vfs_cache_filelen)
+  IMPORT(vfs_cache_read)
+  printf("lambda_render/r_primitives.c:load_font() - Loading %s...",vfs_filename);
+  TTF_Font *font;
+
+  unsigned int f_size = vfs_cache_filelen(vfs_filename);
+  void* f_buf = vfs_cache_read(vfs_filename);
+  font = TTF_OpenFontRW(SDL_RWFromMem(f_buf,f_size),1,32);
+
+  printf("DONE!\n");
+  return (void*)font;
+}
+
+GLuint render_text(void* font, char* text) {
+  TTF_Font *sdl_font = (TTF_Font*)font;
+  SDL_Surface *sdl_output;
+  SDL_Color white = { 0xFF, 0xFF, 0xFF, 0 };
+  SDL_Color black = { 0x00, 0x00, 0x00, 0 };
+  sdl_output = TTF_RenderText_Solid(sdl_font,(const char*)text,white);
+  GLuint retval = SDL_GL_LoadTexture(sdl_output);
+  SDL_FreeSurface(sdl_output);
+  return retval;
+}
+
 
 
 // TODO - switch to VBOs

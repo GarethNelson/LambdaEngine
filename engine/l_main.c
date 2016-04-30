@@ -75,7 +75,11 @@ int main(int argc, char* argv[]) {
     IMPORT(video_init)
     IMPORT(render_init)
     IMPORT(input_init)
-
+    IMPORT(load_font)
+    IMPORT(render_text)
+    IMPORT(draw_quad)
+    IMPORT(video_pre_render)
+    IMPORT(video_post_render)
 
     printf("l_main.c:main() - Starting events system:\n");
 
@@ -95,6 +99,7 @@ int main(int argc, char* argv[]) {
     render_init();
     while(1) {
         RUN_HOOK(lambda_frame,NULL)
+
         switch(global_state->app_stage) {
             case STARTUP:
                printf("l_main.c:main() - Switching to INIT_LOADSCREEN\n");
