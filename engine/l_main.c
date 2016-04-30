@@ -76,8 +76,7 @@ int main(int argc, char* argv[]) {
     IMPORT(render_init)
     IMPORT(input_init)
     IMPORT(load_font)
-    IMPORT(render_text)
-    IMPORT(draw_quad)
+    IMPORT(draw_text)
     IMPORT(video_pre_render)
     IMPORT(video_post_render)
 
