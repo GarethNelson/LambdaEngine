@@ -199,7 +199,9 @@ void draw_text(float x, float y, void* font, char* text) {
      SDL_Color black = { 0x00, 0x00, 0x00, 0 };
      sdl_output = TTF_RenderText_Solid(sdl_font,(const char*)text,white);
      GLuint text_tex = SDL_GL_LoadTexture(sdl_output);
+     glEnable(GL_BLEND);
      draw_quad(x,y,sdl_output->w,sdl_output->h,text_tex);
+     glDisable(GL_BLEND);
      SDL_FreeSurface(sdl_output);
 }
 
@@ -233,7 +235,6 @@ void draw_quad_blend(float x, float y, float w, float h, GLuint tex_id, float al
             glVertex2f(x+w,  y+h );
             glVertex2f(x,  y+h );
      glEnd();
-     glEnable(GL_DEPTH_TEST);
      glDisable(GL_BLEND);
      glEnable(GL_TEXTURE_2D);
 }

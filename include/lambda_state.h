@@ -112,6 +112,13 @@ typedef struct {
 
 // *********************************************
 
+// *********************************************
+//  MAINMENU data
+typedef struct {
+
+} mainmenu_vals_t;
+// *********************************************
+
 /*
  Transition between states is done manually:
  1 - Save any important data from stage_vals to global_vals and do general cleanup

@@ -42,6 +42,8 @@
 
 
 static GLuint bg_tex;
+static void* menu_title_font;
+static void* menu_item_font;
 
 void clean_mainmenu() {
      free(global_state->stage_vals);
@@ -52,13 +54,18 @@ void init_mainmenu() {
      IMPORT(video_pre_render)
      IMPORT(video_post_render)
      IMPORT(load_texture)
+     IMPORT(load_font)
+     IMPORT(draw_text)
      IMPORT(draw_tiled_quad)
+     menu_title_font = load_font("/fonts/default.ttf",128);
+     menu_item_font  = load_font("/fonts/default.ttf",64);
      bg_tex = load_texture("/textures/bg_tex.png");
 }
 
 void update_mainmenu() {
      video_pre_render();
-      draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,128,128,bg_tex);
+     draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,128,128,bg_tex);
+     draw_text((global_state->screen_w/2)-256,((global_state->screen_h/4)-128),menu_title_font,"Lambda Engine");
      video_post_render();
 
 }
