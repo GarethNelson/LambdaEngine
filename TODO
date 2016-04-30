@@ -1,3 +1,5 @@
+Tiling renderer
+
 Texture system
   texture names may be VFS filepaths, or arbitary strings (for dynamic textures)
   methods

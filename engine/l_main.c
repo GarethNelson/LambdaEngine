@@ -37,6 +37,7 @@
 #include "lib_tools.h"
 #include "l_loadscreen.h"
 #include "l_splash.h"
+#include "l_mainmenu.h"
 
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
@@ -75,8 +76,8 @@ int main(int argc, char* argv[]) {
     IMPORT(video_init)
     IMPORT(render_init)
     IMPORT(input_init)
-    IMPORT(load_font)
-    IMPORT(draw_text)
+    IMPORT(load_texture)
+    IMPORT(draw_tiled_quad)
     IMPORT(video_pre_render)
     IMPORT(video_post_render)
 
@@ -121,9 +122,12 @@ int main(int argc, char* argv[]) {
                update_splash();
                break;
             case INIT_MAINMENU:
-               printf("l_main.c:main() - Initialising main menu\n");
+               init_mainmenu();
+               printf("l_main.c:main() - Switching to MAINMENU\n");
+               global_state->app_stage = MAINMENU;
                break;
             case MAINMENU:
+               update_mainmenu();
                break;
             case INIT_INGAME:
                break;

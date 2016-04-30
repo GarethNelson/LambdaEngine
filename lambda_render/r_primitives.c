@@ -178,6 +178,20 @@ void draw_quad(float x, float y, float w, float h,GLuint tex_id) {
      glEnd();
 }
 
+void draw_tiled_quad(float x, float y, float w, float h, float tile_w, float tile_h, GLuint tex_id) {
+     glLoadIdentity();
+     glBindTexture(GL_TEXTURE_2D, tex_id);
+     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+     glColor4f(1.0f,1.0f,1.0f,1.0f);
+     glBegin( GL_QUADS );
+            glTexCoord2f(0.0f, 0.0f); glVertex2f(x, y );
+            glTexCoord2f(w/tile_w, 0.0f); glVertex2f(x+w, y );
+            glTexCoord2f(w/tile_w, h/tile_h); glVertex2f(x+w,  y+h );
+            glTexCoord2f(0.0f, h/tile_h); glVertex2f(x,  y+h );
+     glEnd();
+}
+
 void draw_text(float x, float y, void* font, char* text) {
      TTF_Font *sdl_font = (TTF_Font*)font;
      SDL_Surface *sdl_output;
