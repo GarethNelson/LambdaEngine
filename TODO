@@ -1,8 +1,16 @@
-Stringtable?
+Texture system
+  texture names may be VFS filepaths, or arbitary strings (for dynamic textures)
+  methods
+    get texture
+     return a texture from cache, or if not found there load it to cache and upload to GPU
+    delete texture
+     delete a texture from cache and remove it from the GPU
 
 Font system
   Hashtable of (fontname,size) as key, array of glyph textures as value
-  Texture cache (same string shouldn't result in multiple renderings)
+  Render into texture cache - return a unique ID for rendering
+    Should NOT do perframe for obvious reasons
+    Render textures at stage setup and store into texture cache
 
 Map compiler
   So we can compile .def files into binary structs and pseudo mmap() them
@@ -30,13 +38,6 @@ module hooks system
   Each hook holds an array of callbacks of a certain max size
   run_hook_whatever() simply iterates through the array until a NULL pointer is found
     therefore order of adding callbacks is important
-
-Load screen
-  Actually preload stuff
-   Spawn thread in stage init and create mutex
-   Load requested files into VFS cache in other thread, free mutex once all loaded
-   In update function, check thread status by seeing if mutex is free
-   Once mutex is free, cleanup and go to next stage
    
 VFS cache
   Internal hashtable of VFS filenames mapping to sizes and content
