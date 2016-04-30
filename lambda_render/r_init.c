@@ -28,35 +28,16 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <SDL.h>
-#if defined(__APPLE__)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
 
 #define __IN_RENDER_
 #include <lambda_api.h>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
-FT_Library font_library;
 
 void __attribute__((constructor)) init_module() {
      printf("lambda_render/r_init.c:init_module() - module loaded\n");
      INIT_LAMBDA_API()
-     IMPORT(vfs_cache_read)
-     IMPORT(vfs_cache_filelen)
-}
-
-void render_font_init() {
-     FT_Init_FreeType(&font_library);
 }
 
 void render_init() {
-     printf("lambda_render/r_init.c:render_init() - Setup font subsystem\n");
-     render_font_init();
+     printf("lambda_render/r_init.c:render_init() - Nothing to do!\n");
 }
