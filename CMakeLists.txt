@@ -1,10 +1,11 @@
 cmake_minimum_required (VERSION 3.2)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMakeFiles")
 project (LambdaEngine)
 INCLUDE(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 PKG_SEARCH_MODULE(FREETYPE2 REQUIRED freetype2)
 include_directories(${SDL2_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/soil ${FREETYPE2_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
+find_package(SDL2TTF REQUIRED)
 
 
 find_library(OpenGL_LIBRARY OpenGL )
@@ -41,7 +42,7 @@ file(GLOB lambda_render_SRC
      "lambda_render/*.c"
      "lambda_render/*.h")
 add_library(lambda_render SHARED ${lambda_render_SRC})
-target_link_libraries(lambda_render ${OpenGL_LIBRARY} ${EXTRA_GL} ${FREETYPE2_LIBRARIES} m)
+target_link_libraries(lambda_render ${OpenGL_LIBRARY} ${EXTRA_GL} ${FREETYPE2_LIBRARIES} ${SDL2_LIBRARIES} ${SDL2TTF_LIBRARY} m)
 set_target_properties(lambda_render PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
 
 add_custom_target(core01_md5sums ALL
