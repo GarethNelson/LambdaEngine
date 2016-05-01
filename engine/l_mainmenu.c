@@ -43,8 +43,21 @@
 static GLuint bg_tex;
 static void* menu_title_font;
 static void* menu_item_font;
+static GLuint menu_title_tex;
+static int menu_title_w;
+static int menu_title_h;
+static int menu_title_x;
+static int menu_title_y;
 
-#define MENU_ITEMS 2
+#define MENU_ITEMS 3
+
+static int menu_item_w_active[MENU_ITEMS+1];
+static int menu_item_w_inactive[MENU_ITEMS+1];
+static int menu_item_h[MENU_ITEMS+1];
+static int menu_item_x[MENU_ITEMS+1];
+static int menu_item_y[MENU_ITEMS+1];
+static GLuint menu_item_active_tex[MENU_ITEMS+1];
+static GLuint menu_item_inactive_tex[MENU_ITEMS+1];
 
 void clean_mainmenu() {
      IMPORT(i_default)
@@ -72,6 +85,15 @@ void mainmenu_down_handler(void* param) {
      }
 }
 
+void mainmenu_action_handler(void* param) {
+}
+
+#define MENUITEM(ID,ITEMTEXT) predraw_text(menu_item_font, 255,255,255, ITEMTEXT, &menu_item_w_active[ID], &menu_item_h[ID], &menu_item_active_tex[ID]); \
+                              predraw_text(menu_item_font, 128,128,128, ITEMTEXT, &menu_item_w_inactive[ID], &menu_item_h[ID], &menu_item_inactive_tex[ID]); \
+                              menu_item_x[ID] = ((global_state)->screen_w/2) - (menu_item_w_active[1]/3); \
+                              menu_item_y[ID] = (menu_item_y[ID-1]+(menu_item_h[ID-1]/2));
+     
+
 void init_mainmenu() {
      printf("l_mainmenu.c:init_mainmenu() - Initialising main menu:\n");
      IMPORT(video_pre_render)
@@ -79,33 +101,56 @@ void init_mainmenu() {
      IMPORT(load_texture)
      IMPORT(load_font)
      IMPORT(draw_text)
+     IMPORT(predraw_text)
      IMPORT(draw_tiled_quad)
+     IMPORT(draw_transparent_quad)
+
      menu_title_font = load_font("/fonts/default.ttf",128);
      menu_item_font  = load_font("/fonts/default.ttf",64);
      bg_tex = load_texture("/textures/bg_tex.png");
      global_state->stage_vals = malloc(sizeof(mainmenu_vals_t));
      ((mainmenu_vals_t*)global_state->stage_vals)->cur_item=1;
+
+     predraw_text(menu_title_font, 255,0,0, "Lambda Engine", &menu_title_w, &menu_title_h, &menu_title_tex);
+     menu_title_x = ((global_state->screen_w)/2) - (menu_title_w/4);
+     menu_title_y = ((global_state->screen_h)/4);
+     menu_item_y[0] = menu_title_y+128;
+     
+     MENUITEM(1,"New Game")     
+     MENUITEM(2,"Options")
+     MENUITEM(3,"Quit")
+
      SET_SINGLE_HOOK(input_up, &mainmenu_up_handler);
      SET_SINGLE_HOOK(input_down,&mainmenu_down_handler);
+     SET_SINGLE_HOOK(input_action,&mainmenu_action_handler);
 }
 
 void update_mainmenu() {
+     int i;
      video_pre_render();
       draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,128,128,bg_tex);
-      draw_text((global_state->screen_w/2)-256,((global_state->screen_h/4)-128),
-                 menu_title_font,255,255,255,"Lambda Engine");
+      draw_transparent_quad(menu_title_x,menu_title_y,menu_title_w,menu_title_h,menu_title_tex);
+//      draw_text((global_state->screen_w/2)-256,((global_state->screen_h/4)-128),
+//                 menu_title_font,255,255,255,"Lambda Engine");
 
-      if (((mainmenu_vals_t*)global_state->stage_vals)->cur_item==1) {
+      for(i=1; i<=MENU_ITEMS; i++) {
+          if (i == (((mainmenu_vals_t*)global_state->stage_vals)->cur_item)) {
+             draw_transparent_quad(menu_item_x[i],menu_item_y[i],menu_item_w_active[i],64,menu_item_active_tex[i]);
+          } else {
+             draw_transparent_quad(menu_item_x[i]+10,menu_item_y[i],menu_item_w_inactive[i],64,menu_item_inactive_tex[i]);
+          }
+      }
+/*      if (==1) {
          draw_text((global_state->screen_w/2)-200,((global_state->screen_h/4)+64), 
                     menu_item_font,255,255,255,"New Game");
          draw_text((global_state->screen_w/2)-200,((global_state->screen_h/4)+128),
-                    menu_item_font,128,128,128," Quit");
+                    menu_item_font,128,128,128,"   Quit");
       } else {
          draw_text((global_state->screen_w/2)-200,((global_state->screen_h/4)+64), 
-                    menu_item_font,128,128,128," New Game");
+                    menu_item_font,128,128,128,"   New Game");
          draw_text((global_state->screen_w/2)-200,((global_state->screen_h/4)+128),
                     menu_item_font,255,255,255,"Quit");
-      }
+      }*/
 
      video_post_render();
 

@@ -60,6 +60,8 @@ static void   (*draw_triangle_rot)(float x, float y, float rot);
 static void   (*draw_quad)(float x,float y, float w, float h,GLuint tex_id);
 static void   (*draw_quad_blend)(float x,float y, float w, float h, GLuint tex_id, float alpha);
 static void*  (*load_font)(char* vfs_filename,unsigned int size);
+static void   (*predraw_text)(void* font, int r, int g, int b, char* text, int *w, int *h, GLuint *tex_out);
+static void   (*draw_transparent_quad)(float x, float y, float w, float h, GLuint tex_id);
 static void   (*draw_text)(float x, float y, void* font, int r, int g, int b, char* text);
 static void   (*draw_tiled_quad)(float x, float y, float w, float h, float tile_w, float tile_h, GLuint tex_id);
 #endif
@@ -77,6 +79,8 @@ static void         (*vfs_cache_mark_global)(char* filename);
 static void         (*vfs_cache_mark_temp)(char* filename);
 static void         (*vfs_cache_cleanup)();
 #endif
+
+// *************************** callback implementation below *************
 
 typedef struct hook_callback_t {
     void (*func_ptr)(void* param);

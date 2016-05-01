@@ -81,9 +81,9 @@ void __attribute__((constructor)) init_module() {
 // TODO - move these to something like v_hooks.c
 void video_pre_render() {
      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_ACCUM_BUFFER_BIT);
-     //glMatrixMode( GL_MODELVIEW );
      glLoadIdentity();
      glDisable(GL_DEPTH_TEST);
+
 }
 
 void video_post_render() {
