@@ -49,15 +49,15 @@ static int menu_title_h;
 static int menu_title_x;
 static int menu_title_y;
 
-#define MENU_ITEMS 3
+#define MAX_MENU_ITEMS 10
 
-static int menu_item_w_active[MENU_ITEMS+1];
-static int menu_item_w_inactive[MENU_ITEMS+1];
-static int menu_item_h[MENU_ITEMS+1];
-static int menu_item_x[MENU_ITEMS+1];
-static int menu_item_y[MENU_ITEMS+1];
-static GLuint menu_item_active_tex[MENU_ITEMS+1];
-static GLuint menu_item_inactive_tex[MENU_ITEMS+1];
+static int menu_item_w_active[MAX_MENU_ITEMS+1];
+static int menu_item_w_inactive[MAX_MENU_ITEMS+1];
+static int menu_item_h[MAX_MENU_ITEMS+1];
+static int menu_item_x[MAX_MENU_ITEMS+1];
+static int menu_item_y[MAX_MENU_ITEMS+1];
+static GLuint menu_item_active_tex[MAX_MENU_ITEMS+1];
+static GLuint menu_item_inactive_tex[MAX_MENU_ITEMS+1];
 
 void clean_mainmenu() {
      IMPORT(i_default)
@@ -80,8 +80,8 @@ void mainmenu_up_handler(void* param) {
 
 void mainmenu_down_handler(void* param) {
      ((mainmenu_vals_t*)global_state->stage_vals)->cur_item++;
-     if( ((mainmenu_vals_t*)global_state->stage_vals)->cur_item  > MENU_ITEMS) {
-       ((mainmenu_vals_t*)global_state->stage_vals)->cur_item = MENU_ITEMS;
+     if( ((mainmenu_vals_t*)global_state->stage_vals)->cur_item  > ((mainmenu_vals_t*)global_state->stage_vals)->item_count) {
+       ((mainmenu_vals_t*)global_state->stage_vals)->cur_item = ((mainmenu_vals_t*)global_state->stage_vals)->item_count;
      }
 }
 
@@ -120,6 +120,7 @@ void init_mainmenu() {
      bg_tex = load_texture("/textures/bg_tex.png");
      global_state->stage_vals = malloc(sizeof(mainmenu_vals_t));
      ((mainmenu_vals_t*)global_state->stage_vals)->cur_item=1;
+     ((mainmenu_vals_t*)global_state->stage_vals)->item_count=3;
 
      predraw_text(menu_title_font, 255,0,0, "Lambda Engine", &menu_title_w, &menu_title_h, &menu_title_tex);
      menu_title_x = ((global_state->screen_w)/2) - (menu_title_w/4);
@@ -141,7 +142,7 @@ void update_mainmenu() {
       draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,128,128,bg_tex);
       draw_transparent_quad(menu_title_x,menu_title_y,menu_title_w,menu_title_h,menu_title_tex);
 
-      for(i=1; i<=MENU_ITEMS; i++) {
+      for(i=1; i<=((mainmenu_vals_t*)global_state->stage_vals)->item_count; i++) {
           if (i == (((mainmenu_vals_t*)global_state->stage_vals)->cur_item)) {
              draw_transparent_quad(menu_item_x[i],menu_item_y[i],menu_item_w_active[i],64,menu_item_active_tex[i]);
           } else {
