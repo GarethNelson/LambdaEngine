@@ -65,6 +65,7 @@ static void   (*draw_tiled_quad)(float x, float y, float w, float h, float tile_
 #endif
 
 #ifndef __IN_INPUT_
+static void (*i_default)(void* param);
 static void (*input_init)();
 #endif
 
@@ -99,7 +100,7 @@ typedef struct single_callbacks_t {
 
 hook_callbacks_t *hook_callbacks;
 global_state_t *global_state;
-single_callbacks_t *single_callbacks;
+single_callbacks_t **single_callbacks;
 UT_array *lambda_events;
 
 #define IMPORT(SYMBOL_NAME) SYMBOL_NAME = dlsym(RTLD_DEFAULT,#SYMBOL_NAME);
@@ -108,25 +109,28 @@ UT_array *lambda_events;
 #define INIT_LAMBDA_API() global_state     = ((global_state_t**)     dlsym(RTLD_DEFAULT,"global_state"))[0]; \
                           hook_callbacks   = ((hook_callbacks_t**)   dlsym(RTLD_DEFAULT,"hook_callbacks"))[0]; \
                           lambda_events    = ((UT_array**)           dlsym(RTLD_DEFAULT,"lambda_events"))[0]; \
-                          single_callbacks = ((single_callbacks_t**) dlsym(RTLD_DEFAULT,"single_callbacks"))[0];
+                          single_callbacks = ((single_callbacks_t***) dlsym(RTLD_DEFAULT,"single_callbacks"))[0];
 
 static hook_callbacks_t *hook_callback;
 static hook_callback_t *callback_el;
 static single_callbacks_t *single_callback;
-
+static unsigned int num_hooks;
 
 #define CREATE_HOOK(NEW_HOOK_NAME) hook_callback = malloc(sizeof(hook_callbacks_t)); \
                                    strncpy(hook_callback->hook_name,(const char *)#NEW_HOOK_NAME,40); \
                                    hook_callback->callbacks = NULL; \
                                    HASH_ADD_STR(hook_callbacks,hook_name,hook_callback);
 
-#define SET_SINGLE_HOOK(HOOK_NAME,CALLBACK) HASH_FIND_STR(single_callbacks,#HOOK_NAME,single_callback); \
-                                            if(single_callback==NULL) { \
-                                               single_callback = malloc(sizeof(single_callbacks_t)); \
-                                               HASH_ADD_STR(single_callbacks,hook_name,single_callback); \
-                                            } \
-                                            strncpy(single_callback->hook_name,(const char*)#HOOK_NAME,40); \
-                                            single_callback->func_ptr = CALLBACK;
+#define CREATE_SINGLE_HOOK(NEW_HOOK_NAME) single_callback = malloc(sizeof(single_callbacks_t)); \
+                                          strncpy(single_callback->hook_name,(const char*)#NEW_HOOK_NAME,40); \
+                                          single_callback->func_ptr = NULL; \
+                                          HASH_ADD_STR(*single_callbacks,hook_name,single_callback);
+
+#define SET_SINGLE_HOOK(HOOK_NAME,CALLBACK) HASH_FIND_STR(*single_callbacks,#HOOK_NAME,single_callback); \
+                                            if(single_callback == NULL) {\
+                                               CREATE_SINGLE_HOOK(HOOK_NAME);\
+                                            }\
+                                            single_callback->func_ptr = CALLBACK;\
 
 #define ADD_HOOK_CALLBACK(HOOK_NAME,CALLBACK) HASH_FIND_STR(hook_callbacks,#HOOK_NAME,hook_callback); \
                                               callback_el = malloc(sizeof(hook_callback_t)); \
@@ -138,8 +142,8 @@ static single_callbacks_t *single_callback;
                                       callback_el->func_ptr(PARAM);\
                                   }
 
-#define RUN_SINGLE_HOOK(HOOK_NAME,PARAM) HASH_FIND_STR(single_callbacks,#HOOK_NAME,hook_callbacks); \
-                                         if (single_callback != NULL) single_callback->func_ptr(PARAM);
+#define RUN_SINGLE_HOOK(HOOK_NAME,PARAM) HASH_FIND_STR(*single_callbacks,#HOOK_NAME,single_callback); \
+                                         if (single_callback != NULL) single_callback->func_ptr(PARAM); 
 
 #endif
 

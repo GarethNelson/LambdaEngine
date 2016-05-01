@@ -115,7 +115,7 @@ typedef struct {
 // *********************************************
 //  MAINMENU data
 typedef struct {
-
+    unsigned int cur_item;
 } mainmenu_vals_t;
 // *********************************************
 
