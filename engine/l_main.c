@@ -38,6 +38,7 @@
 #include "l_loadscreen.h"
 #include "l_splash.h"
 #include "l_mainmenu.h"
+#include "l_ingame.h"
 
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
@@ -143,8 +144,10 @@ int main(int argc, char* argv[]) {
                update_mainmenu();
                break;
             case INIT_INGAME:
+               init_ingame();
                break;
             case INGAME:
+               update_ingame();
                break;
             case SHUTDOWN:
                printf("l_main.c:main() - Shutting down!\n");
