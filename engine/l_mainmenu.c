@@ -48,6 +48,7 @@ static int menu_title_w;
 static int menu_title_h;
 static int menu_title_x;
 static int menu_title_y;
+static float offset;
 
 #define MAX_MENU_ITEMS 10
 
@@ -116,11 +117,13 @@ void init_mainmenu() {
      IMPORT(predraw_text)
      IMPORT(draw_tiled_quad)
      IMPORT(draw_transparent_quad)
+     IMPORT(draw_scroll_bg)
 
      menu_title_font = load_font("/fonts/default.ttf",128);
      menu_item_font  = load_font("/fonts/default.ttf",64);
      bg_tex = load_texture("/textures/bg_tex.png");
      global_state->stage_vals = malloc(sizeof(mainmenu_vals_t));
+     offset = 0.0f;
      ((mainmenu_vals_t*)global_state->stage_vals)->cur_item=1;
      ((mainmenu_vals_t*)global_state->stage_vals)->item_count=3;
 
@@ -140,8 +143,13 @@ void init_mainmenu() {
 
 void update_mainmenu() {
      int i;
+     offset++;
+     if(offset>=64) {
+        offset = 0.0f;
+     }
      video_pre_render();
-      draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,64,64,bg_tex);
+      draw_scroll_bg(0,0,64,64,offset,bg_tex);
+      //draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,64,64,bg_tex);
       draw_transparent_quad(menu_title_x,menu_title_y,menu_title_w,menu_title_h,menu_title_tex);
 
       for(i=1; i<=((mainmenu_vals_t*)global_state->stage_vals)->item_count; i++) {

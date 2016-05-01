@@ -64,6 +64,7 @@ static void   (*predraw_text)(void* font, int r, int g, int b, char* text, int *
 static void   (*draw_transparent_quad)(float x, float y, float w, float h, GLuint tex_id);
 static void   (*draw_text)(float x, float y, void* font, int r, int g, int b, char* text);
 static void   (*draw_tiled_quad)(float x, float y, float w, float h, float tile_w, float tile_h, GLuint tex_id);
+static void   (*draw_scroll_bg)(float x, float y, float tile_w, float tile_h, float offset, GLuint tex_id);
 #endif
 
 #ifndef __IN_INPUT_
