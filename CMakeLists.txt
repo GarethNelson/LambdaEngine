@@ -17,6 +17,13 @@ add_executable(lambda ${engine_SRC})
 set_target_properties(lambda PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dist/bin)
 target_link_libraries(lambda pthread physfs dl ${OpenGL_LIBRARY})
 
+file(GLOB lambdamc_SRC
+     "tools/lambdamc/*.c"
+     "tools/lambdamc/*.h")
+add_executable(lambdamc ${lambdamc_SRC})
+set_target_properties(lambdamc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dist/bin)
+target_link_libraries(lambdamc ${SDL2_LIBRARIES})
+
 file(GLOB lambda_video_SRC
      "lambda_video/*.c"
      "lambda_video/*.h")
