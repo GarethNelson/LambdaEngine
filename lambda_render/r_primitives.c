@@ -221,6 +221,7 @@ void draw_text(float x, float y, void* font, int r, int g, int b, char* text) {
 
 
 void draw_triangle_rot(float x, float y, float rot) {
+     glDisable(GL_TEXTURE_2D);
      glLoadIdentity();
      glTranslatef( x + 25.0f, y + 25.0, 0.f );
      glRotatef(rot,0.0f,0.0f,1.0f);
@@ -229,6 +230,7 @@ void draw_triangle_rot(float x, float y, float rot) {
             glColor3f(0.0f,1.0f,0.0f); glVertex2f(0.0f,25.0f);
             glColor3f(0.0f,0.0f,1.0f); glVertex2f(50.0f,50.0f);
      glEnd();
+     glEnable(GL_TEXTURE_2D);
 }
 
 void draw_quad_blend(float x, float y, float w, float h, GLuint tex_id, float alpha) {
