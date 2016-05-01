@@ -141,7 +141,7 @@ void init_mainmenu() {
 void update_mainmenu() {
      int i;
      video_pre_render();
-      draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,128,128,bg_tex);
+      draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,64,64,bg_tex);
       draw_transparent_quad(menu_title_x,menu_title_y,menu_title_w,menu_title_h,menu_title_tex);
 
       for(i=1; i<=((mainmenu_vals_t*)global_state->stage_vals)->item_count; i++) {
