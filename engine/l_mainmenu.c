@@ -130,8 +130,6 @@ void update_mainmenu() {
      video_pre_render();
       draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,128,128,bg_tex);
       draw_transparent_quad(menu_title_x,menu_title_y,menu_title_w,menu_title_h,menu_title_tex);
-//      draw_text((global_state->screen_w/2)-256,((global_state->screen_h/4)-128),
-//                 menu_title_font,255,255,255,"Lambda Engine");
 
       for(i=1; i<=MENU_ITEMS; i++) {
           if (i == (((mainmenu_vals_t*)global_state->stage_vals)->cur_item)) {
@@ -140,17 +138,6 @@ void update_mainmenu() {
              draw_transparent_quad(menu_item_x[i]+10,menu_item_y[i],menu_item_w_inactive[i],64,menu_item_inactive_tex[i]);
           }
       }
-/*      if (==1) {
-         draw_text((global_state->screen_w/2)-200,((global_state->screen_h/4)+64), 
-                    menu_item_font,255,255,255,"New Game");
-         draw_text((global_state->screen_w/2)-200,((global_state->screen_h/4)+128),
-                    menu_item_font,128,128,128,"   Quit");
-      } else {
-         draw_text((global_state->screen_w/2)-200,((global_state->screen_h/4)+64), 
-                    menu_item_font,128,128,128,"   New Game");
-         draw_text((global_state->screen_w/2)-200,((global_state->screen_h/4)+128),
-                    menu_item_font,255,255,255,"Quit");
-      }*/
 
      video_post_render();
 
