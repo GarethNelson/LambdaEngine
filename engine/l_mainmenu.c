@@ -125,7 +125,7 @@ void init_mainmenu() {
 
      menu_title_font = load_font("/fonts/default.ttf",128);
      menu_item_font  = load_font("/fonts/default.ttf",64);
-     bg_tex = load_texture("/textures/bg_tex.png");
+     bg_tex = load_texture("/textures/bg_tex.tga");
      global_state->stage_vals = malloc(sizeof(mainmenu_vals_t));
      offset = 0.0f;
      ((mainmenu_vals_t*)global_state->stage_vals)->cur_item=1;
