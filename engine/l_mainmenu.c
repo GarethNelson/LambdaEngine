@@ -86,6 +86,16 @@ void mainmenu_down_handler(void* param) {
 }
 
 void mainmenu_action_handler(void* param) {
+     switch( ((mainmenu_vals_t*)global_state->stage_vals)->cur_item) {
+         case 1: // New game
+         break;
+         case 2: // Options
+         break;
+         case 3: // Quit
+           clean_mainmenu();
+           global_state->app_stage = SHUTDOWN;
+         break;
+     }
 }
 
 #define MENUITEM(ID,ITEMTEXT) predraw_text(menu_item_font, 255,255,255, ITEMTEXT, &menu_item_w_active[ID], &menu_item_h[ID], &menu_item_active_tex[ID]); \

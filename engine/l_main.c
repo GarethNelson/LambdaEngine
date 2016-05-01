@@ -135,7 +135,9 @@ int main(int argc, char* argv[]) {
             case INGAME:
                break;
             case SHUTDOWN:
+               printf("l_main.c:main() - Shutting down!\n");
                RUN_HOOK(lambda_shutdown,NULL)
+               printf("\nGoodbye!\n");
                exit(0);
                break;
 
