@@ -71,6 +71,7 @@ void v_shutdown(void* param) {
 void __attribute__((constructor)) init_module() {
      INIT_LAMBDA_API()
      CREATE_HOOK(v_pre_render)
+     CREATE_HOOK(v_pre_swap)
      ADD_HOOK_CALLBACK(lambda_post_load,&v_post_init)
      ADD_HOOK_CALLBACK(lambda_shutdown,&v_shutdown)
      printf("lambda_video/v_init.c:init_module() - module loaded\n");
@@ -88,6 +89,7 @@ void video_pre_render() {
 
 void video_post_render() {
      SDL_PumpEvents();
+     RUN_HOOK(v_pre_swap,NULL)
      SDL_GL_SwapWindow(screen);
 }
 

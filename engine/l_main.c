@@ -58,6 +58,14 @@ hook_callbacks_t *hook_callbacks=NULL; // see lambda_api.h
 single_callbacks_t *_single_callbacks=NULL;
 UT_icd events_icd = {sizeof(lambda_event_t),NULL,NULL,NULL};
 
+void* fps_font;
+
+void fps_display(void* param) {
+     char fps_text[40];
+     snprintf(fps_text,40,"FPS:%d, frame delta: %d",global_state->display_fps,global_state->frame_delta);
+     draw_text(0,0,fps_font,255,0,0,fps_text);
+}
+
 int main(int argc, char* argv[]) {
     setbuf(stdout,NULL);
     printf("\n*** LAMBDA ENGINE STARTUP ***\n\n");
@@ -78,6 +86,8 @@ int main(int argc, char* argv[]) {
     IMPORT(render_init)
     IMPORT(input_init)
     IMPORT(load_texture)
+    IMPORT(load_font)
+    IMPORT(draw_text)
     IMPORT(draw_tiled_quad)
     IMPORT(video_pre_render)
     IMPORT(video_post_render)
@@ -98,6 +108,8 @@ int main(int argc, char* argv[]) {
     printf("l_main.c:main() - Video started, preparing render:\n");    
 
     render_init();
+    fps_font = load_font("/fonts/system.ttf",32);
+    ADD_HOOK_CALLBACK(v_pre_swap,&fps_display)
     while(1) {
         RUN_HOOK(lambda_frame,NULL)
 

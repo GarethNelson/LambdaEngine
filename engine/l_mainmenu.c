@@ -88,6 +88,8 @@ void mainmenu_down_handler(void* param) {
 void mainmenu_action_handler(void* param) {
      switch( ((mainmenu_vals_t*)global_state->stage_vals)->cur_item) {
          case 1: // New game
+           clean_mainmenu();
+           global_state->app_stage = INIT_INGAME;
          break;
          case 2: // Options
          break;
