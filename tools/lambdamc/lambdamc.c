@@ -31,6 +31,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <limits.h>
+
+#include <SDL.h>
+#include <SDL_image.h>
+
 #include "ini.h"
 
 typedef struct {

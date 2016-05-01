@@ -4,6 +4,7 @@ project (LambdaEngine)
 INCLUDE(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 PKG_SEARCH_MODULE(FREETYPE2 REQUIRED freetype2)
+PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image)
 include_directories(${SDL2_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/soil ${FREETYPE2_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include)
 find_package(SDL2TTF REQUIRED)
 
@@ -22,7 +23,7 @@ file(GLOB lambdamc_SRC
      "tools/lambdamc/*.h")
 add_executable(lambdamc ${lambdamc_SRC})
 set_target_properties(lambdamc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dist/bin)
-target_link_libraries(lambdamc ${SDL2_LIBRARIES})
+target_link_libraries(lambdamc ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})
 
 file(GLOB lambda_video_SRC
      "lambda_video/*.c"

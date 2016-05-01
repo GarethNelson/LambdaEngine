@@ -1,3 +1,15 @@
+Map compiler
+  Update mapinfo.def in sample to point to source images:
+   main map
+   hotzones map
+    add HOTZONE sections in mapinfo.def specifying colour of each hotzone and hotzone ID
+   entities map
+    add ENTITY section in mapinfo.def specifying colour of each entity type and entity ID
+  Have compiler load main map and cut into tiles
+  Add hotzones and entities to mapinfo.def
+  Have compiler spit out tiles and C header file (to be referenced by game logic)
+   Header file contains macros to check for collisions and sets up initial scene description
+
 Create sample game in core02.pak
   Simple test maps map01 + map02
   Game logic
