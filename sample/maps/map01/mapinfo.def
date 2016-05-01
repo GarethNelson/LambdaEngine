@@ -1,0 +1,6 @@
+; this file is used both by the engine loader and by the map compiler
+; the map compiler uses it to generate the tileset by cutting up a visual and spitting out tiles and the C header
+[MAPINFO]
+MAPNAME=Hotzone test map ; Human-readable map name
+TILERESW=64 ; tile resolution - width and height in pixels
+TILERESH=64

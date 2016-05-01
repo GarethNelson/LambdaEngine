@@ -1,3 +1,3 @@
 [GAMEINFO]
-GAMENAME=Lambda Engine sample game ; Human-readable game name
-STARTMAP=testmap01                 ; Which map to start when player selects new game
+GAMENAME=Lambda Engine Test ; Human-readable game name
+STARTMAP=map01              ; Which map to start when player selects new game
