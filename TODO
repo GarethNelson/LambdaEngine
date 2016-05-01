@@ -1,3 +1,11 @@
+Menu system
+  Implement hooks
+  Move all menu item data into stage_vals
+  Setup param system (similar to l_loadscreen)
+  Implement options menu
+  Create INIT_OPTIONS_MENU state seperate from INIT_MAIN_MENU state
+    Both states must init the menu system itself
+
 Tiling renderer
 
 Texture system
