@@ -46,6 +46,8 @@ static void* menu_item_font;
 static GLuint menu_title_tex;
 static int menu_title_w;
 static int menu_title_h;
+static int menu_title_text_w;
+static int menu_title_text_h;
 static int menu_title_x;
 static int menu_title_y;
 static float offset;
@@ -55,6 +57,8 @@ static float offset;
 static int menu_item_w_active[MAX_MENU_ITEMS+1];
 static int menu_item_w_inactive[MAX_MENU_ITEMS+1];
 static int menu_item_h[MAX_MENU_ITEMS+1];
+static int menu_item_text_w[MAX_MENU_ITEMS+1];
+static int menu_item_text_h[MAX_MENU_ITEMS+1];
 static int menu_item_x[MAX_MENU_ITEMS+1];
 static int menu_item_y[MAX_MENU_ITEMS+1];
 static GLuint menu_item_active_tex[MAX_MENU_ITEMS+1];
@@ -101,9 +105,9 @@ void mainmenu_action_handler(void* param) {
      }
 }
 
-#define MENUITEM(ID,ITEMTEXT) predraw_text(menu_item_font, 255,255,255, ITEMTEXT, &menu_item_w_active[ID], &menu_item_h[ID], &menu_item_active_tex[ID]); \
-                              predraw_text(menu_item_font, 128,128,128, ITEMTEXT, &menu_item_w_inactive[ID], &menu_item_h[ID], &menu_item_inactive_tex[ID]); \
-                              menu_item_x[ID] = ((global_state)->screen_w/2) - (menu_item_w_active[1]/3); \
+#define MENUITEM(ID,ITEMTEXT) predraw_text(menu_item_font, 255,255,255, ITEMTEXT, &menu_item_w_active[ID], &menu_item_h[ID], &menu_item_text_w[ID], &menu_item_text_h[ID], &menu_item_active_tex[ID]); \
+                              predraw_text(menu_item_font, 128,128,128, ITEMTEXT, &menu_item_w_inactive[ID], &menu_item_h[ID],&menu_item_text_w[ID], &menu_item_text_h[ID], &menu_item_inactive_tex[ID]); \
+                              menu_item_x[ID] = ((global_state)->screen_w/2) - (menu_item_text_w[1]/4); \
                               menu_item_y[ID] = (menu_item_y[ID-1]+(menu_item_h[ID-1]/2));
      
 
@@ -127,8 +131,8 @@ void init_mainmenu() {
      ((mainmenu_vals_t*)global_state->stage_vals)->cur_item=1;
      ((mainmenu_vals_t*)global_state->stage_vals)->item_count=3;
 
-     predraw_text(menu_title_font, 255,0,0, "Lambda Engine", &menu_title_w, &menu_title_h, &menu_title_tex);
-     menu_title_x = ((global_state->screen_w)/2) - (menu_title_w/4);
+     predraw_text(menu_title_font, 255,0,0, "Lambda Engine", &menu_title_w, &menu_title_h, &menu_title_text_w, &menu_title_text_h, &menu_title_tex);
+     menu_title_x = ((global_state->screen_w)/2) - (menu_title_text_w/4);
      menu_title_y = ((global_state->screen_h)/4);
      menu_item_y[0] = menu_title_y+128;
      
@@ -149,7 +153,6 @@ void update_mainmenu() {
      }
      video_pre_render();
       draw_scroll_bg(0,0,64,64,offset,bg_tex);
-      //draw_tiled_quad(0,0,global_state->screen_w,global_state->screen_h,64,64,bg_tex);
       draw_transparent_quad(menu_title_x,menu_title_y,menu_title_w,menu_title_h,menu_title_tex);
 
       for(i=1; i<=((mainmenu_vals_t*)global_state->stage_vals)->item_count; i++) {

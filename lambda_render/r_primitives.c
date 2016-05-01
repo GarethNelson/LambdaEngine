@@ -211,7 +211,7 @@ void draw_scroll_bg(float x, float y, float tile_w, float tile_h, float offset, 
      glEnd();
 }
 
-void predraw_text(void* font, int r, int g, int b, char* text, int *w, int *h, GLuint *tex_out) {
+void predraw_text(void* font, int r, int g, int b, char* text, int *w, int *h, int *text_w, int *text_h, GLuint *tex_out) {
      TTF_Font *sdl_font = (TTF_Font*)font;
      SDL_Surface *sdl_output;
      SDL_Color font_col = {r,g,b,0};
@@ -219,6 +219,7 @@ void predraw_text(void* font, int r, int g, int b, char* text, int *w, int *h, G
      *tex_out = SDL_GL_LoadTexture(sdl_output);
      *w = sdl_output->w;
      *h = sdl_output->h;
+     TTF_SizeText(font,(const char*)text,text_w,text_h);
      SDL_FreeSurface(sdl_output);
 }
 
@@ -230,8 +231,9 @@ void draw_transparent_quad(float x, float y, float w, float h, GLuint tex_id) {
 
 void draw_text(float x, float y, void* font, int r, int g, int b, char* text) {
      int w,h;
+     int text_w,text_h;
      GLuint text_tex;
-     predraw_text(font,r,g,b,text,&w,&h,&text_tex);
+     predraw_text(font,r,g,b,text,&w,&h,&text_w,&text_h,&text_tex);
      draw_transparent_quad(x,y,w,h,text_tex);
 }
 
