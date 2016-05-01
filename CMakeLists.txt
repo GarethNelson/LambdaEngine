@@ -65,6 +65,10 @@ add_custom_target(core01_textures ALL
                   ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/textures ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/textures
                   )
                  
+add_custom_target(core02_textures ALL
+                  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/sample/textures ${CMAKE_CURRENT_SOURCE_DIR}/build/core02/textures
+                  )
+
 add_custom_target(core02_gameinfo ALL
                  ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/sample/gameinfo.def ${CMAKE_CURRENT_SOURCE_DIR}/build/core02/gameinfo.def)
 
@@ -74,14 +78,14 @@ add_custom_target(core02_md5sums ALL
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core02/libs)
 
 add_custom_target(core01.pak ALL
-                  DEPENDS core01_textures lambda_video lambda_render core01_md5sums
+                  DEPENDS core01_fonts lambda_input core01_textures lambda_video lambda_render core01_md5sums
                   COMMAND ${CMAKE_COMMAND} -E tar "cfv" ${CMAKE_CURRENT_SOURCE_DIR}/dist/data/core01.pak --format=zip
                   *
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01)
 
 
 add_custom_target(core02.pak ALL
-                  DEPENDS core02_gameinfo core02_md5sums
+                  DEPENDS core02_textures core02_gameinfo core02_md5sums
                   COMMAND ${CMAKE_COMMAND} -E tar "cfv" ${CMAKE_CURRENT_SOURCE_DIR}/dist/data/core02.pak --format=zip
                   *
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core02)
