@@ -192,12 +192,11 @@ void draw_tiled_quad(float x, float y, float w, float h, float tile_w, float til
      glEnd();
 }
 
-void draw_text(float x, float y, void* font, char* text) {
+void draw_text(float x, float y, void* font, int r, int g, int b, char* text) {
      TTF_Font *sdl_font = (TTF_Font*)font;
      SDL_Surface *sdl_output;
-     SDL_Color white = { 0xFF, 0xFF, 0xFF, 0 };
-     SDL_Color black = { 0x00, 0x00, 0x00, 0 };
-     sdl_output = TTF_RenderText_Solid(sdl_font,(const char*)text,white);
+     SDL_Color font_col = {r,g,b,0};
+     sdl_output = TTF_RenderText_Solid(sdl_font,(const char*)text,font_col);
      GLuint text_tex = SDL_GL_LoadTexture(sdl_output);
      glEnable(GL_BLEND);
      draw_quad(x,y,sdl_output->w,sdl_output->h,text_tex);
