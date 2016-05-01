@@ -1,3 +1,14 @@
+Create sample game in core02.pak
+  Simple test maps map01 + map02
+  Game logic
+    Entity 1 - player
+     Hooks keyboard inputs to walk around between tiles
+    Entity 2 - button
+     Hooks action button
+      If action is pressed while player is near the button, jump back to map01 from map02
+    Simple obstacle course
+    Hotzone on map01 that jumps to map02
+
 Modules
   Move more components into external libs
     Menu renderer for example should be possible to patch/mod
@@ -11,6 +22,23 @@ Menu system
     Both states must init the menu system itself
 
 Tiling renderer
+  Scene definition:
+   tile_w (in pixels)
+   tile_h (in pixels)
+   map_w  (in tiles)
+   map_h  (in tiles)
+   2D array
+      tile texture ID
+      tile contains hotzone - if any part of this tile contains a hotzone, 1
+      tile contains obstacle - if any part of this tile contains an obstacle (as in collision map)
+      pointer to entity occupying this tile (or NULL)
+  render algorithm:
+   calculate screen_w and screen_h in tiles
+    screen_w_tiles,screen_h_tiles
+   calculate subset of tiles to render based on camera
+     camera defined by (cam_x,cam_y) coordinates in tiles
+     rectangle from (cam_x,cam_y) to (cam_x+screen_w_tiles,cam_y+screen_h_tiles)
+      iterate through rectangle and draw relevant tile
 
 Texture system
   texture names may be VFS filepaths, or arbitary strings (for dynamic textures)

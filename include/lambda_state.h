@@ -64,6 +64,34 @@ typedef struct {
     int screen_h;
 } global_state_t;
 
+// *********************************************
+//  Scene description
+
+typedef struct {
+    unsigned int pos_x; // in tiles
+    unsigned int pos_y;
+    unsigned int entity_type; // defined by game logic
+    void*    entity_data;     // arbitary data used by the game logic
+} lambda_entity_t;
+
+typedef struct {
+    unsigned int tex_id;
+    int contains_hotzone;
+    int contains_obstacle;
+    lambda_entity_t* occupying_entity;
+} lambda_tile_t;
+
+typedef struct {
+    unsigned int tile_w;
+    unsigned int tile_h;
+    unsigned int map_w;
+    unsigned int map_h;
+    unsigned int cam_x; // in tiles
+    unsigned int cam_y;
+    lambda_tile_t* tiles;
+} lambda_scene_t;
+
+// *********************************************
 
 // *********************************************
 //  General events data
