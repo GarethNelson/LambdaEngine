@@ -1,3 +1,7 @@
+Modules
+  Move more components into external libs
+    Menu renderer for example should be possible to patch/mod
+
 Menu system
   Implement hooks
   Move all menu item data into stage_vals
