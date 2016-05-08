@@ -28,7 +28,7 @@ ECOUNT=1 ; for this sample, we only have 1 entity class in the first map - the p
 
 ; you will always need a player entity class and a single instance of that class on the map
 [ENTITY]
-ID=ent_player ; as above, must be a unique C identifier - it is recommended to prefix with ent_
-COLOR=255,0,0 ; defines the RGB colour of the entity's spawning point
-              ; note that an entity class may have more than one instance, but it is usual for only 1 instance of the player
+ID=ent_player  ; as above, must be a unique C identifier - it is recommended to prefix with ent_
+COLOUR=255,0,0 ; defines the RGB colour of the entity's spawning point
+               ; note that an entity class may have more than one instance, but normally only 1 instance of the player exists
 
