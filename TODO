@@ -1,14 +1,21 @@
-Map compiler
-  Update mapinfo.def in sample to point to source images:
-   main map
-   hotzones map
-    add HOTZONE sections in mapinfo.def specifying colour of each hotzone and hotzone ID
-   entities map
-    add ENTITY section in mapinfo.def specifying colour of each entity type and entity ID
-  Have compiler load main map and cut into tiles
-  Add hotzones and entities to mapinfo.def
-  Have compiler spit out tiles and C header file (to be referenced by game logic)
-   Header file contains macros to check for collisions and sets up initial scene description
+Tools
+  lambdamc         - toplevel map compiler, invokes other tools
+  lambdacut        - cut a tile out of a larger image
+    takes params tileres_w, tileres_h, tile_x, tile_y
+     optionally takes just tileres_w,tileres_h and outputs all tiles into a directory
+  lambdaextractent - extract a list of entity spawn points from an entity map
+     takes entity colour triplet as params (r,g,b)
+     prints x,y coordinates to stdout
+  lambdaextracthz  - extract hotzone rectangle coordinates from a hotzone map
+     takes hotzone colour triplet as params (r,g,b)
+     prints x,y,w,h to stdout
+  lambdagenent     - generate C header file with spawn points of entities and appropriate hooks
+     takes entity ID and x,y coordinates as parameters from stdin (or optionally a file)
+     prints the generated C header to stdout (or to a specified file)
+  lambdagenhz      - generate C header file with rectangle coordinates of hotzones and collision check code
+     takes hotzone ID and x,y,w,h as parameters from stdin (or optionally a file)
+     prints the generated C header to stdout (or to a specified file)
+
 
 Create sample game in core02.pak
   Simple test maps map01 + map02

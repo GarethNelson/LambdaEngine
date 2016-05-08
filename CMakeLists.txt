@@ -23,7 +23,7 @@ file(GLOB lambdamc_SRC
      "tools/lambdamc/*.h")
 add_executable(lambdamc ${lambdamc_SRC})
 set_target_properties(lambdamc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dist/bin)
-target_link_libraries(lambdamc ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})
+target_link_libraries(lambdamc )
 
 file(GLOB lambda_video_SRC
      "lambda_video/*.c"
