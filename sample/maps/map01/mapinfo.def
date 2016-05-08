@@ -10,7 +10,7 @@ TILERESH=64
 FILENAME=visual.png ; must be relative to the directory mapinfo.def is in
 
 ; the below specifies the hotzone map
-[HOTZONES]
+[HOTZONEMAP]
 FILENAME=hotzone.png ; as above, must be relative to the directory mapinfo.def is in
 HZCOUNT=1 ; how many hotzones are defined
 
