@@ -32,8 +32,10 @@
 #include <string.h>
 #include <limits.h>
 
+#include <wand/magick_wand.h>
+
 void print_usage() {
-     printf("usage: lambdacut -w tile_width -h tile_height [-x tile_x -y tile_y] -i filename -o output_dir\n");
+     printf("usage: lambdacut -w tile_width -h tile_height [-x tile_x -y tile_y] -i filename [-o output_dir | -o output_filename]\n");
 }
 
 int main(int argc, char** argv) {
@@ -41,7 +43,7 @@ int main(int argc, char** argv) {
     extern int optind;
 
     char* input_filename     = NULL;
-    char* output_dir         = NULL;
+    char* output_path        = NULL;
     unsigned int tile_width  = 0;
     unsigned int tile_height = 0;
     unsigned int tile_x      = 0;
@@ -60,7 +62,23 @@ int main(int argc, char** argv) {
           break;
 
           case 'o':
-             output_dir = strdup(optarg);
+             output_path = strdup(optarg);
+          break;
+
+          case 'w':
+             tile_width = atoi(optarg);
+          break;
+
+          case 'h':
+             tile_height = atoi(optarg);
+          break;
+
+          case 'x':
+             tile_x = atoi(optarg);
+          break;
+
+          case 'y':
+             tile_y = atoi(optarg);
           break;
 
           case '?':
@@ -70,6 +88,13 @@ int main(int argc, char** argv) {
        }
     }
 
-    
+    if(input_filename==NULL) {
+       fprintf(stderr,"%s: missing -i option\n",argv[0]);
+       print_usage();
+       exit(1);
+    }
+    if(output_path==NULL) {
+       fprintf(stderr,"%s: missing -o option\n",argv[0]);
+    }
     
 }
