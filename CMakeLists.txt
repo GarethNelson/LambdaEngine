@@ -4,10 +4,12 @@ project (LambdaEngine)
 INCLUDE(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 PKG_SEARCH_MODULE(FREETYPE2 REQUIRED freetype2)
-PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image)
-include_directories(${SDL2_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/soil ${FREETYPE2_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${SDL2_INCLUDE_DIRS}
+                    ${CMAKE_CURRENT_SOURCE_DIR}/soil
+                    ${FREETYPE2_INCLUDE_DIRS}
+                    ${CMAKE_CURRENT_SOURCE_DIR}/include)
 find_package(SDL2TTF REQUIRED)
-
+find_package(ImageMagick REQUIRED COMPONENTS MagickWand)
 
 find_library(OpenGL_LIBRARY OpenGL )
 
@@ -24,6 +26,14 @@ file(GLOB lambdamc_SRC
 add_executable(lambdamc ${lambdamc_SRC})
 set_target_properties(lambdamc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dist/bin)
 target_link_libraries(lambdamc )
+
+file(GLOB lambdacut_SRC
+     "tools/lambdacut/*.c"
+     "tools/lambdacut/*.h")
+add_executable(lambdacut ${lambdacut_SRC})
+set_target_properties(lambdacut PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dist/bin)
+target_link_libraries(lambdacut ${ImageMagick_MagickWand_LIBRARIES})
+
 
 file(GLOB lambda_video_SRC
      "lambda_video/*.c"
