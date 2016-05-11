@@ -11,14 +11,15 @@ include_directories(${SDL2_INCLUDE_DIRS}
                     ${ImageMagick_MagickWand_INCLUDE_DIRS}
                     ${CMAKE_CURRENT_SOURCE_DIR}/include)
 find_package(SDL2TTF REQUIRED)
-find_library(OpenGL_LIBRARY OpenGL )
+#find_library(OPENGL_LIBRARIES OpenGL )
 
+find_package(OpenGL REQUIRED)
 file(GLOB engine_SRC
      "engine/*.c"
      "engine/*.h")
 add_executable(lambda ${engine_SRC})
 set_target_properties(lambda PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dist/bin)
-target_link_libraries(lambda pthread physfs dl ${OpenGL_LIBRARY})
+target_link_libraries(lambda pthread physfs dl ${OPENGL_LIBRARIES})
 
 file(GLOB lambdamc_SRC
      "tools/lambdamc/*.c"
@@ -40,7 +41,7 @@ file(GLOB lambda_video_SRC
      "lambda_video/*.c"
      "lambda_video/*.h")
 add_library(lambda_video SHARED ${lambda_video_SRC})
-target_link_libraries(lambda_video ${SDL2_LIBRARIES} ${OpenGL_LIBRARY})
+target_link_libraries(lambda_video ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES})
 set_target_properties(lambda_video PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
 
 
@@ -61,7 +62,7 @@ file(GLOB lambda_render_SRC
      "lambda_render/*.c"
      "lambda_render/*.h")
 add_library(lambda_render SHARED ${lambda_render_SRC})
-target_link_libraries(lambda_render ${OpenGL_LIBRARY} ${EXTRA_GL} ${FREETYPE2_LIBRARIES} ${SDL2_LIBRARIES} ${SDL2TTF_LIBRARY} m)
+target_link_libraries(lambda_render ${OPENGL_LIBRARIES} ${EXTRA_GL} ${FREETYPE2_LIBRARIES} ${SDL2_LIBRARIES} ${SDL2TTF_LIBRARY} m)
 set_target_properties(lambda_render PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
 
 add_custom_target(core01_md5sums ALL
