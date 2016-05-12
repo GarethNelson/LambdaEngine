@@ -26,6 +26,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
 #include <physfs.h>
@@ -48,7 +49,11 @@ void init_lib_cache() {
      printf("lib_cache.c:init_lib_cache() - cache path is %s\n",cache_path);
      
      if(stat(cache_path, &cache_info) != 0) {
+#ifdef __MINGW32__
+        mkdir((const char*)cache_path);
+#else
         mkdir((const char*)cache_path, 0700);
+#endif
         printf("lib_cache.c:init_lib_cache() - Created new cache directory\n");
      }
 }
