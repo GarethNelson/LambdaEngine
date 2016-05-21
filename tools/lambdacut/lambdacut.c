@@ -35,7 +35,7 @@
 #include <wand/magick_wand.h>
 
 void print_usage() {
-     printf("usage: lambdacut -w tile_width -h tile_height -i filename -o output_dir [-v]\n");
+     fprintf(stderr,"usage: lambdacut -w tile_width -h tile_height -i filename -o output_dir [-v]\n");
 }
 
 int main(int argc, char** argv) {
@@ -123,7 +123,7 @@ int main(int argc, char** argv) {
     unsigned int i          = 0;
 
     if(verbose) {
-       printf("Loaded %s[%d * %d], %d tiles [%d * %d]\n",input_filename,image_w,image_h,tile_count,tiles_x,tiles_y);
+       fprintf(stderr,"Loaded %s[%d * %d], %d tiles [%d * %d]\n",input_filename,image_w,image_h,tile_count,tiles_x,tiles_y);
     }
     
     MagickWand** tileset = malloc(sizeof(MagickWand*)*tile_count);
@@ -133,7 +133,7 @@ int main(int argc, char** argv) {
         tile_x = i / tiles_x;
         tile_y = i % tiles_x;
         if(verbose) {
-          printf("Tile %d located at [%d, %d]\n",i,tile_x*tile_w,tile_y*tile_h);
+          fprintf(stderr,"Tile %d located at [%d, %d]\n",i,tile_x*tile_w,tile_y*tile_h);
 
         }
         tileset[i] = CloneMagickWand(mw);
@@ -141,7 +141,7 @@ int main(int argc, char** argv) {
     }
 
     if(verbose) {
-       printf("Beginning tileset comparisions\n");
+       fprintf(stderr,"Beginning tileset comparisions\n");
     }
     unsigned int x=0;
     double diff;
@@ -153,7 +153,7 @@ int main(int argc, char** argv) {
             if(diff==0) {
                is_dup[i]=x;
                if(verbose) {
-                  printf("%d is a duplicate of %d\n",i,x);
+                  fprintf(stderr,"%d is a duplicate of %d\n",i,x);
                }
                break;
             }

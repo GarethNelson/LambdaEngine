@@ -6,6 +6,7 @@ Tools
   lambdacut        - cut a tile out of a larger image
     takes params tileres_w, tileres_h, tile_x, tile_y
      optionally takes just tileres_w,tileres_h and outputs all tiles into a directory
+     also outputs a visual.def
   lambdaextractcol - extract a list of tiles that are in the collision map
      takes collision map colour triplet as params (r,g,b)
      takes a list of tile co-ordinates and filenames on stdin
