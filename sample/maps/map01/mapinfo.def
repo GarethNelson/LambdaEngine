@@ -1,34 +1,25 @@
-; this file is used both by the engine loader and by the map compiler
-; the map compiler uses it to generate the tileset by cutting up a visual and spitting out tiles and the C header
-[MAPINFO]
-MAPNAME=Hotzone test map ; Human-readable map name
-TILERESW=64 ; tile resolution - width and height in pixels
-TILERESH=64
-
-; the below specifies the visual map - what's shown on screen
-[MAPVIS]
-FILENAME=visual.png ; must be relative to the directory mapinfo.def is in
-
-; the below specifies the hotzone map
-[HOTZONEMAP]
-FILENAME=hotzone.png ; as above, must be relative to the directory mapinfo.def is in
-HZCOUNT=1 ; how many hotzones are defined
-
-; this map only has one hotzone, but in a complex map there will be multiple hotzones
-; each hotzone is specified in a hotzone section, so the HOTZONE section must be repeated up to HZCOUNT times
-[HOTZONE]
-ID=hz_map01exit ; this can be any valid C identifier but must be unique to the hotzone
-                ; it is recommended to prefix hz_ to your hotzone identifiers
-COLOUR=255,0,0  ; this defines the RGB colour of the hotzone in the hotzone map
-                ; it must only occur once
-
-[ENTITYMAP]
-FILENAME=entities.png ; same as above
-ECOUNT=1 ; for this sample, we only have 1 entity class in the first map - the player
-
-; you will always need a player entity class and a single instance of that class on the map
-[ENTITY]
-ID=ent_player  ; as above, must be a unique C identifier - it is recommended to prefix with ent_
-COLOUR=255,0,0 ; defines the RGB colour of the entity's spawning point
-               ; note that an entity class may have more than one instance, but normally only 1 instance of the player exists
+# this file is used both by the engine loader and by the map compiler
+# the map compiler uses it to generate the tileset by cutting up a visual and spitting out tiles and the C header
+MAPINFO
+MAPNAME: Hotzone test map
+TILERESW: 64
+TILERESH: 64
+%%
+MAPVIS
+FILENAME: visual.png
+%%
+HOTZONEMAP
+FILENAME: hotzone.png
+%%
+HOTZONE
+ID: hz_map01exit
+COLOUR=255,0,0
+%%
+ENTITYMAP
+FILENAME=entities.png
+%%
+ENTITY
+ID=ent_player
+COLOUR=255,0,0
+%%
 

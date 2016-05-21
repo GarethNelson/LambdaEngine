@@ -1,3 +1,5 @@
-[GAMEINFO]
-GAMENAME=Lambda Engine Test ; Human-readable game name
-STARTMAP=map01              ; Which map to start when player selects new game
+# This file defines the game name and the starting map
+GAMENAME: Lambda Engine Test
+STARTMAP: map01
+%%
+
