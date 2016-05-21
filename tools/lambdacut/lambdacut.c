@@ -115,13 +115,27 @@ int main(int argc, char** argv) {
     image_w = MagickGetImageWidth(mw);
     image_h = MagickGetImageHeight(mw);
 
-    unsigned int tiles_x = image_w/tile_w;
-    unsigned int tiles_y = image_h/tile_h;
+    unsigned int tiles_x    = image_w/tile_w;
+    unsigned int tiles_y    = image_h/tile_h;
     unsigned int tile_count = tiles_x*tiles_y;
-    unsigned int i=0;
+    unsigned int tile_x     = 0;
+    unsigned int tile_y     = 0;
+    unsigned int i          = 0;
 
     if(verbose) {
-       printf("Loaded %s, %d tiles [%d * %d]\n",input_filename,tile_count,tiles_x,tiles_y);
+       printf("Loaded %s[%d * %d], %d tiles [%d * %d]\n",input_filename,image_w,image_h,tile_count,tiles_x,tiles_y);
+    }
+    
+    MagickWand** tileset = malloc(sizeof(MagickWand*)*tile_count);
+
+    for(i=0; i< tile_count; i++) {
+        tile_x = i / tiles_x;
+        tile_y = i % tiles_x;
+        if(verbose) {
+          printf("Tile %d located at [%d, %d]\n",i,tile_x*tile_w,tile_y*tile_h);
+        }
+        tileset[i] = CloneMagickWand(mw);
+        MagickCropImage(tileset[i],tile_w,tile_h,tile_x,tile_y);
     }
 
     if(mw) {
