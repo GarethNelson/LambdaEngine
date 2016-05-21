@@ -145,10 +145,11 @@ int main(int argc, char** argv) {
     }
     unsigned int x=0;
     double diff;
-    for(i=0; i< tile_count; i++) {
+    for(i=1; i< tile_count; i++) {
         for(x=0; x< tile_count; x++) {
             if(x==i) continue;
             MagickCompareImages(tileset[i],tileset[x],1,&diff);
+            is_dup[i]=-1;
             if(diff==0) {
                is_dup[i]=x;
                if(verbose) {
