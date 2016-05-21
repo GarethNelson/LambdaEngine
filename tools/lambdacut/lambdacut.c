@@ -127,15 +127,39 @@ int main(int argc, char** argv) {
     }
     
     MagickWand** tileset = malloc(sizeof(MagickWand*)*tile_count);
+    unsigned int* is_dup = malloc(sizeof(unsigned int)*tile_count);
 
     for(i=0; i< tile_count; i++) {
         tile_x = i / tiles_x;
         tile_y = i % tiles_x;
         if(verbose) {
           printf("Tile %d located at [%d, %d]\n",i,tile_x*tile_w,tile_y*tile_h);
+
         }
         tileset[i] = CloneMagickWand(mw);
-        MagickCropImage(tileset[i],tile_w,tile_h,tile_x,tile_y);
+        MagickCropImage(tileset[i],tile_w,tile_h,tile_x*tile_w,tile_y*tile_h);
+        if(verbose) {
+          printf("Tile %d ID is %s\n",i,MagickGetImageSignature(tileset[i]));
+        }
+    }
+
+    if(verbose) {
+       printf("Beginning tileset comparisions\n");
+    }
+    unsigned int x=0;
+    double diff;
+    for(i=0; i< tile_count; i++) {
+        for(x=0; x< tile_count; x++) {
+            if(x==i) continue;
+            MagickCompareImages(tileset[i],tileset[x],1,&diff);
+            if(diff==0) {
+               is_dup[x]=1;
+               is_dup[i]=1;
+               if(verbose) {
+                  printf("%d is a duplicate of %d\n",x,i);
+               }
+            }
+        }
     }
 
     if(mw) {
