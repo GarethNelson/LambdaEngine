@@ -35,7 +35,7 @@
 #include <wand/magick_wand.h>
 
 void print_usage() {
-     printf("usage: lambdacut -w tile_width -h tile_height [-x tile_x -y tile_y] -i filename [-o output_dir | -o output_filename]\n");
+     printf("usage: lambdacut -w tile_width -h tile_height -i filename -o output_dir\n");
 }
 
 int main(int argc, char** argv) {
@@ -46,8 +46,8 @@ int main(int argc, char** argv) {
     char* output_path        = NULL;
     unsigned int tile_width  = 0;
     unsigned int tile_height = 0;
-    unsigned int tile_x      = 0;
-    unsigned int tile_y      = 0;
+    unsigned int image_w     = 0;
+    unsigned int image_h     = 0;
 
     int c = 0;
 
@@ -73,14 +73,6 @@ int main(int argc, char** argv) {
              tile_height = atoi(optarg);
           break;
 
-          case 'x':
-             tile_x = atoi(optarg);
-          break;
-
-          case 'y':
-             tile_y = atoi(optarg);
-          break;
-
           case '?':
              print_usage();
              exit(1);
@@ -95,6 +87,40 @@ int main(int argc, char** argv) {
     }
     if(output_path==NULL) {
        fprintf(stderr,"%s: missing -o option\n",argv[0]);
+       print_usage();
+       exit(1);
     }
-    
+    if(tile_width==0) {
+       fprintf(stderr,"%s: missing -w option\n",argv[0]);
+       print_usage();
+       exit(1);
+    }
+    if(tile_height==0) {
+       fprintf(stderr,"%s: missing -h option\n",argv[0]);
+       print_usage();
+       exit(1);
+    }
+
+    MagickWand *mw = NULL;
+    MagickWandGenesis();
+    mw = NewMagickWand();   
+
+    MagickReadImage(mw,input_filename);
+
+    image_w = MagickGetImageWidth(mw);
+    image_h = MagickGetImageHeight(mw);
+
+    unsigned int tiles_x = image_w/tile_w;
+    unsigned int tiles_y = image_h/tile_h;
+    unsigned int tile_count = tiles_x*tiles_y;
+    unsigned int i=0;
+
+
+
+    if(mw) {
+       mw = DestroyMagickWand(mw);
+    }
+
+    MagickWandTerminus();
+ 
 }
