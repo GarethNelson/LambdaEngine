@@ -138,9 +138,6 @@ int main(int argc, char** argv) {
         }
         tileset[i] = CloneMagickWand(mw);
         MagickCropImage(tileset[i],tile_w,tile_h,tile_x*tile_w,tile_y*tile_h);
-        if(verbose) {
-          printf("Tile %d ID is %s\n",i,MagickGetImageSignature(tileset[i]));
-        }
     }
 
     if(verbose) {
@@ -153,11 +150,11 @@ int main(int argc, char** argv) {
             if(x==i) continue;
             MagickCompareImages(tileset[i],tileset[x],1,&diff);
             if(diff==0) {
-               is_dup[x]=1;
-               is_dup[i]=1;
+               is_dup[i]=x;
                if(verbose) {
-                  printf("%d is a duplicate of %d\n",x,i);
+                  printf("%d is a duplicate of %d\n",i,x);
                }
+               break;
             }
         }
     }
