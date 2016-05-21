@@ -53,7 +53,11 @@ void vfs_init(char* argv) {
      user_dir = PHYSFS_getUserDir();
      snprintf(config_dir,sizeof(config_dir),"%s.lambda",user_dir);
      if(stat(config_dir, &st) != 0) {
+#ifdef __MINGW32__
+        mkdir(config_dir);
+#else
         mkdir(config_dir, 0700);
+#endif
      }
      printf("DONE!\n");
 

@@ -26,6 +26,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -64,6 +65,8 @@ void init_libs() {
         printf("%s\n",*i);
 #ifdef __APPLE__
         if(strlen(*i) > 6 && !strcmp(*i + strlen(*i) - 6, ".dylib")) {
+#elif __MINGW32__
+        if(strlen(*i) > 4 && !strcmp(*i + strlen(*i) - 4, ".dll")) {
 #else
         if(strlen(*i) > 3 && !strcmp(*i + strlen(*i) - 3, ".so")) {
 #endif

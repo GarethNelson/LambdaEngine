@@ -10,8 +10,6 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
    platform='darwin'
 fi
 
-if [ $platform == 'linux' ] || [ $platform == 'freebsd' ]; then
-   find . -name '*.so' | xargs -n 1 -I{} sh -c 'md5sum {} >{}.md5'
-elif [ $platform == 'darwin' ]; then
-   find . -name '*.dylib' | xargs -n 1 -I{} sh -c 'md5sum {} >{}.md5'
-fi
+find . -name '*.dll' | xargs -n 1 -I{} sh -c 'md5sum {} >{}.md5'
+find . -name '*.so' | xargs -n 1 -I{} sh -c 'md5sum {} >{}.md5'
+find . -name '*.dylib' | xargs -n 1 -I{} sh -c 'md5sum {} >{}.md5'
