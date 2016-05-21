@@ -145,13 +145,14 @@ int main(int argc, char** argv) {
     }
     unsigned int x=0;
     double diff;
+    is_dup[0]=-1;
     for(i=1; i< tile_count; i++) {
         for(x=0; x< tile_count; x++) {
             if(x==i) continue;
             MagickCompareImages(tileset[i],tileset[x],1,&diff);
-            is_dup[i]=-1;
+            is_dup[x]=-1;
             if(diff==0) {
-               is_dup[i]=x;
+               is_dup[x]=i;
                if(verbose) {
                   fprintf(stderr,"%d is a duplicate of %d\n",i,x);
                }
@@ -164,6 +165,21 @@ int main(int argc, char** argv) {
        mw = DestroyMagickWand(mw);
     }
 
+    if(verbose) {
+       fprintf(stderr,"Image analysis done, writing tiles...\n");
+    }
+    
+    char tile_filename[PATH_MAX];
+
+    for(i=0; i<tile_count; i++) {
+        if(is_dup[i] == -1) {
+           snprintf(tile_filename,PATH_MAX-1,"%s/tile%d.png",output_path,i);
+           if(verbose) {
+              fprintf(stderr,"Writing tile ID %d to %s\n",i,tile_filename);
+           }
+           MagickWriteImage(tileset[i],tile_filename);
+        }
+    }
+
     MagickWandTerminus();
- 
 }
