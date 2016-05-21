@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
 
     for(i=0; i< tile_count; i++) {
         tile_x = i % tiles_x;
-        tile_y = i % tiles_y;
+        tile_y = i / tiles_x;
         if(verbose) {
           fprintf(stderr,"Tile %d located at [%d, %d]\n",i,tile_x*tile_w,tile_y*tile_h);
 
@@ -193,7 +193,7 @@ int main(int argc, char** argv) {
         fprintf(visual_fd,"[TILE]\n");
         fprintf(visual_fd,"TILE_ID=%d\n",i);
         fprintf(visual_fd,"TILE_X=%d\n",(i % tiles_x));
-        fprintf(visual_fd,"TILE_Y=%d\n",(i % tiles_y));
+        fprintf(visual_fd,"TILE_Y=%d\n",(i / tiles_x));
         if(is_dup[i]==-1) {
            fprintf(visual_fd,"TEXTURE=tile%d.png\n",i);
         } else {
