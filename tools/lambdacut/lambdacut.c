@@ -35,7 +35,7 @@
 #include <wand/magick_wand.h>
 
 void print_usage() {
-     printf("usage: lambdacut -w tile_width -h tile_height -i filename -o output_dir\n");
+     printf("usage: lambdacut -w tile_width -h tile_height -i filename -o output_dir [-v]\n");
 }
 
 int main(int argc, char** argv) {
@@ -44,18 +44,19 @@ int main(int argc, char** argv) {
 
     char* input_filename     = NULL;
     char* output_path        = NULL;
-    unsigned int tile_width  = 0;
-    unsigned int tile_height = 0;
+    unsigned int tile_w      = 0;
+    unsigned int tile_h      = 0;
     unsigned int image_w     = 0;
     unsigned int image_h     = 0;
 
     int c = 0;
+    int verbose = 0;
 
     if(argc==1) {
        print_usage();
        exit(0);
     }
-    while ((c = getopt(argc, argv, "w:h:x:y:i:o:")) != -1) {
+    while ((c = getopt(argc, argv, "w:h:x:y:i:o:v")) != -1) {
        switch(c) {
           case 'i':
              input_filename = strdup(optarg);
@@ -66,11 +67,15 @@ int main(int argc, char** argv) {
           break;
 
           case 'w':
-             tile_width = atoi(optarg);
+             tile_w = atoi(optarg);
           break;
 
           case 'h':
-             tile_height = atoi(optarg);
+             tile_h = atoi(optarg);
+          break;
+
+          case 'v':
+             verbose = 1;
           break;
 
           case '?':
@@ -90,12 +95,12 @@ int main(int argc, char** argv) {
        print_usage();
        exit(1);
     }
-    if(tile_width==0) {
+    if(tile_w==0) {
        fprintf(stderr,"%s: missing -w option\n",argv[0]);
        print_usage();
        exit(1);
     }
-    if(tile_height==0) {
+    if(tile_h==0) {
        fprintf(stderr,"%s: missing -h option\n",argv[0]);
        print_usage();
        exit(1);
@@ -115,7 +120,9 @@ int main(int argc, char** argv) {
     unsigned int tile_count = tiles_x*tiles_y;
     unsigned int i=0;
 
-
+    if(verbose) {
+       printf("Loaded %s, %d tiles [%d * %d]\n",input_filename,tile_count,tiles_x,tiles_y);
+    }
 
     if(mw) {
        mw = DestroyMagickWand(mw);
