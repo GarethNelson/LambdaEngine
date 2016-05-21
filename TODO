@@ -1,6 +1,11 @@
 TODO in lambdamc
   Add collision map to mapinfo.def
 
+Console system
+  Swap all printf() for an internal function
+  Add hook for "all keyboard input" to input module
+  Add render hooks to render the console if currently active and to capture keyboard input
+
 Tools
   lambdamc         - toplevel map compiler, invokes other tools
   lambdacut        - cut a tile out of a larger image
