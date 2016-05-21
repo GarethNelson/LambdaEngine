@@ -146,13 +146,13 @@ int main(int argc, char** argv) {
     unsigned int x=0;
     double diff;
     is_dup[0]=-1;
-    for(i=1; i< tile_count; i++) {
-        for(x=0; x< tile_count; x++) {
+    for(i=0; i< tile_count; i++) {
+        is_dup[i] = -1;
+        for(x=0; x< i; x++) {
             if(x==i) continue;
             MagickCompareImages(tileset[i],tileset[x],1,&diff);
-            is_dup[x]=-1;
             if(diff==0) {
-               is_dup[x]=i;
+               is_dup[i]=x;
                if(verbose) {
                   fprintf(stderr,"%d is a duplicate of %d\n",i,x);
                }
@@ -182,4 +182,22 @@ int main(int argc, char** argv) {
     }
 
     MagickWandTerminus();
+
+    if(verbose) {
+       fprintf(stderr,"Writing visual.def...\n");
+    }
+    char visualdef_filename[PATH_MAX];
+    snprintf(visualdef_filename,PATH_MAX-1,"%s/visual.def",output_path);
+    FILE* visual_fd = fopen((const char*)visualdef_filename,"w");
+    for(i=0; i<tile_count; i++) {
+        fprintf(visual_fd,"[TILE%d]\n",i);
+        fprintf(visual_fd,"TILE_X=%d\n",(i / tiles_x));
+        fprintf(visual_fd,"TILE_Y=%d\n",(i % tiles_x));
+        if(is_dup[i]==-1) {
+           fprintf(visual_fd,"TEXTURE=tile%d.png\n",i);
+        } else {
+           fprintf(visual_fd,"TEXTURE=tile%d.png\n",is_dup[i]);
+        }
+    }
+    fclose(visual_fd);
 }
