@@ -16,7 +16,7 @@ Tools
      also outputs a visual.def
   lambdaextractcol - extract a list of tiles that are in the collision map
      takes collision map colour triplet as params (r,g,b)
-     takes a list of tile IDs and filenames on stdin
+     takes a list of tile IDs and filenames on stdin or from a specified file (basically visual.def)
      outputs a collision.def
   lambdaextractent - extract a list of entity spawn points from an entity map
      takes entity colour triplet and filename as params (r,g,b)
