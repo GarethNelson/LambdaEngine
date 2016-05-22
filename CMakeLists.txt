@@ -7,6 +7,7 @@ PKG_SEARCH_MODULE(FREETYPE2 REQUIRED freetype2)
 find_package(ImageMagick REQUIRED COMPONENTS MagickWand)
 include_directories(${SDL2_INCLUDE_DIRS}
                     ${CMAKE_CURRENT_SOURCE_DIR}/soil
+                    ${CMAKE_CURRENT_SOURCE_DIR}/def_format
                     ${FREETYPE2_INCLUDE_DIRS}
                     ${ImageMagick_MagickWand_INCLUDE_DIRS}
                     ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -22,6 +23,7 @@ set_target_properties(lambda PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT
 target_link_libraries(lambda pthread physfs dl ${OPENGL_LIBRARIES})
 
 file(GLOB lambdamc_SRC
+     "def_format/*.c"
      "tools/lambdamc/*.c"
      "tools/lambdamc/*.h")
 add_executable(lambdamc ${lambdamc_SRC})
@@ -29,6 +31,7 @@ set_target_properties(lambdamc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRE
 target_link_libraries(lambdamc )
 
 file(GLOB lambdacut_SRC
+     "def_format/*.c"
      "tools/lambdacut/*.c"
      "tools/lambdacut/*.h")
 add_executable(lambdacut ${lambdacut_SRC})
@@ -37,6 +40,7 @@ set_target_properties(lambdacut PROPERTIES COMPILE_FLAGS "-DMAGICKCORE_HDRI_ENAB
 target_link_libraries(lambdacut ${ImageMagick_MagickWand_LIBRARY})
 
 file(GLOB lambdaextractcol_SRC
+     "def_format/*.c"
      "tools/lambdaextractcol/*.c"
      "tools/lambdaextractcol/*.h")
 add_executable(lambdaextractcol ${lambdaextractcol_SRC})
