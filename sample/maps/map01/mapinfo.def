@@ -8,6 +8,10 @@ TILERESH: 64
 MAPVIS
 FILENAME: visual.png
 %%
+COLMAP
+FILENAME: collision.png
+COLOUR: 255,0,0
+%%
 HOTZONEMAP
 FILENAME: hotzone.png
 %%
