@@ -36,6 +36,13 @@ set_target_properties(lambdacut PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURR
 set_target_properties(lambdacut PROPERTIES COMPILE_FLAGS "-DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16")
 target_link_libraries(lambdacut ${ImageMagick_MagickWand_LIBRARY})
 
+file(GLOB lambdaextractcol_SRC
+     "tools/lambdaextractcol/*.c"
+     "tools/lambdaextractcol/*.h")
+add_executable(lambdaextractcol ${lambdaextractcol_SRC})
+set_target_properties(lambdaextractcol PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dist/bin)
+set_target_properties(lambdaextractcol PROPERTIES COMPILE_FLAGS "-DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16")
+target_link_libraries(lambdaextractcol ${ImageMagick_MagickWand_LIBRARY})
 
 file(GLOB lambda_video_SRC
      "lambda_video/*.c"

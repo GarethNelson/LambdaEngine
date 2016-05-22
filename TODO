@@ -8,31 +8,33 @@ Console system
 
 Tools
   lambdamc         - toplevel map compiler, invokes other tools
+    map compiler process finally spits out a .c file that includes all headers
+    C file has a $mapname_init function (e.g map01_init) that sets up relevant hooks and a $mapname_close() function
   lambdacut        - cut a tile out of a larger image
     takes params tileres_w, tileres_h, tile_x, tile_y
      optionally takes just tileres_w,tileres_h and outputs all tiles into a directory
      also outputs a visual.def
   lambdaextractcol - extract a list of tiles that are in the collision map
      takes collision map colour triplet as params (r,g,b)
-     takes a list of tile co-ordinates and filenames on stdin
-     prints tile co-ordinates that contain the collision map colour
+     takes a list of tile IDs and filenames on stdin
+     outputs a collision.def
   lambdaextractent - extract a list of entity spawn points from an entity map
-     takes entity colour triplet as params (r,g,b)
-     prints x,y coordinates to stdout
+     takes entity colour triplet and filename as params (r,g,b)
+     outputs an entities.def
   lambdaextracthz  - extract hotzone rectangle coordinates from a hotzone map
-     takes hotzone colour triplet as params (r,g,b)
-     prints x,y,w,h to stdout
+     takes hotzone colour triplet as params (r,g,b) and filename
+     outputs hotzones.def
   lambdagenent     - generate C header file with spawn points of entities and appropriate hooks
-     takes entity ID and x,y coordinates as parameters from stdin (or optionally a file)
+     takes entities.def as input
      prints the generated C header to stdout (or to a specified file)
   lambdagencol     - generate C header file with function to check for collisions with the collision map
-     takes a list of tile co-ordinates and filenames on stdin
+     takes collision.def as input
      prints the generated C header to stdout (or to a specified file)
       function takes world co-ordinates, checks if they're in a collision map tile and then checks for actual collision
   lambdagenhz      - generate C header file with rectangle coordinates of hotzones and collision check hooks
-     takes hotzone ID and x,y,w,h as parameters from stdin (or optionally a file)
+     takes hotzones.def as input
      prints the generated C header to stdout (or to a specified file)
-
+      generated header provides hooks for each hotzone
 
 Create sample game in core02.pak
   Simple test maps map01 + map02
