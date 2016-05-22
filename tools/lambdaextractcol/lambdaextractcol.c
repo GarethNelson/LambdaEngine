@@ -31,6 +31,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <limits.h>
+#include <errno.h>
 
 #include <wand/magick_wand.h>
 
@@ -92,6 +93,13 @@ int main(int argc, char** argv) {
 
     if(input_filename==NULL) {
        input_fd=stdin;
+    } else {
+       input_fd=fopen(input_filename,"r");
+    }
+
+    if(input_fd==NULL) {
+       fprintf(stderr,"%s: Unable to open input file \"%s\" - %s\n",argv[0],input_filename,strerror(errno));
+       exit(1);
     }
     if(output_path==NULL) {
        fprintf(stderr,"%s: missing -o option\n",argv[0]);
