@@ -1,0 +1,34 @@
+
+# This is a simple test def file
+
+# blank lines should be totally ignored
+
+
+# here is our first section, in this example an imaginary server configuration which listens to port 8080 on localhost
+SERVER
+LISTENIP: 127.0.0.1
+LISTENPORT: 8080
+%%
+
+# as you can see, the section is terminated by %%, blank lines are NOT required however, and are added here only
+# for the sake of visual clarity
+
+# here we have multiple USER sections, the first of which has an extra field (REALNAME) - each record can have
+# any arbitary records, there is no schema enforcement
+USER
+USERNAME: gareth
+REALNAME: Gareth Nelson
+PASSWORD: 1234
+%%
+USER
+USERNAME: bob
+PASSWORD: supersecret
+%%
+
+# after this last record, we close the file, note that the trailing newline is optional
+
+USER
+USERNAME: fred
+PASSWORD: anotherone
+%%
+
