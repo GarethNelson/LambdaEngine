@@ -27,10 +27,6 @@
 //-----------------------------------------------------------------------------
 
 #include <stdio.h>
-#ifdef __linux__
-#define __USE_GNU
-#endif
-#include <dlfcn.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -42,7 +38,6 @@
 #include "l_splash.h"
 #include "l_mainmenu.h"
 #include "l_ingame.h"
-
 
 #define __IN_MAIN_
 #include <lambda_api.h>
@@ -98,7 +93,6 @@ int main(int argc, char* argv[]) {
     printf("l_main.c:main() - Starting post load hooks:\n");
 
     RUN_HOOK(lambda_post_load,NULL)
-
 
     if(video_init() != 0) {
        printf("l_main.c:main() - Failed to setup video!\n");
