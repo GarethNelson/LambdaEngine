@@ -57,7 +57,6 @@ global_state_t *global_state;
 UT_array *lambda_events;
 hook_callbacks_t *hook_callbacks=NULL; // see lambda_api.h
 single_callbacks_t *_single_callbacks=NULL;
-UT_icd events_icd = {sizeof(lambda_event_t),NULL,NULL,NULL};
 
 void* fps_font;
 
@@ -74,7 +73,6 @@ int main(int argc, char* argv[]) {
     global_state = (global_state_t*)malloc(sizeof(global_state_t));
     single_callbacks = &_single_callbacks;
     global_state->app_stage = STARTUP;
-    utarray_new(lambda_events, &events_icd);
     vfs_init(argv[0]);
 
     CREATE_HOOK(lambda_post_load)
