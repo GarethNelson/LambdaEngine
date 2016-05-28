@@ -1,10 +1,49 @@
+Conventions:
+  <game_src_root> refers to the source code for the game under development
+  <game_bin_root> refers to the compiled object code for the game, this will be packed into a .pak archive for the engine
+  
+
+
+There are 3 stages in producing a map, the first stage is the art stage:
+
 Source map:
-/maps/<mapname>/mapinfo.def
-/maps/<mapname>/visual.png
-/maps/<mapname>/hotzone.png
-/maps/<mapname>/collision.png
-/maps/<mapname>/entities.png
+<game_src_root>/maps/<mapname>/mapinfo.def
+<game_src_root>/maps/<mapname>/visual.png
+<game_src_root>/maps/<mapname>/hotzone.png
+<game_src_root>/maps/<mapname>/collision.png
+<game_src_root>/maps/<mapname>/entities.png
+
+
+
+
+After the art stage, automated tools are used to generate/update C header files for the game logic in include/
+The header files should be regenerated after any art changes.
+Code to handle the game logic is placed in <mapname>.c
+
+Intermediate map:
+<game_src_root>/maps/<mapname>/mapinfo.def
+<game_src_root>/maps/<mapname>/visual.png
+<game_src_root>/maps/<mapname>/hotzone.png
+<game_src_root>/maps/<mapname>/collision.png
+<game_src_root>/maps/<mapname>/entities.png
+<game_src_root>/maps/<mapname>/include/<mapname>/mapinfo.h
+<game_src_root>/maps/<mapname>/include/<mapname>/hotzone.h
+<game_src_root>/maps/<mapname>/include/<mapname>/collision.h
+<game_src_root>/maps/<mapname>/include/<mapname>/entities.h
+<game_src_root>/maps/<mapname>/<mapname.c>
+
+
+
+After the code is complete (or during the normal code/compile/test cycle), the map is compiled into the final binary form.
 
 Compiled map:
-
-    
+<game_bin_root>/maps/<mapname>/mapinfo.def
+<game_bin_root>/maps/<mapname>/visual.def
+<game_bin_root>/maps/<mapname>/visual/tile<ID>.png
+                                      ...
+<game_bin_root>/maps/<mapname>/collision.def
+<game_bin_root>/maps/<mapname>/collision/tile<ID>.bmp
+                                         ...
+<game_bin_root>/maps/<mapname>/hotzone.def
+<game_bin_root>/maps/<mapname>/entities.def
+<game_bin_root>/maps/<mapname>/<mapname>.o
