@@ -26,6 +26,9 @@
 //
 //-----------------------------------------------------------------------------
 
+#ifndef __LIB_TOOLS_H_
+#define __LIB_TOOLS_H_
+
 void init_libs();
 
 #define MAX_LIBFN_LEN 30
@@ -37,3 +40,5 @@ typedef struct lib_details {
 } lib_details;
 
 lib_details *libs_list;
+
+#endif

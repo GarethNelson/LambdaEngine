@@ -26,6 +26,11 @@
 //
 //-----------------------------------------------------------------------------
 
+#ifndef __VFS_IO_H_
+#define __VFS_IO_H_
+
 unsigned int vfs_filelen(char* filename);
 void         vfs_read(void* buf,char* filename,unsigned int size);
 void         vfs_extract(char *vfs_filename, char* extract_to);
+
+#endif

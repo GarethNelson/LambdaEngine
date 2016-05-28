@@ -26,4 +26,9 @@
 //
 //-----------------------------------------------------------------------------
 
+#ifndef __VFS_PAK_H_
+#define __VFS_PAK_H_
+
 int vfs_loadpak(char* argv);
+
+#endif
