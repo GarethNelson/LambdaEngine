@@ -71,7 +71,6 @@ void vfs_init(char* argv) {
      printf("vfs_init.c:vfs_init() - Load core02.pak:\n");
      retval = vfs_loadpak("data/core02.pak");
      if(retval != 0) {
-       printf("vfs_init.c:vfs_init() - Could not load core02.pak, this file is required!\n");
-       exit(EXIT_FAILURE);
+       printf("vfs_init.c:vfs_init() - Could not load core02.pak!\n");
      }
 }
