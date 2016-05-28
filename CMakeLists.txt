@@ -64,21 +64,21 @@ file(GLOB lambda_video_SRC
 add_library(lambda_video SHARED ${lambda_video_SRC})
 target_link_libraries(lambda_video ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES} dl)
 set_target_properties(lambda_video PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
-#
-#
-#file(GLOB lambda_input_SRC
-#     "lambda_input/*.c"
-#     "lambda_input/*.h")
-#add_library(lambda_input SHARED ${lambda_input_SRC})
-#target_link_libraries(lambda_input ${SDL2_LIBRARIES} dl)
-#set_target_properties(lambda_input PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
-#
-#
+
+
+file(GLOB lambda_input_SRC
+     "lambda_input/*.c"
+     "lambda_input/*.h")
+add_library(lambda_input SHARED ${lambda_input_SRC})
+target_link_libraries(lambda_input ${SDL2_LIBRARIES} dl)
+set_target_properties(lambda_input PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
+
+
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
    set(EXTRA_GL GL)
 endif()
-#
-#
+
+
 file(GLOB lambda_render_SRC
      "soil/*.c"
      "lambda_render/*.c"
@@ -86,7 +86,7 @@ file(GLOB lambda_render_SRC
 add_library(lambda_render SHARED ${lambda_render_SRC})
 target_link_libraries(lambda_render ${OPENGL_LIBRARIES} ${EXTRA_GL} ${FREETYPE2_LIBRARIES} ${SDL2_LIBRARIES} ${SDL2TTF_LIBRARY} m dl)
 set_target_properties(lambda_render PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/core01/libs)
-#
+
 add_custom_target(core01_md5sums ALL
                  DEPENDS lambda_video lambda_render lambda_input
                  COMMAND  "${CMAKE_CURRENT_SOURCE_DIR}/tools/build_md5sums.sh"

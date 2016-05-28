@@ -69,7 +69,6 @@ void i_handle_sdl_key_event(SDL_Event *e) {
 }
 
 void i_frame(void* param) {
-     utarray_clear(lambda_events);
      SDL_Event e;
      while (SDL_PollEvent(&e)) {
         switch(e.type) {

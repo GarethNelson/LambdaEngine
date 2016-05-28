@@ -48,7 +48,7 @@ static loader_asset_t *tmp_asset;
 
 #define L_PRECACHE(asset_filename) tmp_asset = (loader_asset_t*)malloc(sizeof(loader_asset_t)); \
                                    snprintf(tmp_asset->filename,PATH_MAX-1,"%s",asset_filename);\
-                                   LL_APPEND(  ((loader_vals_t*)global_state->stage_vals)->assets, tmp_asset);
+                                   LL_APPEND( loader_state->assets, tmp_asset);
 
 void clean_init_screen() {
      pthread_mutex_destroy(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));
@@ -58,16 +58,16 @@ void clean_init_screen() {
 
 void* loader_thread(void* data) {
       printf("l_loadscreen.c:loader_thread() - Begin loading assets\n");
-      pthread_mutex_lock(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));
+      pthread_mutex_lock(&(loader_state->loader_mutex));
 
       loader_asset_t *asset_to_load, *tmp;
-      LL_FOREACH_SAFE( ((loader_vals_t*)global_state->stage_vals)->assets, asset_to_load,tmp) {
+      LL_FOREACH_SAFE( loader_state->assets, asset_to_load,tmp) {
          printf("l_loadscreen.c:loader_thread() - Precaching %s\n", asset_to_load->filename);
          vfs_precache(asset_to_load->filename);
-         LL_DELETE( ((loader_vals_t*)global_state->stage_vals)->assets, asset_to_load);
+         LL_DELETE( loader_state->assets, asset_to_load);
       }
 
-      pthread_mutex_unlock(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex));
+      pthread_mutex_unlock(&(loader_state->loader_mutex));
       printf("l_loadscreen.c:loader_thread() - Finished loading assets!\n");
       return NULL;
 }
@@ -97,8 +97,8 @@ void init_load_screen() {
         setup_first_loadscreen();
      }
      printf("l_loadscreen.c:init_load_screen() - Starting asset loader thread:\n");
-     pthread_mutex_init(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex), NULL);
-     pthread_create(&(((loader_vals_t*)global_state->stage_vals)->loader_thread),NULL,loader_thread,NULL);
+     pthread_mutex_init(&(loader_state->loader_mutex), NULL);
+     pthread_create(&(loader_state->loader_thread),NULL,loader_thread,NULL);
 }
 
 void update_load_screen() {
