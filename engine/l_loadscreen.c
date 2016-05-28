@@ -43,6 +43,7 @@
 #include "vfs_cache.h"
 
 static float rot;
+static loader_vals_t* loader_state;
 static loader_asset_t *tmp_asset;
 
 #define L_PRECACHE(asset_filename) tmp_asset = (loader_asset_t*)malloc(sizeof(loader_asset_t)); \
@@ -71,22 +72,29 @@ void* loader_thread(void* data) {
       return NULL;
 }
 
+void setup_first_loadscreen() {
+     printf("l_loadscreen.c:setup_first_screen() - First start!\n");
+     loader_state = (loader_vals_t*)malloc(sizeof(loader_vals_t));
+     loader_state->next_stage = INIT_SPLASH;
+     loader_state->assets = NULL;
+     printf("l_loadscreen.c:setup_first_screen() - Precache setup begin\n");
+       L_PRECACHE("/textures/logo.tga")
+       L_PRECACHE("/fonts/default.ttf")
+       L_PRECACHE("/textures/bg_tex.tga")
+     printf("l_loadscreen.c:setup_first_screen() - Precache setup end\n");
+}
+
 void init_load_screen() {
      printf("l_loadscreen.c:init_load_screen() - Initialising loading screen\n");
+     
+     loader_state = ((loader_vals_t*)global_state->stage_vals);
+
      IMPORT(video_pre_render)
      IMPORT(video_post_render)
      IMPORT(draw_triangle_rot)
      rot = 1.0f;
      if(global_state->stage_vals == NULL) { // if we're here, it means this is the first loading screen
-       printf("l_loadscreen.c:init_load_screen() - First start!\n");
-       global_state->stage_vals = malloc(sizeof(loader_vals_t));
-       ((loader_vals_t*)global_state->stage_vals)->next_stage = INIT_SPLASH;
-       ((loader_vals_t*)global_state->stage_vals)->assets = NULL;
-       printf("l_loadscreen.c:init_load_screen() - Precache setup begin\n");
-       L_PRECACHE("/textures/logo.tga")
-       L_PRECACHE("/fonts/default.ttf")
-       L_PRECACHE("/textures/bg_tex.tga")
-       printf("l_loadscreen.c:init_load_screen() - Precache setup end\n");
+        setup_first_loadscreen();
      }
      printf("l_loadscreen.c:init_load_screen() - Starting asset loader thread:\n");
      pthread_mutex_init(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex), NULL);
@@ -100,8 +108,8 @@ void update_load_screen() {
      // this is silly, but means we see SOME of the loading animation even if it's super quick
      if(rot >= 360.0f) {
         rot = 1.0f;
-        if(pthread_mutex_trylock(&(((loader_vals_t*)global_state->stage_vals)->loader_mutex))==0) {
-           global_state->app_stage = ((loader_vals_t*)global_state->stage_vals)->next_stage;
+        if(pthread_mutex_trylock(&(loader_state->loader_mutex))==0) {
+           global_state->app_stage = loader_state->next_stage;
            clean_init_screen();
         }
      } else {
