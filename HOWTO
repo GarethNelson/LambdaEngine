@@ -2,7 +2,7 @@ Conventions:
   <game_src_root> refers to the source code for the game under development
   <game_bin_root> refers to the compiled object code for the game, this will be packed into a .pak archive for the engine
   
-
+A game is made up of several maps linked together by game logic code compiled as C modules.
 
 There are 3 stages in producing a map, the first stage is the art stage:
 
@@ -19,6 +19,7 @@ Source map:
 After the art stage, automated tools are used to generate/update C header files for the game logic in include/
 The header files should be regenerated after any art changes.
 Code to handle the game logic is placed in <mapname>.c
+It is recommended that <game_src_root> as a whole live in a version control repository
 
 Intermediate map:
 <game_src_root>/maps/<mapname>/mapinfo.def
@@ -47,3 +48,8 @@ Compiled map:
 <game_bin_root>/maps/<mapname>/hotzone.def
 <game_bin_root>/maps/<mapname>/entities.def
 <game_bin_root>/maps/<mapname>/<mapname>.o
+
+
+Once all the maps are compiled, the whole game can be compiled by linking the .o files into a gamelogic.so.
+Doing this requires a gameinfo.def file that defines the start map, game name and other information.
+
