@@ -18,6 +18,7 @@ Tools
      takes collision map colour triplet as params (r,g,b)
      takes a list of tile IDs and filenames on stdin or from a specified file (basically visual.def)
      outputs a collision.def
+      Need to make this an actual filter
   lambdaextractent - extract a list of entity spawn points from an entity map
      takes entity colour triplet and filename as params (r,g,b)
      outputs an entities.def
