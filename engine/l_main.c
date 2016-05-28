@@ -40,13 +40,6 @@
 #include "l_mainmenu.h"
 #include "l_ingame.h"
 
-#if defined(__APPLE__)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
 
 #define __IN_MAIN_
 #include <lambda_api.h>
