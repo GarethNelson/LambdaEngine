@@ -33,6 +33,9 @@
 #include <dlfcn.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+#include "globals.h"
+
 #include "vfs_init.h"
 #include "lib_tools.h"
 #include "l_loadscreen.h"
@@ -45,12 +48,6 @@
 #include <lambda_api.h>
 #include <lambda_state.h>
 
-
-global_state_t *global_state;
-UT_array *lambda_events;
-hook_callbacks_t *hook_callbacks=NULL; // see lambda_api.h
-single_callbacks_t *_single_callbacks=NULL;
-
 void* fps_font;
 
 void fps_display(void* param) {
@@ -59,30 +56,40 @@ void fps_display(void* param) {
      draw_text(0,0,fps_font,255,0,0,fps_text);
 }
 
+void create_main_hooks() {
+     CREATE_HOOK(lambda_post_load)
+     CREATE_HOOK(lambda_shutdown)
+     CREATE_HOOK(lambda_frame)
+}
+
+void import_syms() {
+     IMPORT(video_init)
+     IMPORT(render_init)
+     IMPORT(input_init)
+     IMPORT(load_texture)
+     IMPORT(load_font)
+     IMPORT(draw_text)
+     IMPORT(draw_tiled_quad)
+     IMPORT(video_pre_render)
+     IMPORT(video_post_render)
+}
+
 int main(int argc, char* argv[]) {
     setbuf(stdout,NULL);
     printf("\n*** LAMBDA ENGINE STARTUP ***\n\n");
     printf("l_main.c:main() - Lambda engine starting up\n");
-    global_state = (global_state_t*)malloc(sizeof(global_state_t));
-    single_callbacks = &_single_callbacks;
+
+    init_globals();
+
     global_state->app_stage = STARTUP;
+
     vfs_init(argv[0]);
 
-    CREATE_HOOK(lambda_post_load)
-    CREATE_HOOK(lambda_shutdown)
-    CREATE_HOOK(lambda_frame)
-
+    create_main_hooks();
 
     init_libs();
-    IMPORT(video_init)
-    IMPORT(render_init)
-    IMPORT(input_init)
-    IMPORT(load_texture)
-    IMPORT(load_font)
-    IMPORT(draw_text)
-    IMPORT(draw_tiled_quad)
-    IMPORT(video_pre_render)
-    IMPORT(video_post_render)
+
+    import_syms();
 
     printf("l_main.c:main() - Starting events system:\n");
 
