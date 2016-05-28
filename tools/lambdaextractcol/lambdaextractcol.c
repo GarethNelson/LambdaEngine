@@ -177,11 +177,10 @@ int main(int argc, char** argv) {
         for(tile_x=0; tile_x<tile_w; tile_x++) {
             for(tile_y=0; tile_y<tile_h; tile_y++) {
                 MagickGetImagePixelColor(wands[i],tile_x,tile_y,color_wand);
-                pixel_r = PixelGetRed(color_wand);
-                pixel_g = PixelGetGreen(color_wand);
-                pixel_b = PixelGetBlue(color_wand);
-                printf("%f %f %f\n",pixel_r,pixel_g,pixel_b);
-                if((pixel_r==red_c) && (pixel_g==green_c) && (pixel_b==blue_c)) {
+                pixel_r = PixelGetRed(color_wand)*255;
+                pixel_g = PixelGetGreen(color_wand)*255;
+                pixel_b = PixelGetBlue(color_wand)*255;
+                if((pixel_r==(float)red_c) && (pixel_g==(float)green_c) && (pixel_b==(float)blue_c)) {
                   printf("TILE\n");
                   printf("ID: %d\n",i);
                   printf("%%%%\n");
