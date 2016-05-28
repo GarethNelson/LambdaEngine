@@ -70,7 +70,6 @@ def_database_t* read_def_fd(FILE* fd) {
           retval->records[retval->record_count -1].fields[f_count-1].field_name = strdup(strsep(&line,":"));
           retval->records[retval->record_count -1].fields[f_count-1].field_val  = strdup(strsep(&line,":"))+1; // +1 to get rid of leading whitespace
        }   
-       free(line);
        line = NULL;
     }
     return retval;
