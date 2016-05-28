@@ -1,0 +1,10 @@
+Source map:
+/maps/<mapname>/mapinfo.def
+/maps/<mapname>/visual.png
+/maps/<mapname>/hotzone.png
+/maps/<mapname>/collision.png
+/maps/<mapname>/entities.png
+
+Compiled map:
+
+    
